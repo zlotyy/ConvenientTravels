@@ -17,10 +17,13 @@
         <junit-version>4.12</junit-version>
         <javax.servlet.api-version>2.5</javax.servlet.api-version>
         <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
-        <mysql.connector-version>6.0.6</mysql.connector-version>
+        <mysql.connector-version>5.1.39</mysql.connector-version>
         <javax.javaee.web.api-version>7.0</javax.javaee.web.api-version>
         <org.springframework.data.jpa-version>1.11.4.RELEASE</org.springframework.data.jpa-version>
         <commons.dbcp-version>1.4</commons.dbcp-version>
+        <org.hibernate.core-version>5.2.10.Final</org.hibernate.core-version>
+        <org.hibernate.entitymanager-version>5.2.10.Final</org.hibernate.entitymanager-version>
+        <org.hibernate.validator-version>5.4.1.Final</org.hibernate.validator-version>
     </properties>
 
     <dependencies>
@@ -70,6 +73,24 @@
             <version>${org.springframework-version}</version>
         </dependency>
 
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate.core-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${org.hibernate.entitymanager-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${org.hibernate.validator-version}</version>
+        </dependency>
+
+
         <!-- JPA - database manage -->
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -97,27 +118,47 @@
             <artifactId>slf4j-api</artifactId>
             <version>${org.slf4j-version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
+            <version>${org.slf4j-version}</version>
             <scope>test</scope>
         </dependency>
-
+-->
         <!-- dodatkowe dependency dla slf4j razem z log4j (usunac slf4j-simple) -->
         <!--<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${org.slf4j-version}</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${org.slf4j-version}</version>
             <scope>runtime</scope>
-        </dependency>-->
-
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
     </dependencies>
+
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>${java-version}</source>
+                    <target>${java-version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

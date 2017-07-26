@@ -11,6 +11,12 @@ public class StartController {
 
     @RequestMapping("/")
     public String returnStartPage(){
+        //org.apache.log4j.BasicConfigurator.configure();
+        /*log.info("LOOOOOGGGGEEEEEERRRRRR");
+        log.trace("LOOOOOGGGGEEEEEERRRRRR");
+        log.debug("LOOOOOGGGGEEEEEERRRRRR");
+        log.error("LOOOOOGGGGEEEEEERRRRRR");*/
+
         return  "index";
     }
 }
