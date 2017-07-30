@@ -4,7 +4,7 @@
 <log4j:configuration>
     <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
         <param name="Threshold" value="DEBUG" />
-        <param name="File" value="d:/myLogFile.log" />
+        <param name="File" value="d:/GitHub/Aplikacje Webowe/Logi/ConvenientTravels.log" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d  %-5p  [%c{1}] %m %n" />
         </layout>
