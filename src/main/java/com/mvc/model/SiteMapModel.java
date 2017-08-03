@@ -1,6 +1,5 @@
 package com.mvc.model;
 
-import com.google.gson.annotations.SerializedName;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -10,16 +9,22 @@ import java.io.Serializable;
 @Table(name="SiteMap")
 public class SiteMapModel implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @SerializedName("siteId")
-    public long siteId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "NodeId")
+    private long nodeId;
 
     @Id
-    @SerializedName("parentId")
-    private long parentId;
+    @Column(name = "NodeParentId")
+    private long nodeParentId;
 
+    @Column(name = "NodeName", unique = true)
     @NotEmpty
-    @Column(unique = true)
-    @SerializedName("siteName")
-    private String siteName;
+    private String nodeName;
+
+    @Column(name = "NodeController", unique = true)
+    private String nodeController;
+
+    @Column(name = "IsEnabled")
+    @NotEmpty
+    private Boolean isEnabled;
 }
