@@ -1,5 +1,6 @@
 package com.mvc.model;
 
+import com.mvc.enums.Male;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -39,7 +40,7 @@ public class UserModel {
 
     @Column(name = "Male")
     @NotEmpty
-    private String male;
+    private Male male;
 
     @Column(name = "BirthYear")
     @NotEmpty
@@ -65,9 +66,9 @@ public class UserModel {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar lastLoginTime;
 
-    @Column(name = "IsDelete")
+    @Column(name = "IsDeleted")
     @NotEmpty
-    private boolean isDelete;
+    private boolean isDeleted;
 
     //CAR ID
 }
