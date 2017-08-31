@@ -8,19 +8,43 @@ import java.util.Calendar;
 
 @Entity
 @Table(name = "SessionActual")
-public class SessionActualModel  implements Serializable {
+public class SessionActualModel {
     @Id
     @GeneratedValue
     @Column(name = "SessionId")
     private long sessionId;
 
-    @Id
-    @Column(name = "UserId")
-    @NotEmpty
-    private long userId;
-
     @Column(name = "LogInTime")
     @Temporal(TemporalType.TIMESTAMP)
     @NotEmpty
     private Calendar logInTime;
+
+    // Polaczenie 1 User do N Sesji
+    @ManyToOne
+    @JoinColumn(name = "UserId")
+    private UserModel user;
+
+    public long getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(long sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public Calendar getLogInTime() {
+        return logInTime;
+    }
+
+    public void setLogInTime(Calendar logInTime) {
+        this.logInTime = logInTime;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
 }

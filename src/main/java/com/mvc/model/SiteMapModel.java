@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="SiteMap")
-public class SiteMapModel implements Serializable {
+public class SiteMapModel implements  Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "NodeId")
@@ -27,4 +27,44 @@ public class SiteMapModel implements Serializable {
     @Column(name = "IsEnabled")
     @NotEmpty
     private Boolean isEnabled;
+
+    public long getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(long nodeId) {
+        this.nodeId = nodeId;
+    }
+
+    public long getNodeParentId() {
+        return nodeParentId;
+    }
+
+    public void setNodeParentId(long nodeParentId) {
+        this.nodeParentId = nodeParentId;
+    }
+
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
+
+    public String getNodeController() {
+        return nodeController;
+    }
+
+    public void setNodeController(String nodeController) {
+        this.nodeController = nodeController;
+    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
 }
