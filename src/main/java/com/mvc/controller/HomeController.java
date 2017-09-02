@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
-public class StartController {
+@Controller("homeController")
+public class HomeController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @RequestMapping("/")
@@ -14,6 +14,6 @@ public class StartController {
         //org.apache.log4j.BasicConfigurator.configure();   //domyslna konfiguracja log4j
         log.info("returnStartPage");
 
-        return  "index";
+        return "home/index";
     }
 }

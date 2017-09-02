@@ -44,7 +44,7 @@ public class DriveDetailsModel {
 
     @Column(name = "PassengersComments")
     @ElementCollection(targetClass=String.class)
-    @CollectionTable(name = "Drive_PassengersComments")
+    @CollectionTable(name = "Drive_PassengersComments", joinColumns = @JoinColumn(name = "DriveId"))
     private List<String> passengersComments;
 
     @OneToOne

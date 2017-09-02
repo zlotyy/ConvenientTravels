@@ -65,12 +65,12 @@ public class DriveModel {
 
     @Column(name = "StopOverCities")
     @ElementCollection(targetClass=String.class)
-    @CollectionTable(name = "Drive_StopOverCities")
+    @CollectionTable(name = "Drive_StopOverCities", joinColumns = @JoinColumn(name = "DriveId"))
     private List<String> stopOverCities;
 
     @Column(name = "StopOverStreets")
     @ElementCollection(targetClass=String.class)
-    @CollectionTable(name = "Drive_StopOverStreet")
+    @CollectionTable(name = "Drive_StopOverStreet", joinColumns = @JoinColumn(name = "DriveId"))
     private List<String> stopOverStreets;
 
     @Column(name = "IsRoundTrip")

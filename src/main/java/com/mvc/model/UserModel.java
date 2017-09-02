@@ -53,17 +53,17 @@ public class UserModel {
 
     @Column(name = "UserRates")
     @ElementCollection(targetClass=Integer.class)
-    @CollectionTable(name = "User_Rates")
+    @CollectionTable(name = "User_Rates", joinColumns = @JoinColumn(name = "UserId"))
     private List<Integer> userRates;
 
     @Column(name = "PersonalityAssessment")
     @ElementCollection(targetClass=String.class)
-    @CollectionTable(name = "User_PersonalityAssessment")
+    @CollectionTable(name = "User_PersonalityAssessment", joinColumns = @JoinColumn(name = "UserId"))
     private List<String> personalityAssessment;
 
     @Column(name = "DrivingSkills")
     @ElementCollection(targetClass=Integer.class)
-    @CollectionTable(name = "User_DrivingSkills")
+    @CollectionTable(name = "User_DrivingSkills", joinColumns = @JoinColumn(name = "UserId"))
     private List<Integer> drivingSkills;
 
     @Column(name = "ModifyTime")

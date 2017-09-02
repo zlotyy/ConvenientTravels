@@ -41,6 +41,11 @@
                 <property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect" />    <!-- Dzieki temu wpisowi tworzą sie klucze obce w tabelach -->
             </bean>
         </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>    <!-- Sa 4 opcje: validate, update, create, create-drop -->
+            </props>
+        </property>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
