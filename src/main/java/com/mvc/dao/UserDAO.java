@@ -11,7 +11,7 @@ import java.util.List;
 public class UserDAO implements IUserDAO {
 
     public UserModel createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                                int birthYear, String searchData, List<Integer> userRates, List<String> personalityAssessment,
+                                Calendar birthDate, String searchData, List<Integer> userRates, List<String> personalityAssessment,
                                 List<Integer> drivingSkills, Calendar modifyTime, Calendar lastLoginTime, boolean isDeleted) {
         UserModel user = new UserModel();
         user.setLogin(login);
@@ -21,7 +21,7 @@ public class UserDAO implements IUserDAO {
         user.setName(name);
         user.setLastname(lastname);
         user.setMale(male);
-        user.setBirthYear(birthYear);
+        user.setBirthDate(birthDate);
         user.setSearchData(searchData);
         user.setUserRates(userRates);
         user.setPersonalityAssessment(personalityAssessment);

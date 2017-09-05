@@ -18,7 +18,7 @@ public interface IUserService {
     boolean deleteUser(long userId);
     UserModel editUser(long userId);
     UserModel createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                         int birthYear, String searchData, List<Integer> userRates, List<String> personalityAssessment,
+                         Calendar birthDate, String searchData, List<Integer> userRates, List<String> personalityAssessment,
                          List<Integer> drivingSkills, Calendar modifyTime, Calendar lastLoginTime, boolean isDeleted);
     void updateLastLoginTime(long userId);
 }

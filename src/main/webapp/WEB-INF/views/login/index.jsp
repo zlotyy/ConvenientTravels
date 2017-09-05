@@ -23,27 +23,26 @@
 </head>
 
 <body>
-    <form>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-offset-5 col-md-3">
-                    <div class="form-login">
-                        <h4>Convenient Travels</h4>
-                        <input type="text" id="login" class="form-control input-sm chat-input" placeholder="Login" />
-                        </br>
-                        <input type="text" id="password" class="form-control input-sm chat-input" placeholder="Hasło" />
-                        </br>
-                        <div class="wrapper">
-            <span class="group-btn">
-                <a href="#" class="btn btn-primary btn-md">Zaloguj <i class="fa fa-sign-in"></i></a>
-            </span>
-                        </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-6">
+                <div class="form-login">
+                    <h4>Convenient Travels</h4>
+                    <p class="text-center">Logowanie</p>
+                    <input type="text" id="login" class="form-control input-sm chat-input" placeholder="Login" />
+                    </br>
+                    <input type="text" id="password" class="form-control input-sm chat-input" placeholder="Hasło" />
+                    </br>
+                    <div class="wrapper">
+                    <span class="group-btn">
+                        <a href="#" class="btn btn-success btn-md">Zarejestruj konto</a>
+                        <a href="#" class="btn btn-primary btn-md">Zaloguj się <i class="fa fa-sign-in"></i></a>
+                    </span>
                     </div>
-
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

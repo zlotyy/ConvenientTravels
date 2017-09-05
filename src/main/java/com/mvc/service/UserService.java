@@ -44,10 +44,10 @@ public class UserService implements IUserService {
      * @return
      */
     public UserModel createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                                int birthYear, String searchData, List<Integer> userRates, List<String> personalityAssessment,
+                                Calendar birthDate, String searchData, List<Integer> userRates, List<String> personalityAssessment,
                                 List<Integer> drivingSkills, Calendar modifyTime, Calendar lastLoginTime, boolean isDeleted) {
 
-        return userDAO.createUser(login, password, mail, phone, name, lastname, male, birthYear, searchData, userRates, personalityAssessment,
+        return userDAO.createUser(login, password, mail, phone, name, lastname, male, birthDate, searchData, userRates, personalityAssessment,
                 drivingSkills, modifyTime, lastLoginTime, isDeleted);
     }
 

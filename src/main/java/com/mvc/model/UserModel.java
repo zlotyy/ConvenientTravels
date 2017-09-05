@@ -45,8 +45,9 @@ public class UserModel {
     private Male male;
 
     @Column(name = "BirthYear")
+    @Temporal(TemporalType.DATE)
     @NotEmpty
-    private int birthYear;
+    private Calendar birthDate;
 
     @Column(name = "SearchData")
     private String searchData;
@@ -166,12 +167,12 @@ public class UserModel {
         this.male = male;
     }
 
-    public int getBirthYear() {
-        return birthYear;
+    public Calendar getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
+    public void setBirthDate(Calendar birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getSearchData() {
