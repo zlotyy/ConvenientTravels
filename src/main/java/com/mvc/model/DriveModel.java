@@ -4,6 +4,7 @@ package com.mvc.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -17,34 +18,34 @@ public class DriveModel {
     private long driveId;
 
     @Column(name = "InsertUserId")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private long insertUserId;
 
     @Column(name = "StartDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private Calendar startDate;
 
     @Column(name = "ReturnDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private Calendar returnDate;
 
     @Column(name = "InsertDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private Calendar insertDate;
 
     @Column(name = "ModificationDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private Calendar modificationDate;
 
     @Column(name = "SearchData")
     private String searchData;
 
     @Column(name = "CityStart")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String cityStart;
 
     @Column(name = "StreetStart")
@@ -54,7 +55,7 @@ public class DriveModel {
     private String busStopStart;
 
     @Column(name = "CityArrival")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String cityArrival;
 
     @Column(name = "StreetArrival")
@@ -74,15 +75,15 @@ public class DriveModel {
     private List<String> stopOverStreets;
 
     @Column(name = "IsRoundTrip")
-    @NotEmpty
+    @NotNull(message = "Pole nie moze byc puste")
     private boolean isRoundTrip;
 
     @Column(name = "Cost")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private int cost;
 
     @Column(name = "IsDeleted")
-    @NotEmpty
+    @NotNull(message = "Pole nie moze byc puste")
     private boolean isDeleted;
 
     // Polaczenie 1 User do N Przejazdow

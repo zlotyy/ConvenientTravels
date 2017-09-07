@@ -23,6 +23,8 @@
 </head>
 
 <body>
+    <jsp:include page="/menu" />
+
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-6">
@@ -34,15 +36,17 @@
                     <input type="text" id="password" class="form-control input-sm chat-input" placeholder="Hasło" />
                     </br>
                     <div class="wrapper">
-                    <span class="group-btn">
-                        <a href="#" class="btn btn-success btn-md">Zarejestruj konto</a>
-                        <a href="#" class="btn btn-primary btn-md">Zaloguj się <i class="fa fa-sign-in"></i></a>
-                    </span>
+                        <span class="group-btn">
+                            <a href="#" class="btn btn-success btn-md">Zarejestruj konto</a>
+                            <a href="#" class="btn btn-primary btn-md">Zaloguj się <i class="fa fa-sign-in"></i></a>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <jsp:include page="/footer" />
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

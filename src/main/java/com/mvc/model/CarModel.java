@@ -14,14 +14,14 @@ public class CarModel {
     private long carId;
 
     @Column(name = "CarBrand")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String carBrand;
 
     @Column(name = "CarModel")
     private String carModel;
 
     @Column(name = "Color")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String color;
 
     // Polaczenie 1 User do N Samochodow

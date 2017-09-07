@@ -16,7 +16,7 @@ public class SessionActualModel {
 
     @Column(name = "LogInTime")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private Calendar logInTime;
 
     // Polaczenie 1 User do N Sesji

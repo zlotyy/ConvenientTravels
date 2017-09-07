@@ -15,7 +15,7 @@ public class MessageModel {
     private long messageId;
 
     @Column(name = "Content")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String content;
 
     @Column(name = "SendTime")

@@ -27,7 +27,7 @@ public class DriveDetailsModel {
     private LuggageSize luggageSize;
 
     @Column(name = "PassengersQuantity")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private int passengersQuantity;
 
     @Column(name = "IsSmokePermitted")

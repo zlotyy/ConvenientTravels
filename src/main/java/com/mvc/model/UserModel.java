@@ -4,6 +4,7 @@ import com.mvc.enums.Male;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.List;
 
@@ -16,37 +17,37 @@ public class UserModel {
     private long userId;
 
     @Column(name = "Login")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String login;
 
     @Column(name = "Password")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String password;
 
     @Column(name = "Mail")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String mail;
 
     @Column(name = "Phone")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String phone;
 
     @Column(name = "Name")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String name;
 
     @Column(name = "Lastname")
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String lastname;
 
     @Column(name = "Male")
     @Enumerated(EnumType.STRING)
-    @NotEmpty
+    @NotNull(message = "Pole nie moze byc puste")
     private Male male;
 
     @Column(name = "BirthYear")
+    @NotEmpty(message = "Pole nie moze byc puste")
     @Temporal(TemporalType.DATE)
-    @NotEmpty
     private Calendar birthDate;
 
     @Column(name = "SearchData")
@@ -76,7 +77,7 @@ public class UserModel {
     private Calendar lastLoginTime;
 
     @Column(name = "IsDeleted")
-    @NotEmpty
+    @NotNull(message = "Pole nie moze byc puste")
     private boolean isDeleted;
 
     // Polaczenie 1 User do N Przejazdow

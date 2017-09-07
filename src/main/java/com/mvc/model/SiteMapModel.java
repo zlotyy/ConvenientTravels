@@ -3,6 +3,7 @@ package com.mvc.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -18,14 +19,14 @@ public class SiteMapModel implements  Serializable {
     private long nodeParentId;
 
     @Column(name = "NodeName", unique = true)
-    @NotEmpty
+    @NotEmpty(message = "Pole nie moze byc puste")
     private String nodeName;
 
     @Column(name = "NodeController", unique = true)
     private String nodeController;
 
     @Column(name = "IsEnabled")
-    @NotEmpty
+    @NotNull(message = "Pole nie moze byc puste")
     private Boolean isEnabled;
 
     public long getNodeId() {

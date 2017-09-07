@@ -8,15 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller("loginController")
+@RequestMapping("/login")
 public class LoginController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     IUserService userService;
 
-    @RequestMapping("/login")
-    public String index(){
+    @RequestMapping()
+    public String logIn(){
 
-        return "/login/index";
+        return "home/index";
     }
 }

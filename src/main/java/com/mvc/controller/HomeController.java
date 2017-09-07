@@ -12,6 +12,11 @@ public class HomeController {
     @RequestMapping("/")
     public String returnStartPage(){
         //org.apache.log4j.BasicConfigurator.configure();   //domyslna konfiguracja log4j
+
+
+
+
+
         log.info("returnStartPage");
 
         return "home/index";

@@ -3,6 +3,7 @@ package com.mvc.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -14,7 +15,7 @@ public class BookingModel implements Serializable {
     private long bookingId;
 
     @Column(name = "IsConfirmed")
-    @NotEmpty
+    @NotNull(message = "Pole nie moze byc puste")
     private boolean isConfirmed;
 
     // Polaczenie 1 User do N Rezerwacji
