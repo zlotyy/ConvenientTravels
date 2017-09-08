@@ -16,9 +16,9 @@ public interface IUserService {
     boolean isAccountDeleted(String login);
     //List<UserModel> getUsersForGrid(String sortOrder, String search);     // funkcjonalnsc by byla, gdyby bylo konto admina
     boolean deleteUser(long userId);
-    UserModel editUser(long userId);
-    UserModel createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
+    boolean editUser(long userId);
+    boolean createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
                          Calendar birthDate, String searchData, List<Integer> userRates, List<String> personalityAssessment,
                          List<Integer> drivingSkills, Calendar modifyTime, Calendar lastLoginTime, boolean isDeleted);
-    void updateLastLoginTime(long userId);
+    boolean updateLastLoginTime(long userId);
 }

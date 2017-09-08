@@ -1,35 +1,33 @@
 package com.mvc.dao;
 
-import com.mvc.enums.Male;
 import com.mvc.model.UserModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.Calendar;
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 @Repository("userDAO")
 public class UserDAO implements IUserDAO {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    public UserModel createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                                Calendar birthDate, String searchData, List<Integer> userRates, List<String> personalityAssessment,
-                                List<Integer> drivingSkills, Calendar modifyTime, Calendar lastLoginTime, boolean isDeleted) {
-        UserModel user = new UserModel();
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setMail(mail);
-        user.setPhone(phone);
-        user.setName(name);
-        user.setLastname(lastname);
-        user.setMale(male);
-        user.setBirthDate(birthDate);
-        user.setSearchData(searchData);
-        user.setUserRates(userRates);
-        user.setPersonalityAssessment(personalityAssessment);
-        user.setDrivingSkills(drivingSkills);
-        user.setModifyTime(modifyTime);
-        user.setLastLoginTime(lastLoginTime);
-        user.setDeleted(isDeleted);
+    @PersistenceContext
+    EntityManager entityManager;
 
-        return null;
+    public boolean createUser(UserModel user) {
+
+        try {
+            entityManager.persist(user);
+        } catch (PersistenceException pE){
+            log.error("Nie udalo sie zapisac obiektu do bazy");
+            return false;
+        }
+
+        //UWAGA - NIE WIEM CZY DOBRZE ZE TO ROBIE
+        entityManager.close();
+
+        return true;
     }
 }

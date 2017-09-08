@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="radio-inline" for="maleRadio">
-                                        <form:radiobutton path="male" id="maleRadio" value="Mężczyzna" />
+                                        <form:radiobutton path="male" id="maleRadio" value="Mezczyzna" />
                                         Mężczyzna
                                         <form:errors path="male" cssclass="error"/>
                                     </label>

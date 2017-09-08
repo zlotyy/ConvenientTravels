@@ -2,6 +2,7 @@ package com.mvc.model;
 
 import com.mvc.enums.Male;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,8 +47,9 @@ public class UserModel {
     private Male male;
 
     @Column(name = "BirthYear")
-    @NotEmpty(message = "Pole nie moze byc puste")
+    @NotNull(message = "Pole nie moze byc puste")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Calendar birthDate;
 
     @Column(name = "SearchData")

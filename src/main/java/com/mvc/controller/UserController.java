@@ -50,9 +50,9 @@ public class UserController {
             log.info("Rejestracja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
 
             Calendar timeNow = Calendar.getInstance();
-            log.info("timeNow = " + timeNow);
 
-            userService.createUser(
+            boolean queryResult;
+            queryResult = userService.createUser(
                     user.getLogin(),
                     user.getPassword(),
                     user.getMail(),
@@ -70,7 +70,13 @@ public class UserController {
                     false
             );
 
-            return "redirect:/";
+            if(queryResult){
+                log.info("Rejestracja konta - uzytkownik zapisany do bazy");
+                return "redirect:/";
+            } else {
+                log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
+                return "register/index";
+            }
         }
     }
 }
