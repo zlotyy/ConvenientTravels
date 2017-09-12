@@ -46,7 +46,7 @@ public class UserModel {
     @NotNull(message = "Pole nie moze byc puste")
     private Male male;
 
-    @Column(name = "BirthYear")
+    @Column(name = "BirthDate")
     @NotNull(message = "Pole nie moze byc puste")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -54,6 +54,10 @@ public class UserModel {
 
     @Column(name = "SearchData")
     private String searchData;
+
+    @Column(name = "Role")
+    @NotEmpty(message = "Pole nie moze byc puste")
+    private String role;
 
     @Column(name = "UserRates")
     @ElementCollection(targetClass=Integer.class)
@@ -103,7 +107,6 @@ public class UserModel {
 
     @OneToMany(mappedBy = "receiver")
     private List<MessageModel> message_receiver;
-
 
 
     public long getUserId() {
@@ -280,5 +283,13 @@ public class UserModel {
 
     public void setMessage_receiver(List<MessageModel> message_receiver) {
         this.message_receiver = message_receiver;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

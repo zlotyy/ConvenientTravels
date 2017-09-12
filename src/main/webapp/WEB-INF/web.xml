@@ -25,9 +25,22 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/spring-mvc-servlet.xml,
-            /WEB-INF/spring-mvc-core.xml
+            /WEB-INF/spring-mvc-core.xml,
+            /WEB-INF/spring-mvc-security.xml
         </param-value>
     </context-param>
+
+    <!-- Spring Security -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy
+        </filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <jsp-config>
         <jsp-property-group>

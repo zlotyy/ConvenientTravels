@@ -1,56 +1,78 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: zloty
-  Date: 2017-09-02
-  Time: 15:43
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page session="true"%>
 <html>
 <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Login Page</title>
+    <style>
+        .error {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        .msg {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
 
-    <link rel="stylesheet" href="/resources/styles/login/mybootstrap.css">
-
-    <!--Pulling Awesome Font -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <title>Convenient Travels</title>
+        #login-box {
+            width: 300px;
+            padding: 20px;
+            margin: 100px auto;
+            background: #fff;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border: 1px solid #000;
+        }
+    </style>
 </head>
+<body onload='document.loginForm.username.focus();'>
 
-<body>
-    <jsp:include page="/menu" />
+<h1>Spring Security Login Form (Database Authentication)</h1>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-6">
-                <div class="form-login">
-                    <h4>Convenient Travels</h4>
-                    <p class="text-center">Logowanie</p>
-                    <input type="text" id="login" class="form-control input-sm chat-input" placeholder="Login" />
-                    </br>
-                    <input type="text" id="password" class="form-control input-sm chat-input" placeholder="Hasło" />
-                    </br>
-                    <div class="wrapper">
-                        <span class="group-btn">
-                            <a href="#" class="btn btn-success btn-md">Zarejestruj konto</a>
-                            <a href="#" class="btn btn-primary btn-md">Zaloguj się <i class="fa fa-sign-in"></i></a>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="login-box">
 
-    <jsp:include page="/footer" />
+    <h2>Login with Username and Password</h2>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <c:if test="${not empty error}">
+        <div class="error">${error}</div>
+    </c:if>
+    <c:if test="${not empty msg}">
+        <div class="msg">${msg}</div>
+    </c:if>
+
+    <form name='loginForm'
+          action="<c:url value='/login' />" method='POST'>
+
+        <table>
+            <tr>
+                <td>User:</td>
+                <td><input type='text' name='login'></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type='password' name='password' /></td>
+            </tr>
+            <tr>
+                <td colspan='2'><input name="submit" type="submit"
+                                       value="submit" /></td>
+            </tr>
+        </table>
+
+        <input type="hidden" name="${_csrf.parameterName}"
+               value="${_csrf.token}" />
+
+    </form>
+</div>
+
 </body>
 </html>
