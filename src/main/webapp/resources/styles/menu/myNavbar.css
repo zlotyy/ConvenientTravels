@@ -62,3 +62,10 @@ Follow me on Twitter @maridlcrmn
         transform: translate(0px,0px);
     }
 }
+
+/* CSS Dla linków - usuniecie koloru i podkreslenia
+a, a:hover, a:active, a:visited {
+    color: initial;
+    text-decoration: none;
+}
+*/

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller("loginController")
-//@RequestMapping("/login")
+@RequestMapping("/login")
 public class LoginController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -42,4 +42,22 @@ public class LoginController {
 //        return model;
 //
 //    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView login(@RequestParam(value = "error", required = false) String error,
+                              @RequestParam(value = "logout", required = false) String logout) {
+
+        ModelAndView model = new ModelAndView();
+        if (error != null) {
+            model.addObject("logInError", "Login i hasło są nieprawidłowe!");
+        }
+
+        if (logout != null) {
+            model.addObject("logoutSuccess", "Zostałeś pomyślnie wylogowany");
+        }
+        model.setViewName("home/index");
+
+        return model;
+    }
+
 }

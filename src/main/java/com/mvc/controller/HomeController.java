@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    @RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String returnStartPage(Model model){
         //org.apache.log4j.BasicConfigurator.configure();   //domyslna konfiguracja log4j
         UserModel user = new UserModel();
@@ -50,24 +50,6 @@ public class HomeController {
         model.addObject("title", "Spring Security Login Form - Database Authentication");
         model.addObject("message", "This page is for ROLE_ADMIN only!");
         model.setViewName("admin/index");
-        return model;
-
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "logout", required = false) String logout) {
-
-        ModelAndView model = new ModelAndView();
-        if (error != null) {
-            model.addObject("error", "Invalid username and password!");
-        }
-
-        if (logout != null) {
-            model.addObject("msg", "You've been logged out successfully.");
-        }
-        model.setViewName("login/index");
-
         return model;
 
     }
