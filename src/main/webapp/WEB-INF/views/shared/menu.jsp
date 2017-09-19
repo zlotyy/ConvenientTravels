@@ -29,12 +29,17 @@
                         <li><a href="#">Wiadomości</a></li>
                     </sec:authorize>
 
-                    <c:if test="${not empty logInError}">
-                        <li class="error">${logInError}</li>
-                    </c:if>
-                    <c:if test="${not empty logoutSuccess}">
-                        <li class="msg">${logoutSuccess}</li>
-                    </c:if>
+                    <sec:authorize access="!hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')">
+                        <c:if test="${not empty logInError}">
+                            <li class="error">${logInError}</li>
+                        </c:if>
+                        <c:if test="${not empty logoutSuccess}">
+                            <li class="msg">${logoutSuccess}</li>
+                        </c:if>
+                        <c:if test="${not empty registerSuccess}">
+                            <li class="msg">${registerSuccess}</li>
+                        </c:if>
+                    </sec:authorize>
 
                     <li><a href="#">Kontakt</a></li>
                     <li>

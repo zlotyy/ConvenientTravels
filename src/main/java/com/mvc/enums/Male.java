@@ -1,6 +1,16 @@
 package com.mvc.enums;
 
 public enum Male {
-    Kobieta,
-    Mezczyzna
+    KOBIETA("Kobieta"),
+    MEZCZYZNA("Mężczyzna");
+
+    private String male;
+
+    Male(String male){
+        this.male = male;
+    }
+
+    public String getMale(){
+        return male;
+    }
 }

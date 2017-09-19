@@ -1,6 +1,5 @@
 package com.mvc.controller;
 
-import com.mvc.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -8,39 +7,30 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+
 @Controller("homeController")
-//@RequestMapping("/")
+@RequestMapping("/")
 public class HomeController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String returnStartPage(Model model){
-        //org.apache.log4j.BasicConfigurator.configure();   //domyslna konfiguracja log4j
-        UserModel user = new UserModel();
-        model.addAttribute("user", user);
+    @RequestMapping(method = RequestMethod.GET)
+    public String returnStartPage(Principal principal){
+
+        if(principal != null) {
+            String login;
+            login = principal.getName();
+            log.info("Uzytkownik " + login + " zostal zalogowany");
+        }
 
         log.info("returnStartPage");
 
         return "home/index";
     }
-
-
-//    @RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
-//    public ModelAndView defaultPage() {
-//
-//        ModelAndView model = new ModelAndView();
-//        model.addObject("title", "Spring Security Login Form - Database Authentication");
-//        model.addObject("message", "This is default page!");
-//        model.setViewName("welcome/index");
-//        return model;
-//
-//    }
 
 
     @RequestMapping(value = "/admin**", method = RequestMethod.GET)

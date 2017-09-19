@@ -32,6 +32,7 @@
     <!-- Select users and user_roles from database -->
     <authentication-manager>
         <authentication-provider>
+            <password-encoder ref="encoder"/>
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query=
                                        "select Login, Password, NOT IsDeleted from user where Login=?"
@@ -40,4 +41,5 @@
         </authentication-provider>
     </authentication-manager>
 
+    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans:beans>

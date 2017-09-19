@@ -92,14 +92,14 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="radio-inline" for="femaleRadio">
-                                        <form:radiobutton path="male" id="femaleRadio" value="Kobieta" />
+                                        <form:radiobutton path="male" id="femaleRadio" value="KOBIETA" />
                                         Kobieta
                                         <form:errors path="male" cssclass="error"/>
                                     </label>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="radio-inline" for="maleRadio">
-                                        <form:radiobutton path="male" id="maleRadio" value="Mezczyzna" />
+                                        <form:radiobutton path="male" id="maleRadio" value="MEZCZYZNA" />
                                         Mężczyzna
                                         <form:errors path="male" cssclass="error"/>
                                     </label>

@@ -22,6 +22,11 @@ public class UserService implements IUserService {
         return null;
     }
 
+    public UserModel getUser(String login, String password) {
+
+        return userDAO.findByLoginAndPassword(login, password);
+    }
+
     public UserModel getUser(long userId) {
         return null;
     }
@@ -48,8 +53,7 @@ public class UserService implements IUserService {
      */
     @Transactional
     public boolean createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                                Calendar birthDate, String searchData, List<Integer> userRates, List<String> personalityAssessment,
-                                List<Integer> drivingSkills, Calendar modifyTime, Calendar lastLoginTime, boolean isDeleted) {
+                                Calendar birthDate, Calendar modifyTime) {
 
         UserModel user = new UserModel();
         user.setLogin(login);
@@ -60,13 +64,7 @@ public class UserService implements IUserService {
         user.setLastname(lastname);
         user.setMale(male);
         user.setBirthDate(birthDate);
-        user.setSearchData(searchData);
-        user.setUserRates(userRates);
-        user.setPersonalityAssessment(personalityAssessment);
-        user.setDrivingSkills(drivingSkills);
         user.setModifyTime(modifyTime);
-        user.setLastLoginTime(lastLoginTime);
-        user.setDeleted(isDeleted);
 
         return userDAO.createUser(user);
     }

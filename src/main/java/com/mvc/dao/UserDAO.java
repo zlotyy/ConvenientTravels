@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 
 @Repository("userDAO")
 public class UserDAO implements IUserDAO {
@@ -16,6 +14,9 @@ public class UserDAO implements IUserDAO {
     @PersistenceContext
     EntityManager entityManager;
 
+    /**
+     * metoda zapisuje uzytkownika do bazy danych
+     */
     public boolean createUser(UserModel user) {
 
         try {
@@ -25,9 +26,44 @@ public class UserDAO implements IUserDAO {
             return false;
         }
 
-        //UWAGA - NIE WIEM CZY DOBRZE ZE TO ROBIE
-        entityManager.close();
-
         return true;
+    }
+
+
+    /**
+     * metoda wyszukuje uzytkownika w bazie danych
+     */
+    public UserModel findByLoginAndPassword(String login, String password) {
+
+        TypedQuery<UserModel> query = entityManager.createQuery("select u from UserModel u where u.login = :login and u.password = :password", UserModel.class);
+        query.setParameter("login", login);
+        query.setParameter("password", password);
+
+        UserModel user = null;
+        try {
+            user = query.getSingleResult();
+        } catch (NoResultException nRE){
+            log.info("UserDAO.findByLoginAndPassword() - nie znaleziono uzytkownika w bazie");
+        }
+
+        return user;
+    }
+
+
+    /**
+     * metoda wyszukuje uzytkownika w bazie danych
+     */
+    public UserModel findByLogin(String login) {
+        TypedQuery<UserModel> query = entityManager.createQuery("select u from UserModel u where u.login = :login", UserModel.class);
+        query.setParameter("login", login);
+
+        UserModel user = null;
+        try {
+            user = query.getSingleResult();
+        } catch (NoResultException nRE){
+            log.info("UserDAO.findByLogin() - nie znaleziono uzytkownika w bazie");
+        }
+
+        return user;
     }
 }

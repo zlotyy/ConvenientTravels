@@ -1,6 +1,9 @@
 package com.mvc.model;
 
 import com.mvc.enums.Male;
+import com.mvc.enums.Role;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,6 +30,7 @@ public class UserModel {
 
     @Column(name = "Mail")
     @NotEmpty(message = "Pole nie moze byc puste")
+    @Email(message = "Podaj poprawny adres e-mail")
     private String mail;
 
     @Column(name = "Phone")
@@ -56,8 +60,10 @@ public class UserModel {
     private String searchData;
 
     @Column(name = "Role")
-    @NotEmpty(message = "Pole nie moze byc puste")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Pole nie moze byc puste")
+//    @ColumnDefault("ROLE_USER")
+    private Role role = Role.ROLE_USER;
 
     @Column(name = "UserRates")
     @ElementCollection(targetClass=Integer.class)
@@ -82,7 +88,7 @@ public class UserModel {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar lastLoginTime;
 
-    @Column(name = "IsDeleted")
+    @Column(name = "IsDeleted", columnDefinition = "tinyint(1) default 1")
     @NotNull(message = "Pole nie moze byc puste")
     private boolean isDeleted;
 
@@ -285,11 +291,11 @@ public class UserModel {
         this.message_receiver = message_receiver;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

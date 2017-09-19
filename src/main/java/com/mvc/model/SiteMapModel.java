@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name="SiteMap")
+@Table(name = "SiteMap")
 public class SiteMapModel implements  Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,7 @@ import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.util.Calendar;
-import java.util.Collections;
 
 
 @Controller("userController")
@@ -25,6 +25,8 @@ public class UserController {
     @Autowired
     IUserService userService;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * kontroler przenosi do widoku rejestracji konta
@@ -54,25 +56,19 @@ public class UserController {
             boolean queryResult;
             queryResult = userService.createUser(
                     user.getLogin(),
-                    user.getPassword(),
+                    bCryptPasswordEncoder.encode(user.getPassword()),
                     user.getMail(),
                     user.getPhone(),
                     user.getName(),
                     user.getLastname(),
                     user.getMale(),
                     user.getBirthDate(),
-                    "",
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    timeNow,
-                    null,
-                    false
+                    timeNow
             );
 
             if(queryResult){
                 log.info("Rejestracja konta - uzytkownik zapisany do bazy");
-                return "redirect:/";
+                return "redirect:/?registerSuccess";
             } else {
                 log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
                 return "register/index";
