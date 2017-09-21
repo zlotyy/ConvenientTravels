@@ -19,7 +19,7 @@ public class HomeController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(method = RequestMethod.GET)
-    public String returnStartPage(Principal principal){
+    public String index(Principal principal){
 
         if(principal != null) {
             String login;
@@ -40,24 +40,6 @@ public class HomeController {
         model.addObject("title", "Spring Security Login Form - Database Authentication");
         model.addObject("message", "This page is for ROLE_ADMIN only!");
         model.setViewName("admin/index");
-        return model;
-
-    }
-
-    //for 403 access denied page
-    @RequestMapping(value = "/403", method = RequestMethod.GET)
-    public ModelAndView accessDenied() {
-
-        ModelAndView model = new ModelAndView();
-
-        //check if user is login
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            UserDetails userDetail = (UserDetails) auth.getPrincipal();
-            model.addObject("username", userDetail.getUsername());
-        }
-
-        model.setViewName("403/index");
         return model;
 
     }

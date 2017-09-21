@@ -23,10 +23,11 @@
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
-                        <li><a href="#">Dodaj przejazd</a></li>
-                        <li><a href="#">Moje przejazdy</a></li>
-                        <li><a href="#">Moje rezerwacje</a></li>
-                        <li><a href="#">Wiadomości</a></li>
+                        <li><a href="/drives/addNewDrive">Dodaj przejazd</a></li>
+                        <li><a href="/drives/searchDrive">Wyszukaj przejazd</a></li>
+                        <li><a href="/drives/myDrives">Moje przejazdy</a></li>
+                        <li><a href="/drives/myBookings">Moje rezerwacje</a></li>
+                        <li><a href="/messages/myMessages">Wiadomości</a></li>
                     </sec:authorize>
 
                     <sec:authorize access="!hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')">
@@ -41,7 +42,7 @@
                         </c:if>
                     </sec:authorize>
 
-                    <li><a href="#">Kontakt</a></li>
+                    <li><a href="/contact">Kontakt</a></li>
                     <li>
                         <a class="btn btn-default btn-outline btn-circle collapsed"  data-toggle="collapse" href="#nav-collapse2" aria-expanded="false" aria-controls="nav-collapse2">Konto</a>
                     </li>
@@ -83,7 +84,7 @@
                                    value="${_csrf.token}" />
 
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                <a href="/user/edit" class="btn btn-primary">${pageContext.request.userPrincipal.name} <span class="badge">Edytuj konto</span></a>
+                                <a href="/user/account" class="btn btn-primary">${pageContext.request.userPrincipal.name} <span class="badge">Edytuj konto</span></a>
                                 <%--<a href="/user/edit" class="btn btn-primary">Edytuj konto <span class="badge">${pageContext.request.userPrincipal.name}</span></a>--%>
                                 <a href="javascript:formSubmit()" class="btn btn-danger">Wyloguj</a>
                             </c:if>

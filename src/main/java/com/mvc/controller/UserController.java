@@ -32,7 +32,7 @@ public class UserController {
      * kontroler przenosi do widoku rejestracji konta
      */
     @RequestMapping(value="/register", method = RequestMethod.GET)
-    public String navigateToRegisterForm(Model model){
+    public String return_register_index(Model model){
         UserModel user = new UserModel();
         model.addAttribute("user", user);
 
@@ -74,5 +74,12 @@ public class UserController {
                 return "register/index";
             }
         }
+    }
+
+
+    @RequestMapping("/account")
+    public String return_account_index(){
+
+        return "account/index";
     }
 }

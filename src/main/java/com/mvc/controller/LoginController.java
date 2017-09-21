@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller("loginController")
-@RequestMapping("/login")
+@RequestMapping("/login")           // TAK W ZASADZIE TO JEST TO NIEPOTRZEBNE
 public class LoginController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
