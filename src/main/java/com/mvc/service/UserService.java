@@ -18,10 +18,19 @@ public class UserService implements IUserService {
     @Autowired
     UserDAO userDAO;
 
+    /**
+     * metoda szuka uzytkownika po loginie
+     * @return
+     */
     public UserModel getUser(String login) {
-        return null;
+
+        return userDAO.findByLogin(login);
     }
 
+    /**
+     * metoda szuka uzytkownika po loginie i hasle
+     * @return
+     */
     public UserModel getUser(String login, String password) {
 
         return userDAO.findByLoginAndPassword(login, password);
@@ -39,12 +48,22 @@ public class UserService implements IUserService {
         return false;
     }
 
+    public List<UserModel> getUsersForGrid(String sortOrder, String search) {
+        return null;
+    }
+
     public boolean deleteUser(long userId) {
         return false;
     }
 
-    public boolean editUser(long userId) {
-        return false;
+    /**
+     * metoda aktualizuje dane uzytkownika
+     * @return
+     */
+    @Transactional
+    public boolean editUser(UserModel user) {
+
+        return userDAO.editUser(user);
     }
 
     /**

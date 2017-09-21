@@ -12,11 +12,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Calendar;
 
 
+@SessionAttributes(types = UserModel.class)     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
 @Controller("userController")
 @RequestMapping("/user")
 public class UserController {
@@ -36,7 +40,8 @@ public class UserController {
         UserModel user = new UserModel();
         model.addAttribute("user", user);
 
-        log.info("INFO navigateToRegisterForm");
+        log.info("return_register_index");
+
         return "register/index";
     }
 
@@ -77,9 +82,44 @@ public class UserController {
     }
 
 
-    @RequestMapping("/account")
-    public String return_account_index(){
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
+    public String return_account_index(Model model, Principal principal){
+
+        UserModel user = null;
+        String login;
+
+        if(principal != null) {
+            login = principal.getName();
+            user = userService.getUser(login);
+            log.info("return_account_index login = " + login);
+            log.info("return_account_index user = " + user);
+        } else {
+            log.error("(Uzytkownik nie jest zalogowany) principal = null");
+        }
+
+        model.addAttribute("user", user);
 
         return "account/index";
+    }
+
+    @RequestMapping(value = "/account/edit", method = RequestMethod.POST)
+    public String editUser(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
+        if(result.hasErrors()){
+            log.info("Edycja konta - wprowadzono niepoprawne dane, zwroc formularz");
+
+            return "account/index";
+        } else {
+            log.info("Edycja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
+
+            boolean queryResult = userService.editUser(user);
+
+            if(queryResult){
+                log.info("Edycja konta - uzytkownik zapisany do bazy");
+                return "redirect:/user/account";
+            } else {
+                log.info("Edycja konta - nie udalo sie zapisac uzytkownika do bazy");
+                return "redirect:/user/account";
+            }
+        }
     }
 }

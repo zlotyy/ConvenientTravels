@@ -25,6 +25,7 @@ public class UserDAO implements IUserDAO {
             log.error("Nie udalo sie zapisac obiektu do bazy");
             return false;
         }
+        log.info("Zapisano uzytkownika w bazie: " + user);
 
         return true;
     }
@@ -42,6 +43,7 @@ public class UserDAO implements IUserDAO {
         UserModel user = null;
         try {
             user = query.getSingleResult();
+            log.info("Znaleziono uzytkownika w bazie: " + user);
         } catch (NoResultException nRE){
             log.info("UserDAO.findByLoginAndPassword() - nie znaleziono uzytkownika w bazie");
         }
@@ -60,10 +62,36 @@ public class UserDAO implements IUserDAO {
         UserModel user = null;
         try {
             user = query.getSingleResult();
+            log.info("Znaleziono uzytkownika w bazie: " + user);
         } catch (NoResultException nRE){
             log.info("UserDAO.findByLogin() - nie znaleziono uzytkownika w bazie");
         }
 
         return user;
+    }
+
+
+    /**
+     * metoda zapisuje edytowanego uzytkownika do bazy danych
+     */
+    public boolean editUser(UserModel user) {
+        // wyszukaj w bazie uzytkownika po ID
+        UserModel userFromDB = entityManager.find(UserModel.class, user.getUserId());
+
+        log.info("userFromDB: " + userFromDB);
+
+        userFromDB = entityManager.merge(user);
+
+        log.info("Po zmianach - userFromDB: " + userFromDB);
+//        try {
+//            entityManager.merge(user);
+//            log.info("Zaktualizowano dane uzytkownika w bazie: " + user);
+//        } catch (PersistenceException pE){
+//            log.error("Nie udalo sie nadpisac obiektu w bazie");
+//            return false;
+//        }
+
+
+        return true;
     }
 }

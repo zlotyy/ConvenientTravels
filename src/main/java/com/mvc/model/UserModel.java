@@ -195,6 +195,14 @@ public class UserModel {
         this.searchData = searchData;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public List<Integer> getUserRates() {
         return userRates;
     }
@@ -291,11 +299,12 @@ public class UserModel {
         this.message_receiver = message_receiver;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "userId=" + userId +
+                ", login='" + login + '\'' +
+                ", role=" + role +
+                '}';
     }
 }

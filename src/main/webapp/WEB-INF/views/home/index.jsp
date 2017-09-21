@@ -15,7 +15,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css">
+
+    <%-- okresla style dla komunikatow odnosnie logowania --%>
     <link rel="stylesheet" href="/resources/styles/menu/loginForm.css">
+
     <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css">
 
     <title>Convenient Travels</title>
