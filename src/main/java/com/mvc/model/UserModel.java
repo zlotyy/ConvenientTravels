@@ -304,7 +304,16 @@ public class UserModel {
         return "UserModel{" +
                 "userId=" + userId +
                 ", login='" + login + '\'' +
+                ", mail='" + mail + '\'' +
+                ", phone='" + phone + '\'' +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", male=" + male +
+                ", birthDate=" + birthDate +
                 ", role=" + role +
+                ", modifyTime=" + modifyTime +
+                ", lastLoginTime=" + lastLoginTime +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }

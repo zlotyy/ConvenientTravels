@@ -34,7 +34,7 @@
         <div class="panel panel-primary my-fixed-panel">
             <div class="col-md-8">
                 <c:url var="saveUrl" value="/user/account/edit" />
-                <form:form class="form-horizontal" action="/user/account/edit" modelAttribute="user" method="post">
+                <form:form class="form-horizontal" action="${saveUrl}" modelAttribute="user" method="post">
                     <div class="container-fluid">
                         <h2 class="col-md-offset-3">Twój profil</h2>
                         <br>
@@ -85,8 +85,8 @@
                                     <form:button type="reset" class="btn btn-primary btn-block">Anuluj</form:button>
                                 </div>
 
-                                <%--<input type="hidden" name="${_csrf.parameterName}"--%>
-                                       <%--value="${_csrf.token}" />--%>
+                                <input type="hidden" name="${_csrf.parameterName}"
+                                       value="${_csrf.token}" />
                             </div>
                         </div>
                     </div>

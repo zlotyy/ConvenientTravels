@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Calendar;
@@ -83,19 +84,10 @@ public class UserController {
 
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public String return_account_index(Model model, Principal principal){
+    public String return_account_index(Model model, HttpSession session){
 
-        UserModel user = null;
-        String login;
-
-        if(principal != null) {
-            login = principal.getName();
-            user = userService.getUser(login);
-            log.info("return_account_index login = " + login);
-            log.info("return_account_index user = " + user);
-        } else {
-            log.error("(Uzytkownik nie jest zalogowany) principal = null");
-        }
+        UserModel user = (UserModel)session.getAttribute("userFromSession");
+        log.info("return_account_index user = " + user);
 
         model.addAttribute("user", user);
 
