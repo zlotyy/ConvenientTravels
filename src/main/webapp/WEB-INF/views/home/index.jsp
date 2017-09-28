@@ -27,18 +27,62 @@
 <body>
     <jsp:include page="/menu" />
 
+    <%--<h1 class="text-center text-primary">Witaj w Convenient Travels</h1>--%>
+
+    <%--<div style="display: inline-block; align: center; vertical-align: middle;">
+        <img src="resources/images/home/car.jpg" alt="TEKST ALTERNATYWNY" width="30%" height="30%"/>
+    </div>
+
+    <div style="display:inline-block;vertical-align: middle;">
+        Wybierasz się w podróż i chcesz trochę zaoszczędzić? Zaloguj się i korzystaj z okazji na wspólne przejazdy z innymi użytkownikami.
+    </div>--%>
+
+
+
+
+
+    <%--<p style="text-align: justify">--%>
+        <%--<img src="resources/images/home/car.jpg" alt="TEKST ALTERNATYWNY" width="60%" height="60%" style="float: right; margin: 6px; vertical-align: middle"/>--%>
+
+        <%--Wybierasz się w podróż i chcesz trochę zaoszczędzić? Zaloguj się i korzystaj z okazji na wspólne przejazdy z innymi użytkownikami.--%>
+
+
+
+    <%--</p>--%>
+
+
+
     <div class="container">
         <div class="panel panel-primary my-fixed-panel">
             <section>
                 <div class="panel-body">
-                    Lorem ipsum dolor sit amet lorem. Nullam rutrum ut, ultricies in, lobortis tincidunt mauris. Cras nec scelerisque justo facilisis pharetra. Suspendisse est sem, vulputate accumsan. In urna. Aenean nulla id sapien. Vestibulum tempus. Pellentesque ac erat. Fusce dui dolor, scelerisque rhoncus laoreet luctus, quam at turpis. Nullam eleifend in, ornare bibendum dui. In pretium sit amet dolor. Pellentesque fringilla enim, sagittis vel, dignissim vitae, sollicitudin arcu. Sed id nunc. Ut sodales lectus lectus, porta ac, mattis id, ullamcorper quam. Praesent ac turpis egestas. Mauris ac lacinia eget, sollicitudin arcu. In molestie vitae, consequat mollis tempor magna justo ipsum primis in lacus lacus sed est dolor, scelerisque odio orci, viverra justo. Suspendisse auctor, tempor auctor, tempor lorem. Nam laoreet iaculis massa. Nulla dignissim in, mollis lobortis. Vivamus est congue quis, luctus et tortor. Proin scelerisque mauris sit amet, consectetuer adipiscing dui sodales sapien leo tristique sodales. Vivamus ullamcorper pede interdum arcu id sapien sed wisi ultricies iaculis odio quis felis ac arcu. Duis eu convallis pellentesque, justo fringilla sed, neque. Fusce iaculis, purus fringilla orci. In nec egestas turpis. Nullam feugiat.
-                    <br>
-                    Lorem ipsum dolor sit amet lorem. Nullam rutrum ut, ultricies in, lobortis tincidunt mauris. Cras nec scelerisque justo facilisis pharetra. Suspendisse est sem, vulputate accumsan. In urna. Aenean nulla id sapien. Vestibulum tempus. Pellentesque ac erat. Fusce dui dolor, scelerisque rhoncus laoreet luctus, quam at turpis. Nullam eleifend in, ornare bibendum dui. In pretium sit amet dolor. Pellentesque fringilla enim, sagittis vel, dignissim vitae, sollicitudin arcu. Sed id nunc. Ut sodales lectus lectus, porta ac, mattis id, ullamcorper quam. Praesent ac turpis egestas. Mauris ac lacinia eget, sollicitudin arcu. In molestie vitae, consequat mollis tempor magna justo ipsum primis in lacus lacus sed est dolor, scelerisque odio orci, viverra justo. Suspendisse auctor, tempor auctor, tempor lorem. Nam laoreet iaculis massa. Nulla dignissim in, mollis lobortis. Vivamus est congue quis, luctus et tortor. Proin scelerisque mauris sit amet, consectetuer adipiscing dui sodales sapien leo tristique sodales. Vivamus ullamcorper pede interdum arcu id sapien sed wisi ultricies iaculis odio quis felis ac arcu. Duis eu convallis pellentesque, justo fringilla sed, neque. Fusce iaculis, purus fringilla orci. In nec egestas turpis. Nullam feugiat.
-                    <br>
-                    Lorem ipsum dolor sit amet lorem. Nullam rutrum ut, ultricies in, lobortis tincidunt mauris. Cras nec scelerisque justo facilisis pharetra. Suspendisse est sem, vulputate accumsan. In urna. Aenean nulla id sapien. Vestibulum tempus. Pellentesque ac erat. Fusce dui dolor, scelerisque rhoncus laoreet luctus, quam at turpis. Nullam eleifend in, ornare bibendum dui. In pretium sit amet dolor. Pellentesque fringilla enim, sagittis vel, dignissim vitae, sollicitudin arcu. Sed id nunc. Ut sodales lectus lectus, porta ac, mattis id, ullamcorper quam. Praesent ac turpis egestas. Mauris ac lacinia eget, sollicitudin arcu. In molestie vitae, consequat mollis tempor magna justo ipsum primis in lacus lacus sed est dolor, scelerisque odio orci, viverra justo. Suspendisse auctor, tempor auctor, tempor lorem. Nam laoreet iaculis massa. Nulla dignissim in, mollis lobortis. Vivamus est congue quis, luctus et tortor. Proin scelerisque mauris sit amet, consectetuer adipiscing dui sodales sapien leo tristique sodales. Vivamus ullamcorper pede interdum arcu id sapien sed wisi ultricies iaculis odio quis felis ac arcu. Duis eu convallis pellentesque, justo fringilla sed, neque. Fusce iaculis, purus fringilla orci. In nec egestas turpis. Nullam feugiat.
-                    <br>
-                    Lorem ipsum dolor sit amet lorem. Nullam rutrum ut, ultricies in, lobortis tincidunt mauris. Cras nec scelerisque justo facilisis pharetra. Suspendisse est sem, vulputate accumsan. In urna. Aenean nulla id sapien. Vestibulum tempus. Pellentesque ac erat. Fusce dui dolor, scelerisque rhoncus laoreet luctus, quam at turpis. Nullam eleifend in, ornare bibendum dui. In pretium sit amet dolor. Pellentesque fringilla enim, sagittis vel, dignissim vitae, sollicitudin arcu. Sed id nunc. Ut sodales lectus lectus, porta ac, mattis id, ullamcorper quam. Praesent ac turpis egestas. Mauris ac lacinia eget, sollicitudin arcu. In molestie vitae, consequat mollis tempor magna justo ipsum primis in lacus lacus sed est dolor, scelerisque odio orci, viverra justo. Suspendisse auctor, tempor auctor, tempor lorem. Nam laoreet iaculis massa. Nulla dignissim in, mollis lobortis. Vivamus est congue quis, luctus et tortor. Proin scelerisque mauris sit amet, consectetuer adipiscing dui sodales sapien leo tristique sodales. Vivamus ullamcorper pede interdum arcu id sapien sed wisi ultricies iaculis odio quis felis ac arcu. Duis eu convallis pellentesque, justo fringilla sed, neque. Fusce iaculis, purus fringilla orci. In nec egestas turpis. Nullam feugiat.
-                   </div>
+                    <h1 class="text-center text-primary">Witaj w Convenient Travels</h1>
+
+                    <img src="resources/images/home/car.jpg" alt="TEKST ALTERNATYWNY" width="60%" height="60%" align="right" style="margin-left: 5%" />
+
+                    <h4 class="next-to-img text-primary">
+                        Wybierasz się w podróż i chcesz trochę zaoszczędzić?
+                        Zaloguj się i korzystaj z okazji na wspólne przejazdy z innymi użytkownikami!
+                        <br><br>
+                        Jeżeli nie masz jeszcze konta, załóż je koniecznie w górnym panelu strony.
+                    </h4>
+
+
+                    <%--<div class="side-by-side">--%>
+
+                        <%--<div class="text-left-by-img">TEXT</div>--%>
+
+                        <%--<div class="img-right-by-text">--%>
+
+                            <%--<img src="resources/images/home/car.jpg" alt="TEKST ALTERNATYWNY" width="60%" height="60%" />--%>
+
+                        <%--</div>--%>
+
+                    <%--</div>--%>
+
+
+
+                </div>
             </section>
         </div>
     </div>

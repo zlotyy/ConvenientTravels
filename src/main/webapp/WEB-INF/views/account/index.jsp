@@ -35,7 +35,7 @@
             <div class="col-md-8">
                 <c:url var="saveUrl" value="/user/account/edit" />
                 <form:form class="form-horizontal" action="${saveUrl}" modelAttribute="user" method="post">
-                    <div class="container-fluid">
+                    <div class="container-fluid  text-primary">
                         <h2 class="col-md-offset-3">Twój profil</h2>
                         <br>
                         <div class="form-group">
