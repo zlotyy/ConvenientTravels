@@ -17,7 +17,7 @@ import java.util.List;
 public class UserModel {
     @Id
     @GeneratedValue
-    @Column(name = "UserId")
+    @Column(name = "UserId", unique = true)
     private long userId;
 
     @Column(name = "Login")

@@ -33,15 +33,14 @@
     <div class="container">
         <div class="panel panel-primary my-fixed-panel">
             <div class="col-md-8">
-                <c:url var="saveUrl" value="/user/account/edit" />
-                <form:form class="form-horizontal" action="${saveUrl}" modelAttribute="user" method="post">
+                <form:form class="form-horizontal" action="/user/account/edit" modelAttribute="user" method="post">
                     <div class="container-fluid  text-primary">
                         <h2 class="col-md-offset-3">Twój profil</h2>
                         <br>
                         <div class="form-group">
                             <label for="login" class="col-md-1 col-md-offset-1 control-label">Login</label>
                             <div class="col-md-8 col-md-offset-1">
-                                <form:input path="login" id="login" placeholder="Login" class="form-control" autofocus="autofocus" disabled="true"/>
+                                <form:input path="login" id="login" placeholder="Login" class="form-control" disabled="true"/>
                                 <form:errors path="login" cssclass="error" />
                             </div>
                         </div>
@@ -91,6 +90,53 @@
                         </div>
                     </div>
                 </form:form> <!-- /form -->
+            </div>
+            <div class="col-md-4">
+                <div class="container-fluid  text-primary details-margins">
+                    <div class="form-group">
+                        <form:form class="form-horizontal" action="/user/account/changePassword" modelAttribute="userPassword" method="post"
+                                   onsubmit="return validate();" id="passwordForm">
+                            <div class="form-group">
+                                <div class="row col-md-8 change-password">
+                                    <form:button type="button" class="btn btn-primary btn-block">Zmień hasło</form:button>
+                                </div>
+                                <div class="row col-md-8 save-password">
+                                    <form:button type="submit" class="btn btn-primary btn-block">Zapisz</form:button>
+                                </div>
+                            </div>
+                            <c:if test="${not empty wrongOldPassword}">
+                                <li class="error change-password">${wrongOldPassword}</li>
+                            </c:if>
+                            <div class="form-group">
+                                <div class="row col-md-8">
+                                    <form:input type="password" path="oldPassword" id="oldPassword" placeholder="Poprzednie hasło" class="form-control" required="required" />
+                                    <form:errors path="oldPassword" cssclass="error" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-8">
+                                    <form:input type="password" path="newPassword" id="newPassword" placeholder="Nowe hasło" class="form-control" required="required" />
+                                    <form:errors path="newPassword" cssclass="error" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row col-md-8">
+                                    <input data-validate="true" type="password" id="confirmPassword" placeholder="Powtórz hasło" class="form-control" required />
+                                </div>
+                            </div>
+                        </form:form>
+                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<form:form class="form-horizontal" action="${saveUrl}" modelAttribute="user" method="post">--%>
+
+                            <%--<div class="form-group">--%>
+                                <%--<div class="row col-md-8">--%>
+                                    <%--<form:button type="button" class="btn btn-primary btn-block">Wyłącz konto</form:button>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</form:form>--%>
+                    <%--</div>--%>
+                </div>
             </div>
         </div>
     </div> <!-- ./container -->

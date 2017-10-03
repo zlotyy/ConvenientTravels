@@ -67,6 +67,17 @@ public class UserService implements IUserService {
     }
 
     /**
+     * metoda aktualizuje haslo uzytkownika
+     * @return
+     */
+    @Transactional
+    public boolean editPassword(UserModel user, String newPassword) {
+        user.setPassword(newPassword);
+
+        return userDAO.editUser(user);
+    }
+
+    /**
      * metoda tworzy nowego uzytkownika
      * @return
      */

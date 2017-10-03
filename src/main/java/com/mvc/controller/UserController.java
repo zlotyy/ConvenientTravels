@@ -1,5 +1,6 @@
 package com.mvc.controller;
 
+import com.mvc.dto.PasswordDTO;
 import com.mvc.model.UserModel;
 import com.mvc.service.IUserService;
 import org.slf4j.Logger;
@@ -9,15 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Calendar;
 
 
@@ -84,12 +80,18 @@ public class UserController {
 
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public String return_account_index(Model model, HttpSession session){
+    public String return_account_index(Model model, HttpSession session,
+                                       @RequestParam(value = "wrongOldPassword", required = false) String wrongOldPassword){
 
         UserModel user = (UserModel)session.getAttribute("userFromSession");
         log.info("return_account_index user = " + user);
 
         model.addAttribute("user", user);
+
+        // Okresla czy w przypadku zmiany hasla zostalo podane poprawne poprzednie haslo
+        if (wrongOldPassword != null) {
+            model.addAttribute("wrongOldPassword", "Podaj poprawne poprzednie haslo");
+        }
 
         return "account/index";
     }
@@ -114,4 +116,36 @@ public class UserController {
             }
         }
     }
+
+    @RequestMapping(value = "/account/changePassword", method = RequestMethod.POST)
+    public String editPassword(@ModelAttribute("userPassword") @Valid PasswordDTO passwordDTO, BindingResult result, @ModelAttribute("user") @Valid UserModel user){
+        if(result.hasErrors()){
+            log.info("Edycja hasla - wprowadzono niepoprawne dane, zwroc formularz");
+
+            return "account/index";
+        } else {
+            if(bCryptPasswordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())){
+                log.info("Edycja hasla - wywolaj serwis zapisujacy do bazy");
+                boolean queryResult = userService.editPassword(user, bCryptPasswordEncoder.encode(passwordDTO.getNewPassword()));
+
+                if(queryResult){
+                    log.info("Edycja hasla - uzytkownik zapisany do bazy");
+                    return "redirect:/user/account";
+                } else {
+                    log.info("Edycja hasla - nie udalo sie zapisac uzytkownika do bazy");
+                    return "redirect:/user/account";
+                }
+            } else {
+                log.info("Edycja hasla - podane poprzednie haslo nieprawidlowe, zwroc formularz");
+                return "redirect:/user/account?wrongOldPassword";
+            }
+        }
+    }
+
+    // bez tego nie da sie przekazac userPassword do JSP
+    @ModelAttribute("userPassword")
+    public PasswordDTO getPassword(){
+        return new PasswordDTO();
+    }
+
 }

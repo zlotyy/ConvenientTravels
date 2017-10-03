@@ -27,7 +27,7 @@
 
     <div class="container">
         <div class="panel panel-primary my-fixed-panel">
-            <form:form class="form-horizontal" action="/user/register" modelAttribute="user" method="post">
+            <form:form class="form-horizontal" action="/user/register" modelAttribute="user" method="post" autocomplete="true">
                 <div class="container-fluid">
                     <h2 class="col-md-offset-2">Rejestracja konta</h2>
                     <br>

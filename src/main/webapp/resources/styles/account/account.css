@@ -1,3 +1,12 @@
 .save, .cancel{
     display: none;
 }
+
+.save-password, #confirmPassword, #newPassword, #oldPassword {
+    display: none;
+}
+
+.details-margins {
+    margin-top: 81px;
+    margin-bottom: 30px;
+}
