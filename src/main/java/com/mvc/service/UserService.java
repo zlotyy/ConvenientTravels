@@ -19,7 +19,7 @@ public class UserService implements IUserService {
     UserDAO userDAO;
 
     /**
-     * metoda szuka uzytkownika po loginie
+     * serwis szuka uzytkownika po loginie
      * @return
      */
     public UserModel getUser(String login) {
@@ -28,7 +28,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * metoda szuka uzytkownika po loginie i hasle
+     * serwis szuka uzytkownika po loginie i hasle
      * @return
      */
     public UserModel getUser(String login, String password) {
@@ -52,12 +52,17 @@ public class UserService implements IUserService {
         return null;
     }
 
-    public boolean deleteUser(long userId) {
-        return false;
+    /**
+     * serwis ustawia uzytkowniki parametr isDeleted na true
+     */
+    public boolean setUserDeleted(UserModel user) {
+        user.setDeleted(true);
+
+        return userDAO.editUser(user);
     }
 
     /**
-     * metoda aktualizuje dane uzytkownika
+     * serwis aktualizuje dane uzytkownika
      * @return
      */
     @Transactional
@@ -67,7 +72,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * metoda aktualizuje haslo uzytkownika
+     * serwis aktualizuje haslo uzytkownika
      * @return
      */
     @Transactional
@@ -78,7 +83,7 @@ public class UserService implements IUserService {
     }
 
     /**
-     * metoda tworzy nowego uzytkownika
+     * serwis tworzy nowego uzytkownika
      * @return
      */
     @Transactional

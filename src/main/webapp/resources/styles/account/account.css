@@ -2,11 +2,22 @@
     display: none;
 }
 
-.save-password, #confirmPassword, #newPassword, #oldPassword {
+.save-password, .cancel-password, #confirmPassword, #newPassword, #oldPassword {
     display: none;
 }
 
 .details-margins {
     margin-top: 81px;
     margin-bottom: 30px;
+}
+
+.btn-psw-save-margins {
+    margin-left: revert;
+    margin-right: 2px;
+    border: solid red;
+}
+.btn-psw-cancel-margins {
+    margin-left: 2px;
+    margin-right: 0;
+    border: solid red;
 }

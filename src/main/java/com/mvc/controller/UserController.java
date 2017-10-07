@@ -78,7 +78,13 @@ public class UserController {
         }
     }
 
-
+    /**
+     * kontroler otwiera strone z profilem uzytkownika
+     * @param model
+     * @param session
+     * @param wrongOldPassword
+     * @return
+     */
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String return_account_index(Model model, HttpSession session,
                                        @RequestParam(value = "wrongOldPassword", required = false) String wrongOldPassword){
@@ -96,6 +102,13 @@ public class UserController {
         return "account/index";
     }
 
+
+    /**
+     * kontroler wywoluje serwis edytujacy dane uzytkownika
+     * @param user
+     * @param result
+     * @return
+     */
     @RequestMapping(value = "/account/edit", method = RequestMethod.POST)
     public String editUser(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
         if(result.hasErrors()){
@@ -117,6 +130,14 @@ public class UserController {
         }
     }
 
+
+    /**
+     * kontroler wywoluje serwis edytujacy haslo uzytkownika
+     * @param passwordDTO
+     * @param result
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "/account/changePassword", method = RequestMethod.POST)
     public String editPassword(@ModelAttribute("userPassword") @Valid PasswordDTO passwordDTO, BindingResult result, @ModelAttribute("user") @Valid UserModel user){
         if(result.hasErrors()){
@@ -140,6 +161,53 @@ public class UserController {
                 return "redirect:/user/account?wrongOldPassword";
             }
         }
+    }
+
+
+    /**
+     * kontroler wywoluje serwis edytujacy haslo uzytkownika
+     */
+    @RequestMapping(value = "/account/delete", method = RequestMethod.POST)
+    public String deleteUser(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
+        log.info("Usuwanie konta - wywolaj serwis zmieniajacy isDeleted na true");
+
+        boolean queryResult = userService.setUserDeleted(user);
+
+        if(queryResult){
+            log.info("Usuwanie konta - uzytkownikowi ustawiono isDeleted na true");
+            return "redirect:/user/account";
+        } else {
+            log.info("Usuwanie konta - nie udalo sie dla uzytkownika ustawic isDeleted na true");
+            return "redirect:/user/account";
+        }
+
+    }
+
+    @RequestMapping(value = "/account/delete/confirm", method = RequestMethod.GET)
+    public String showConfirmDialog(Model model, HttpSession session){
+        model.addAttribute("dialogTitle", "Usuwanie konta");
+        model.addAttribute("dialogContent", "Czy jesteś pewien, że chcesz usunąć konto?");
+        model.addAttribute("dialogFormAction", "/user/account/delete/confirm/ok");
+        model.addAttribute("dialogFormModelAttribute", "user");
+        model.addAttribute("user", (UserModel)session.getAttribute("userFromSession"));
+
+        return "modals/confirm";
+    }
+
+    @RequestMapping(value = "/account/delete/confirm/ok", method = RequestMethod.POST)
+    public String confirmDelete(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
+
+        log.info("Usuwanie konta - potwierdz");
+
+        return "redirect:/user/account";
+    }
+
+    @RequestMapping(value = "/account/changePassword/alert", method = RequestMethod.GET)
+    public String alert(Model model){
+        model.addAttribute("alertTitle", "Błąd!");
+        model.addAttribute("alertContent", "Podane hasła się nie zgadzają");
+
+        return "modals/alert";
     }
 
     // bez tego nie da sie przekazac userPassword do JSP
