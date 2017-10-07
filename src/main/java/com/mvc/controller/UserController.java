@@ -1,17 +1,22 @@
 package com.mvc.controller;
 
 import com.mvc.dto.PasswordDTO;
+import com.mvc.dto.UserRatesDTO;
+import com.mvc.helpers.UserRatesCounter;
 import com.mvc.model.UserModel;
 import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Calendar;
@@ -80,11 +85,8 @@ public class UserController {
 
     /**
      * kontroler otwiera strone z profilem uzytkownika
-     * @param model
-     * @param session
-     * @param wrongOldPassword
-     * @return
      */
+    @Transactional
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String return_account_index(Model model, HttpSession session,
                                        @RequestParam(value = "wrongOldPassword", required = false) String wrongOldPassword){
@@ -92,7 +94,15 @@ public class UserController {
         UserModel user = (UserModel)session.getAttribute("userFromSession");
         log.info("return_account_index user = " + user);
 
+        //oblicz srednia ocen i wstaw do formularza
+        UserRatesDTO userRatesDTO = new UserRatesDTO();
+//        UserRatesCounter uRC = new UserRatesCounter();
+//        userRatesDTO.setUserRates(uRC.returnAverageRate(user.getUserRates()));
+//        userRatesDTO.setDrivingSkills(uRC.returnAverageRate(user.getDrivingSkills()));
+        userRatesDTO.setUserRates(5);
+
         model.addAttribute("user", user);
+        model.addAttribute("userRates", userRatesDTO);
 
         // Okresla czy w przypadku zmiany hasla zostalo podane poprawne poprzednie haslo
         if (wrongOldPassword != null) {
@@ -105,9 +115,6 @@ public class UserController {
 
     /**
      * kontroler wywoluje serwis edytujacy dane uzytkownika
-     * @param user
-     * @param result
-     * @return
      */
     @RequestMapping(value = "/account/edit", method = RequestMethod.POST)
     public String editUser(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
@@ -133,10 +140,6 @@ public class UserController {
 
     /**
      * kontroler wywoluje serwis edytujacy haslo uzytkownika
-     * @param passwordDTO
-     * @param result
-     * @param user
-     * @return
      */
     @RequestMapping(value = "/account/changePassword", method = RequestMethod.POST)
     public String editPassword(@ModelAttribute("userPassword") @Valid PasswordDTO passwordDTO, BindingResult result, @ModelAttribute("user") @Valid UserModel user){
@@ -163,45 +166,47 @@ public class UserController {
         }
     }
 
-
     /**
-     * kontroler wywoluje serwis edytujacy haslo uzytkownika
+     * kontroler wywoluje serwis usuwajacy uzytkownika
      */
-    @RequestMapping(value = "/account/delete", method = RequestMethod.POST)
-    public String deleteUser(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
+    @RequestMapping(value = "/account/delete/confirm", method = RequestMethod.POST)
+    public String deleteUser(@ModelAttribute("user") @Valid UserModel user, HttpServletRequest request){
         log.info("Usuwanie konta - wywolaj serwis zmieniajacy isDeleted na true");
 
         boolean queryResult = userService.setUserDeleted(user);
 
         if(queryResult){
             log.info("Usuwanie konta - uzytkownikowi ustawiono isDeleted na true");
-            return "redirect:/user/account";
+
+            HttpSession session = request.getSession(false);
+            SecurityContextHolder.clearContext();
+            if(session != null) {
+                session.invalidate();
+                log.info("Wylogowano z aplikacji");
+            }
+
+            return "redirect:/?accountDeleted";
         } else {
             log.info("Usuwanie konta - nie udalo sie dla uzytkownika ustawic isDeleted na true");
             return "redirect:/user/account";
         }
-
     }
 
+    /**
+     * kontroler wyswietla modal z potwierdzeniem operacji
+     */
     @RequestMapping(value = "/account/delete/confirm", method = RequestMethod.GET)
-    public String showConfirmDialog(Model model, HttpSession session){
+    public String showConfirmDialog(Model model){
         model.addAttribute("dialogTitle", "Usuwanie konta");
         model.addAttribute("dialogContent", "Czy jesteś pewien, że chcesz usunąć konto?");
-        model.addAttribute("dialogFormAction", "/user/account/delete/confirm/ok");
-        model.addAttribute("dialogFormModelAttribute", "user");
-        model.addAttribute("user", (UserModel)session.getAttribute("userFromSession"));
+        model.addAttribute("dialogFormAction", "/user/account/delete/confirm");
 
         return "modals/confirm";
     }
 
-    @RequestMapping(value = "/account/delete/confirm/ok", method = RequestMethod.POST)
-    public String confirmDelete(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
-
-        log.info("Usuwanie konta - potwierdz");
-
-        return "redirect:/user/account";
-    }
-
+    /**
+     * kontroler wyswietla modal z alertem
+     */
     @RequestMapping(value = "/account/changePassword/alert", method = RequestMethod.GET)
     public String alert(Model model){
         model.addAttribute("alertTitle", "Błąd!");
@@ -210,10 +215,18 @@ public class UserController {
         return "modals/alert";
     }
 
-    // bez tego nie da sie przekazac userPassword do JSP
+    /**
+     * bez tego nie da sie przekazac userPassword do JSP
+     */
     @ModelAttribute("userPassword")
     public PasswordDTO getPassword(){
         return new PasswordDTO();
+    }
+
+
+    @ModelAttribute("userRates")
+    public UserRatesDTO getRates(){
+        return new UserRatesDTO();
     }
 
 }

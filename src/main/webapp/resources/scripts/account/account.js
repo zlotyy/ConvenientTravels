@@ -83,54 +83,8 @@ $('.cancel-password').click(function(){
     $('#wrongPassword').hide();
 });
 
-// Otworz modal z potwierdzeniem
-$(function() {
-
-    $("#confirmDialog").dialog({
-        autoOpen: false,
-        modal: true
-        // buttons: {
-        //     "Confirm": function(e) {
-        //         $(this).dialog('close');
-        //         $('#confirmDialogForm').submit();
-        //     },
-        //     "Cancel": function() {
-        //         $(this).dialog('close');
-        //     }
-        // }
-    });
-
-    $("#deleteUser").on("click", function(e) {
-        //e.preventDefault();
-        $("#confirmDialog").dialog("open");
-    });
-
-    $("#dialogClose").on("click", function () {
-        $("#confirmDialog").dialog("close");
-    });
-
-    // $("#confirmDialogForm").on("submit", function () {
-    //     $("#confirmDialog").dialog("close");
-    //     //$("#confirmDialogForm").dialog("close");
-    // });
-    // $("#dialogSubmit").on("click", function () {
-    //     $("#confirmDialog").dialog("close");
-    //     $('#confirmDialogForm').submit();
-    // });
-
+// otworz modal z potwierdzeniem
+$("#deleteUser").on("click", function(e) {
+    //e.preventDefault();
+    $("#confirmDialog").dialog("open");
 });
-
-// Otworz modal z alertem
-$(function() {
-
-    $("#alertDialog").dialog({
-        autoOpen: false,
-        modal: true
-    });
-
-    $("#alertClose").on("click", function() {
-        $("#alertDialog").dialog("close");
-    });
-
-});
-

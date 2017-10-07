@@ -40,6 +40,9 @@
                         <c:if test="${not empty registerSuccess}">
                             <li class="msg">${registerSuccess}</li>
                         </c:if>
+                        <c:if test="${not empty accountDeleted}">
+                            <li class="msg">${accountDeleted}</li>
+                        </c:if>
                     </sec:authorize>
 
                     <li><a href="/contact">Kontakt</a></li>
@@ -71,13 +74,6 @@
                     </sec:authorize>
                     <%-- Gdy zalogowany to pokaz inne MENU (login uzytkownika i button EDYTUJ KONTO) --%>
                     <sec:authorize access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">
-
-                        <script>
-                            function formSubmit() {
-                                document.getElementById("logoutForm").submit();
-                            }
-                        </script>
-
                         <c:url value="/logout" var="logoutUrl" />
                         <form class="navbar-form navbar-right form-inline" role="form" action="${logoutUrl}" method="post" id="logoutForm">
                             <input type="hidden" name="${_csrf.parameterName}"
@@ -86,7 +82,7 @@
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
                                 <a href="/user/account" class="btn btn-primary">${pageContext.request.userPrincipal.name} <span class="badge">Edytuj konto</span></a>
                                 <%--<a href="/user/edit" class="btn btn-primary">Edytuj konto <span class="badge">${pageContext.request.userPrincipal.name}</span></a>--%>
-                                <a href="javascript:formSubmit()" class="btn btn-danger">Wyloguj</a>
+                                <a href="javascript:logoutSubmit()" class="btn btn-danger">Wyloguj</a>
                             </c:if>
                         </form>
                     </sec:authorize>
@@ -95,3 +91,12 @@
         </div><!-- /.container -->
     </nav><!-- /.navbar -->
 </div><!-- /.container-fluid -->
+
+<%--Wazne - dzieki temu nie trzeba czyscic cache'a css i js--%>
+<%@ page import="java.util.Random" %>
+<%
+    int cacheNumber = 1;
+    Random r = new Random();
+    cacheNumber = r.nextInt();
+%>
+<script src="/resources/scripts/shared/menu.js?version=<%=cacheNumber%>" ></script>

@@ -55,6 +55,7 @@ public class UserService implements IUserService {
     /**
      * serwis ustawia uzytkowniki parametr isDeleted na true
      */
+    @Transactional
     public boolean setUserDeleted(UserModel user) {
         user.setDeleted(true);
 
@@ -104,6 +105,7 @@ public class UserService implements IUserService {
         return userDAO.createUser(user);
     }
 
+    @Transactional
     public boolean updateLastLoginTime(long userId) {
         return false;
     }

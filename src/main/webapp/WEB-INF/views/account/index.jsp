@@ -43,7 +43,8 @@
     <div class="container">
         <div class="panel panel-primary my-fixed-panel">
             <div class="col-md-8">
-                <form:form class="form-horizontal" action="/user/account/edit" modelAttribute="user" method="post" id="profileForm">
+                <form:form class="form-horizontal" action="/user/account/edit" modelAttribute="user" method="post"
+                           id="profileForm" name="profileForm">
                     <div class="container-fluid  text-primary">
                         <h2 class="col-md-offset-3">Twój profil</h2>
                         <br>
@@ -106,19 +107,17 @@
                     <div class="form-group">
                         <%-- Modal z potwierdzeniem --%>
                         <jsp:include page="/user/account/delete/confirm" />
+                        <%-- Modal z alertem --%>
+                        <jsp:include page="/user/account/changePassword/alert" />
+
                         <form:form class="form-horizontal" action="/user/account/changePassword" modelAttribute="userPassword" method="post"
-                                   id="passwordForm">
-
-                            <%-- Modal z alertem --%>
-                            <jsp:include page="/user/account/changePassword/alert" />
-
+                                   id="passwordForm" name="passwordForm">
 
                             <div class="form-group">
                                 <div class="row col-md-8">
                                     <button type="button" id="deleteUser" class="btn btn-primary btn-block">Usuń konto</button>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <div class="row col-md-8 change-password">
                                     <form:button type="button" class="btn btn-primary btn-block">Zmień hasło</form:button>
@@ -153,6 +152,15 @@
                                 </div>
                             </div>
                         </form:form>
+                        <form:form class="form-horizontal" modelAttribute="userRates" method="post" id="ratesForm" name="ratesForm">
+                            <div class="form-group">
+                                <div class="row col-md-8">
+                                    <label for="userRates" class="control-label">Średnia Ocen</label>
+                                    <form:hidden path="userRates" id="userRates" class="form-control" />
+                                    <img src="../../resources/images/user/rates/0stars.png" />
+                                </div>
+                            </div>
+                        </form:form>
                     </div>
                 </div>
             </div>
@@ -171,5 +179,7 @@
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
     <script src="/resources/scripts/account/account.js?version=<%=cacheNumber%>" ></script>
+    <script src="/resources/scripts/modals/dialogs/confirm.js?version=<%=cacheNumber%>" ></script>
+    <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>
 </body>
 </html>

@@ -15,7 +15,8 @@ public class MenuController {
     @RequestMapping()
     public String index(@RequestParam(value = "registerSuccess", required = false) String registerSuccess, Model model,
                         @RequestParam(value = "error", required = false) String error,
-                        @RequestParam(value = "logout", required = false) String logout){
+                        @RequestParam(value = "logout", required = false) String logout,
+                        @RequestParam(value = "accountDeleted", required = false) String accountDeleted){
 
         // Okresla czy w przypadku rejestracji konta zostalo ono utworzone
         if (registerSuccess != null) {
@@ -29,6 +30,11 @@ public class MenuController {
         if (logout != null) {
             model.addAttribute("logoutSuccess", "Zostałeś pomyślnie wylogowany");
         }
+
+        if (accountDeleted != null) {
+            model.addAttribute("accountDeleted", "Twoje konto zostało usunięte");
+        }
+
         return "shared/menu";
     }
 }
