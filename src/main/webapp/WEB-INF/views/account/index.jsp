@@ -45,7 +45,7 @@
             <div class="col-md-8">
                 <form:form class="form-horizontal" action="/user/account/edit" modelAttribute="user" method="post"
                            id="profileForm" name="profileForm">
-                    <div class="container-fluid  text-primary">
+                    <div class="container-fluid">
                         <h2 class="col-md-offset-3">Twój profil</h2>
                         <br>
                         <div class="form-group">
@@ -109,7 +109,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="container-fluid text-primary details-margins">
+                <div class="container-fluid details-margins">
                     <div class="form-group">
                         <%-- Modal z potwierdzeniem --%>
                         <jsp:include page="/user/account/delete/confirm" />
