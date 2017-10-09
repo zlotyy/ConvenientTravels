@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.Principal;
 
 @Controller("loginController")
 @RequestMapping("/login")           // TAK W ZASADZIE TO JEST TO NIEPOTRZEBNE
@@ -28,7 +29,17 @@ public class LoginController {
     IUserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String login() {
+    public String login(Principal principal, HttpSession session) {
+
+        if(principal != null) {
+            String login = principal.getName();
+            UserModel user = userService.getUser(login);
+            userService.updateLastLoginTime(user);
+
+            session.setAttribute("userFromSession", user);
+
+            log.info("Uzytkownik " + session.getAttribute("userFromSession") + " zostal zalogowany");
+        }
 
         return "home/index";
     }

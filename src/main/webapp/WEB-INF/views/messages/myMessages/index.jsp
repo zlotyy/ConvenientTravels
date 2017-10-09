@@ -1,3 +1,10 @@
+<%--Wazne - dzieki temu nie trzeba czyscic cache'a css i js--%>
+<%@ page import="java.util.Random" %>
+<%
+    int cacheNumber = 1;
+    Random r = new Random();
+    cacheNumber = r.nextInt();
+%>
 <%--
   Created by IntelliJ IDEA.
   User: zloty
@@ -14,9 +21,9 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css">
+    <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css?version=<%=cacheNumber%>">
 
-    <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css">
+    <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css?version=<%=cacheNumber%>">
 
     <title>Convenient Travels</title>
 </head>

@@ -36,7 +36,7 @@
         <section>
             <div class="panel-body">
                 <div class="text-center">
-                    <h3>Admin</h3>
+                    <h3>TERMS</h3>
                 </div>
             </div>
         </section>

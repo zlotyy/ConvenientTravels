@@ -1,3 +1,10 @@
+<%--Wazne - dzieki temu nie trzeba czyscic cache'a css i js--%>
+<%@ page import="java.util.Random" %>
+<%
+    int cacheNumber = 1;
+    Random r = new Random();
+    cacheNumber = r.nextInt();
+%>
 <%--
   Created by IntelliJ IDEA.
   User: zloty
@@ -15,9 +22,9 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css">
+    <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css?version=<%=cacheNumber%>">
 
-    <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css">
+    <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css?version=<%=cacheNumber%>">
 
     <title>Convenient Travels</title>
 </head>
@@ -34,55 +41,55 @@
                     <div class="form-group">
                         <label for="login" class="col-md-1 col-md-offset-1 control-label">Login</label>
                         <div class="col-md-9">
-                            <form:input path="login" id="login" placeholder="Login" class="form-control" autofocus="autofocus" />
+                            <form:input path="login" id="login" placeholder="Login" class="form-control" autofocus="autofocus" required="required" />
                             <form:errors path="login" cssclass="error" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-md-1 col-md-offset-1 control-label">Hasło</label>
                         <div class="col-md-9">
-                            <form:input path="password" type="password" id="password" placeholder="Hasło" class="form-control" />
+                            <form:input path="password" type="password" id="password" placeholder="Hasło" class="form-control" required="required" />
                             <form:errors path="password" cssclass="error"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword" class="col-md-1 col-md-offset-1 control-label">Potwierdź Hasło</label>
                         <div class="col-md-9">
-                            <input type="password" id="confirmPassword" placeholder="Hasło" class="form-control">
+                            <input type="password" id="confirmPassword" placeholder="Hasło" class="form-control" required >
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="firstName" class="col-md-1 col-md-offset-1 control-label">Imię</label>
                         <div class="col-md-9">
-                            <form:input path="name" id="firstName" placeholder="Imię" class="form-control" />
+                            <form:input path="name" id="firstName" placeholder="Imię" class="form-control" required="required" />
                             <form:errors path="name" cssclass="error"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="lastName" class="col-md-1 col-md-offset-1 control-label">Nazwisko</label>
                         <div class="col-md-9">
-                            <form:input path="lastname" id="lastName" placeholder="Nazwisko" class="form-control" />
+                            <form:input path="lastname" id="lastName" placeholder="Nazwisko" class="form-control" required="required" />
                             <form:errors path="lastname" cssclass="error"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="email" class="col-md-1 col-md-offset-1 control-label">Email</label>
                         <div class="col-md-9">
-                            <form:input path="mail" type="email" id="email" placeholder="Email" class="form-control" />
+                            <form:input path="mail" type="email" id="email" placeholder="Email" class="form-control" required="required" />
                             <form:errors path="mail" cssclass="error"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="phone" class="col-md-1 col-md-offset-1 control-label">Telefon</label>
                         <div class="col-md-9">
-                            <form:input path="phone" id="phone" placeholder="Telefon" class="form-control" />
+                            <form:input path="phone" id="phone" placeholder="Telefon" class="form-control" required="required" />
                             <form:errors path="phone" cssclass="error"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="birthDate" class="col-md-1 col-md-offset-1 control-label">Data urodzenia</label>
                         <div class="col-md-9">
-                            <form:input path="birthDate" type="date" id="birthDate" class="form-control" />
+                            <form:input path="birthDate" type="date" id="birthDate" class="form-control" required="required" />
                             <form:errors path="birthDate" cssclass="error"/>
                         </div>
                     </div>
@@ -92,7 +99,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="radio-inline" for="femaleRadio">
-                                        <form:radiobutton path="male" id="femaleRadio" value="KOBIETA" />
+                                        <form:radiobutton path="male" id="femaleRadio" value="KOBIETA" required="required" />
                                         Kobieta
                                         <form:errors path="male" cssclass="error"/>
                                     </label>
@@ -111,7 +118,7 @@
                         <div class="col-md-9 col-md-offset-2">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox">Akceptuję <a href="/terms">regulamin</a>     <%-- LINK DO REGULAMINU --%>
+                                    <input type="checkbox" required >Akceptuję <a href="/terms">regulamin</a>     <%-- LINK DO REGULAMINU --%>
                                 </label>
                             </div>
                         </div>

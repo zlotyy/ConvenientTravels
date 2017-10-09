@@ -105,8 +105,14 @@ public class UserService implements IUserService {
         return userDAO.createUser(user);
     }
 
+    /**
+     * serwis uatualnia czas ostatniego logowania
+     */
     @Transactional
-    public boolean updateLastLoginTime(long userId) {
-        return false;
+    public boolean updateLastLoginTime(UserModel user) {
+        Calendar timeNow = Calendar.getInstance();
+        user.setLastLoginTime(timeNow);
+
+        return userDAO.editUser(user);
     }
 }

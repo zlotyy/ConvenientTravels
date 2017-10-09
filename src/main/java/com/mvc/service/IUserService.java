@@ -21,5 +21,5 @@ public interface IUserService {
     boolean editPassword(UserModel user, String newPassword);
     boolean createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
                          Calendar birthDate, Calendar modifyTime);
-    boolean updateLastLoginTime(long userId);
+    boolean updateLastLoginTime(UserModel user);
 }

@@ -157,7 +157,7 @@
                                 <div class="row col-md-8">
                                     <label for="userRates" class="control-label">Średnia Ocen</label>
                                     <form:hidden path="userRates" id="userRates" class="form-control" />
-                                    <img src="../../resources/images/user/rates/0stars.png" />
+                                    <img src="resources/images/user/rates/0stars.png" />
                                 </div>
                             </div>
                         </form:form>

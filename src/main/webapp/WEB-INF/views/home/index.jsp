@@ -1,3 +1,10 @@
+<%--Wazne - dzieki temu nie trzeba czyscic cache'a css i js--%>
+<%@ page import="java.util.Random" %>
+<%
+    int cacheNumber = 1;
+    Random r = new Random();
+    cacheNumber = r.nextInt();
+%>
 <%--
   Created by IntelliJ IDEA.
   User: zloty
@@ -14,12 +21,12 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css">
+    <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css?version=<%=cacheNumber%>">
 
     <%-- okresla style dla komunikatow odnosnie logowania --%>
-    <link rel="stylesheet" href="/resources/styles/menu/loginForm.css">
+    <link rel="stylesheet" href="/resources/styles/menu/loginForm.css?version=<%=cacheNumber%>">
 
-    <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css">
+    <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css?version=<%=cacheNumber%>">
 
     <title>Convenient Travels</title>
 </head>
@@ -58,7 +65,7 @@
                 <div class="panel-body">
                     <h1 class="text-center text-primary">Witaj w Convenient Travels</h1>
 
-                    <img src="resources/images/home/car.jpg" alt="TEKST ALTERNATYWNY" width="60%" height="60%" align="right" style="margin-left: 5%" />
+                    <img src="/resources/images/home/car.jpg" alt="TEKST ALTERNATYWNY" width="60%" height="60%" align="right" style="margin-left: 5%" />
 
                     <h4 class="next-to-img text-primary">
                         Wybierasz się w podróż i chcesz trochę zaoszczędzić?
