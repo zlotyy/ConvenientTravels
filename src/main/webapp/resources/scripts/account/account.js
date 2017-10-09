@@ -72,7 +72,6 @@ $('#passwordForm').submit(function (event) {
         $('.cancel-password').hide();
         $('.change-password').show();
         $('#oldPassword, #newPassword, #confirmPassword').hide();
-        //event.preventDefault();
     }
 });
 $('.cancel-password').click(function(){

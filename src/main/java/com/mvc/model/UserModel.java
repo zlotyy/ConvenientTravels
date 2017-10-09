@@ -62,7 +62,6 @@ public class UserModel {
     @Column(name = "Role")
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Pole nie moze byc puste")
-//    @ColumnDefault("ROLE_USER")
     private Role role = Role.ROLE_USER;
 
     @Column(name = "UserRates")

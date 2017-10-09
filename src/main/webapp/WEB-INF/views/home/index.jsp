@@ -65,7 +65,7 @@
                 <div class="panel-body">
                     <h1 class="text-center text-primary">Witaj w Convenient Travels</h1>
 
-                    <img src="/resources/images/home/car.jpg" alt="TEKST ALTERNATYWNY" width="60%" height="60%" align="right" style="margin-left: 5%" />
+                    <img src="/resources/images/home/car.jpg" alt="Samochód" width="60%" height="60%" align="right" style="margin-left: 5%" />
 
                     <h4 class="next-to-img text-primary">
                         Wybierasz się w podróż i chcesz trochę zaoszczędzić?

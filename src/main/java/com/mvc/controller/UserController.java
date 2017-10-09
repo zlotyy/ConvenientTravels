@@ -207,7 +207,7 @@ public class UserController {
     /**
      * kontroler wyswietla modal z alertem
      */
-    @RequestMapping(value = "/account/changePassword/alert", method = RequestMethod.GET)
+    @RequestMapping(value = {"/account/changePassword/alert", "/register/wrongPassword/alert"}, method = RequestMethod.GET)
     public String alert(Model model){
         model.addAttribute("alertTitle", "Błąd!");
         model.addAttribute("alertContent", "Podane hasła się nie zgadzają");

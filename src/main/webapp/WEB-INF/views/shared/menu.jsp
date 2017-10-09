@@ -55,12 +55,12 @@
                         <form class="navbar-form navbar-right form-inline" role="form" name="loginForm" action="<c:url value='/login' />" method="post">
 
                             <div class="form-group">
-                                <label class="sr-only" for="login">Login</label>
-                                <input type="text" class="form-control" id="login" name='login' placeholder="Login" autofocus required />
+                                <label class="sr-only" for="loginMenu">Login</label>
+                                <input type="text" class="form-control" id="loginMenu" name='login' placeholder="Login" autofocus required />
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="password">Hasło</label>
-                                <input type="password" class="form-control" id="password" name='password' placeholder="Hasło" required />
+                                <label class="sr-only" for="passwordMenu">Hasło</label>
+                                <input type="password" class="form-control" id="passwordMenu" name='password' placeholder="Hasło" required />
                             </div>
                             <%-- button domyslnie ma type="submit", input tak nie ma --%>
                             <button type="submit" class="btn btn-primary">Zaloguj się</button>

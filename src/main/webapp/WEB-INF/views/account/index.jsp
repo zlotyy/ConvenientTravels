@@ -101,6 +101,12 @@
                         </div>
                     </div>
                 </form:form> <!-- /form -->
+                <div class="form-group">
+                    <%--<label for="car" class="col-md-1 col-md-offset-1 control-label">Samochód</label>--%>
+                    <div class="col-md-9 col-md-offset-3">
+                        <img src="/resources/images/home/car.jpg" id="car" alt="Wybierz samochód" width="30%" height="20%" href="/car" style="margin-top: 15px" />
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="container-fluid text-primary details-margins">

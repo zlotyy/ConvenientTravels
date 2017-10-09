@@ -22,9 +22,14 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+    <%-- jQuery UI CSS --%>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" />
+
     <link rel="stylesheet" href="/resources/styles/menu/myNavbar.css?version=<%=cacheNumber%>">
 
     <link rel="stylesheet" href="/resources/styles/pageContent/pageContent.css?version=<%=cacheNumber%>">
+
+    <link rel="stylesheet" href="/resources/styles/register/register.css?version=<%=cacheNumber%>">
 
     <title>Convenient Travels</title>
 </head>
@@ -34,7 +39,12 @@
 
     <div class="container">
         <div class="panel panel-primary my-fixed-panel">
-            <form:form class="form-horizontal" action="/user/register" modelAttribute="user" method="post" autocomplete="true">
+            <%-- Modal z alertem --%>
+            <jsp:include page="/user/register/wrongPassword/alert" />
+            <%-- Modal z samochodem --%>
+            <jsp:include page="/car" />
+
+            <form:form class="form-horizontal" action="/user/register" modelAttribute="user" method="post" id="registerForm" autocomplete="true">
                 <div class="container-fluid">
                     <h2 class="col-md-offset-2">Rejestracja konta</h2>
                     <br>
@@ -55,7 +65,7 @@
                     <div class="form-group">
                         <label for="confirmPassword" class="col-md-1 col-md-offset-1 control-label">Potwierdź Hasło</label>
                         <div class="col-md-9">
-                            <input type="password" id="confirmPassword" placeholder="Hasło" class="form-control" required >
+                            <input type="password" id="confirmPassword" placeholder="Powtórz hasło" class="form-control" required >
                         </div>
                     </div>
                     <div class="form-group">
@@ -93,43 +103,53 @@
                             <form:errors path="birthDate" cssclass="error"/>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-1 col-md-offset-1">Płeć</label>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label class="radio-inline" for="femaleRadio">
-                                        <form:radiobutton path="male" id="femaleRadio" value="KOBIETA" required="required" />
-                                        Kobieta
-                                        <form:errors path="male" cssclass="error"/>
-                                    </label>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="radio-inline" for="maleRadio">
-                                        <form:radiobutton path="male" id="maleRadio" value="MEZCZYZNA" />
-                                        Mężczyzna
-                                        <form:errors path="male" cssclass="error"/>
-                                    </label>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-md-offset-2">Płeć</label>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="radio-inline" for="femaleRadio">
+                                            <form:radiobutton path="male" id="femaleRadio" value="KOBIETA" required="required" />
+                                            Kobieta
+                                            <form:errors path="male" cssclass="error"/>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="radio-inline" for="maleRadio">
+                                            <form:radiobutton path="male" id="maleRadio" value="MEZCZYZNA" />
+                                            Mężczyzna
+                                            <form:errors path="male" cssclass="error"/>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div> <!-- /.form-group -->
-                    <div class="form-group">
-                        <div class="col-md-9 col-md-offset-2">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" required >Akceptuję <a href="/terms">regulamin</a>     <%-- LINK DO REGULAMINU --%>
-                                </label>
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" required >Akceptuję <a href="/terms">regulamin</a>     <%-- LINK DO REGULAMINU --%>
+                                    </label>
+                                </div>
+                            </div>
+                        </div> <!-- /.form-group -->
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class="row col-md-6">
+                                    <form:button type="submit" class="btn btn-primary btn-block">Zarejestruj konto</form:button>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="/"><form:button type="button" class="btn btn-primary btn-block">Anuluj</form:button></a>
+                                </div>
                             </div>
                         </div>
-                    </div> <!-- /.form-group -->
-                    <div class="form-group">
-                        <div class="col-md-9 col-md-offset-2">
-                            <div class="row col-md-3">
-                                <form:button type="submit" class="btn btn-primary btn-block">Zarejestruj konto</form:button>
-                            </div>
-                            <div class="col-md-2">
-                                <a href="/"><form:button type="button" class="btn btn-primary btn-block">Anuluj</form:button></a>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="car" class="col-md-1 control-label">Samochód</label>
+                            <div class="col-md-10 col-md-offset-1">
+                                <img src="/resources/images/home/car.jpg" id="car" alt="Wybierz samochód" width="50%" height="20%" href="/car" />
                             </div>
                         </div>
                     </div>
@@ -146,5 +166,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <%-- jQuery UI javascript --%>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script src="/resources/scripts/register/register.js?version=<%=cacheNumber%>" ></script>
+    <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>
+    <script src="/resources/scripts/modals/dialogs/car.js?version=<%=cacheNumber%>" ></script>
 </body>
 </html>

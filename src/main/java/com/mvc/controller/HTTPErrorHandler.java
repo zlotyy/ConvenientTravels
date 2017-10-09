@@ -26,9 +26,9 @@ public class HTTPErrorHandler {
         return "error/403/index";
     }
 
-    @RequestMapping(value="/404", method = RequestMethod.GET)
-    public String error404(){
-
-        return "error/404/index";
-    }
+//    @RequestMapping(value="/404", method = RequestMethod.GET)
+//    public String error404(){
+//
+//        return "error/404/index";
+//    }
 }
