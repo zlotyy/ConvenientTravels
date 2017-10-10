@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Car")
-public class CarModel {
+public class CarModel implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "carId")

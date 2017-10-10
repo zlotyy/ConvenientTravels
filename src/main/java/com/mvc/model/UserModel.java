@@ -9,18 +9,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
 @Entity
 @Table(name = "User")
-public class UserModel {
+public class UserModel implements Serializable {
     @Id
     @GeneratedValue
-    @Column(name = "UserId", unique = true)
+    @Column(name = "UserId")
     private long userId;
 
-    @Column(name = "Login")
+    @Column(name = "Login", unique = true)
     @NotEmpty(message = "Pole nie moze byc puste")
     private String login;
 
@@ -28,7 +29,7 @@ public class UserModel {
     @NotEmpty(message = "Pole nie moze byc puste")
     private String password;
 
-    @Column(name = "Mail")
+    @Column(name = "Mail", unique = true)
     @NotEmpty(message = "Pole nie moze byc puste")
     @Email(message = "Podaj poprawny adres e-mail")
     private String mail;
@@ -93,15 +94,15 @@ public class UserModel {
 
     // Polaczenie 1 User do N Przejazdow
     @OneToMany(mappedBy = "user")
-    private List<DriveModel> drive;
+    private List<DriveModel> drives;
 
     // Polaczenie 1 User do N Samochodow
     @OneToMany(mappedBy = "user")
-    private List<CarModel> car;
+    private List<CarModel> cars;
 
     // Polaczenie 1 User do N Rezerwacji
     @OneToMany(mappedBy = "user")
-    private List<BookingModel> booking;
+    private List<BookingModel> bookings;
 
     // Polaczenie 1 User do N Sesji
     @OneToMany(mappedBy = "user")
@@ -250,28 +251,28 @@ public class UserModel {
         isDeleted = deleted;
     }
 
-    public List<DriveModel> getDrive() {
-        return drive;
+    public List<DriveModel> getDrives() {
+        return drives;
     }
 
-    public void setDrive(List<DriveModel> drive) {
-        this.drive = drive;
+    public void setDrives(List<DriveModel> drives) {
+        this.drives = drives;
     }
 
-    public List<CarModel> getCar() {
-        return car;
+    public List<CarModel> getCars() {
+        return cars;
     }
 
-    public void setCar(List<CarModel> car) {
-        this.car = car;
+    public void setCars(List<CarModel> cars) {
+        this.cars = cars;
     }
 
-    public List<BookingModel> getBooking() {
-        return booking;
+    public List<BookingModel> getBookings() {
+        return bookings;
     }
 
-    public void setBooking(List<BookingModel> booking) {
-        this.booking = booking;
+    public void setBookings(List<BookingModel> bookings) {
+        this.bookings = bookings;
     }
 
     public List<SessionActualModel> getSessionActual() {

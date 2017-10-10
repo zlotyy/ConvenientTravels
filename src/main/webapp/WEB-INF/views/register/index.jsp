@@ -126,8 +126,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <div class="checkbox">
+                            <label for="car" class="col-md-2 col-md-offset-2 control-label">Wybierz Samochód</label>
+                            <div class="col-md-8">
+                                <img src="/resources/images/home/car.jpg" id="car" alt="Wybierz samochód" width="60%" height="20%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-5 col-md-offset-5">
+                                <div class="checkbox pull-right">
                                     <label>
                                         <input type="checkbox" required >Akceptuję <a href="/terms">regulamin</a>     <%-- LINK DO REGULAMINU --%>
                                     </label>
@@ -135,21 +143,13 @@
                             </div>
                         </div> <!-- /.form-group -->
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <div class="row col-md-6">
-                                    <form:button type="submit" class="btn btn-primary btn-block">Zarejestruj konto</form:button>
-                                </div>
-                                <div class="col-md-4">
-                                    <a href="/"><form:button type="button" class="btn btn-primary btn-block">Anuluj</form:button></a>
-                                </div>
+                            <div class="col-md-5 col-md-offset-5">
+                                <form:button type="submit" class="btn btn-primary btn-block">Zarejestruj konto</form:button>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="car" class="col-md-1 control-label">Samochód</label>
-                            <div class="col-md-10 col-md-offset-1">
-                                <img src="/resources/images/home/car.jpg" id="car" alt="Wybierz samochód" width="50%" height="20%" href="/car" />
+                            <div class="col-md-5 col-md-offset-5">
+                                <a href="/"><form:button type="button" class="btn btn-primary btn-block">Anuluj</form:button></a>
                             </div>
                         </div>
                     </div>

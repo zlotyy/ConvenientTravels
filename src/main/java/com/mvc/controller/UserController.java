@@ -3,6 +3,7 @@ package com.mvc.controller;
 import com.mvc.dto.PasswordDTO;
 import com.mvc.dto.UserRatesDTO;
 import com.mvc.helpers.UserRatesCounter;
+import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
 import com.mvc.service.IUserService;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 
 @SessionAttributes(types = UserModel.class)     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
