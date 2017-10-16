@@ -2,6 +2,7 @@ package com.mvc.service;
 
 import com.mvc.dao.UserDAO;
 import com.mvc.enums.Male;
+import com.mvc.helpers.Result;
 import com.mvc.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,8 +89,8 @@ public class UserService implements IUserService {
      * @return
      */
     @Transactional
-    public boolean createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                                Calendar birthDate, Calendar modifyTime) {
+    public Result createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
+                             Calendar birthDate, Calendar modifyTime) {
 
         UserModel user = new UserModel();
         user.setLogin(login);

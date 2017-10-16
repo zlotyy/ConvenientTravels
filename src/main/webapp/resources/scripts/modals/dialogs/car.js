@@ -5,10 +5,10 @@ $("#carDialog").dialog({
 });
 
 $("#car").on("click", function () {
-    $("#carDialog").dialog("open");
+    showCarModal();
 });
 
-$("#dialogClose, button[title='Close']").on("click", function () {
+$("#dialogClose, #dialogSubmit,button[title='Close']").on("click", function () {
     //$("#carTable").find("tr:gt(1)").remove();
     $("#carDialog").dialog("close");
 });
@@ -17,3 +17,6 @@ $('#addNextCar').on('click', function(){
     $('#addCarForm').submit();
 });
 
+function showCarModal(){
+    $("#carDialog").dialog("open");
+}

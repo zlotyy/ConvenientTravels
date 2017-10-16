@@ -2,6 +2,9 @@ package com.mvc.controller;
 
 import com.mvc.dto.PasswordDTO;
 import com.mvc.dto.UserRatesDTO;
+import com.mvc.helpers.Result;
+import com.mvc.helpers.ResultError;
+import com.mvc.helpers.ResultSuccess;
 import com.mvc.helpers.UserRatesCounter;
 import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
@@ -9,6 +12,7 @@ import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -41,11 +45,15 @@ public class UserController {
      * kontroler przenosi do widoku rejestracji konta
      */
     @RequestMapping(value="/register", method = RequestMethod.GET)
-    public String return_register_index(Model model){
+    public String return_register_index(Model model, @RequestParam(value = "carModalVisible", required = false) String carModalVisible){
         UserModel user = new UserModel();
         model.addAttribute("user", user);
 
         log.info("return_register_index");
+
+        if(carModalVisible != null){
+            model.addAttribute("carModalVisible", true);
+        }
 
         return "register/index";
     }
@@ -54,8 +62,8 @@ public class UserController {
      * kontroler wywoluje serwis zapisujacy uzytkownika do bazy
      */
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public String createUser(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
-        if(result.hasErrors()){
+    public String createUser(@ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
             log.info("Rejestracja konta - wprowadzono niepoprawne dane, zwroc formularz");
             return "register/index";
         } else {
@@ -63,24 +71,30 @@ public class UserController {
 
             Calendar timeNow = Calendar.getInstance();
 
-            boolean queryResult;
-            queryResult = userService.createUser(
-                    user.getLogin(),
-                    bCryptPasswordEncoder.encode(user.getPassword()),
-                    user.getMail(),
-                    user.getPhone(),
-                    user.getName(),
-                    user.getLastname(),
-                    user.getMale(),
-                    user.getBirthDate(),
-                    timeNow
-            );
+            Result result;
 
-            if(queryResult){
+            try {
+                result = userService.createUser(
+                        user.getLogin(),
+                        bCryptPasswordEncoder.encode(user.getPassword()),
+                        user.getMail(),
+                        user.getPhone(),
+                        user.getName(),
+                        user.getLastname(),
+                        user.getMale(),
+                        user.getBirthDate(),
+                        timeNow
+                );
+            } catch (DataIntegrityViolationException e){
+                result = new ResultError("Ten login lub email jest już zajęty.");
+            }
+
+            if(result.isSuccess()){
                 log.info("Rejestracja konta - uzytkownik zapisany do bazy");
                 return "redirect:/?registerSuccess";
             } else {
                 log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
+                model.addAttribute("dbError", result.getError());
                 return "register/index";
             }
         }

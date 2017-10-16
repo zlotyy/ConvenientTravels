@@ -1,13 +1,20 @@
 package com.mvc.dao;
 
+import com.mvc.helpers.Result;
+import com.mvc.helpers.ResultError;
+import com.mvc.helpers.ResultSuccess;
 import com.mvc.model.UserModel;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import javax.validation.ConstraintViolationException;
 
 @Repository("userDAO")
 public class UserDAO implements IUserDAO {
@@ -22,17 +29,19 @@ public class UserDAO implements IUserDAO {
     /**
      * metoda zapisuje uzytkownika do bazy danych
      */
-    public boolean createUser(UserModel user) {
+    public Result createUser(UserModel user) {
+        Result result;
 
         try {
             entityManager.persist(user);
+            result = new ResultSuccess();
+            log.info("Zapisano uzytkownika w bazie: " + user);
         } catch (PersistenceException pE){
             log.error("Nie udalo sie zapisac obiektu do bazy");
-            return false;
+            result = new ResultError("Operacja nie powiodła się");
         }
-        log.info("Zapisano uzytkownika w bazie: " + user);
 
-        return true;
+        return result;
     }
 
 

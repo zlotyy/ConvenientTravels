@@ -59,26 +59,13 @@ public class CarController {
 //    }
 
 
-//    /**
-//     * kontroler dodaje kolejny samochod do modala
-//     */
-//    @RequestMapping(value = "/add", method = RequestMethod.POST)
-//    public String addNextCar(Model model, @ModelAttribute("user") UserModel user){
-//        model.addAttribute("dialogTitle", "Twoje samochody");
-//
-//        List<CarModel> cars = user.getCars();
-//        if(cars == null){
-//            cars = new ArrayList<>();
-//        }
-//
-//        CarModel car = new CarModel();
-//
-//        car.setCarBrand(new String());
-//        car.setCarModel(new String());
-//        car.setColor(new String());
-//        cars.add(car);
-//        user.setCars(cars);
-//
-//        return "modals/car";
-//    }
+    /**
+     * kontroler dodaje kolejny samochod do modala
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addNextCar(Model model, @ModelAttribute("user") UserModel user){
+        model.addAttribute("dialogTitle", "Twoje samochody");
+
+        return "modals/car";
+    }
 }

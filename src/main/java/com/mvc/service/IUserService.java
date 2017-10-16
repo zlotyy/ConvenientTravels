@@ -1,6 +1,7 @@
 package com.mvc.service;
 
 import com.mvc.enums.Male;
+import com.mvc.helpers.Result;
 import com.mvc.model.UserModel;
 
 import java.util.Calendar;
@@ -19,7 +20,7 @@ public interface IUserService {
     boolean setUserDeleted(UserModel user);
     boolean editUser(UserModel user);
     boolean editPassword(UserModel user, String newPassword);
-    boolean createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                         Calendar birthDate, Calendar modifyTime);
+    Result createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
+                      Calendar birthDate, Calendar modifyTime);
     boolean updateLastLoginTime(UserModel user);
 }

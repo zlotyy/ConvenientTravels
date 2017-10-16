@@ -14,6 +14,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <!-- Latest compiled and minified CSS -->
@@ -35,6 +36,9 @@
 </head>
 
 <body>
+
+
+
     <jsp:include page="/menu" />
 
     <div class="container">
@@ -53,6 +57,7 @@
                         <div class="col-md-9">
                             <form:input path="login" id="login" placeholder="Login" class="form-control" autofocus="autofocus" required="required" />
                             <form:errors path="login" cssclass="error" />
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -160,7 +165,6 @@
 
     <jsp:include page="/footer" />
 
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>--%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -172,5 +176,18 @@
     <script src="/resources/scripts/register/register.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/dialogs/car.js?version=<%=cacheNumber%>" ></script>
+
+    <%--&lt;%&ndash; skrypt odpowiada za ponowne wyswietlenie modala z wyborem samochodu w momencie gdy klikniemy Dodaj Kolejny &ndash;%&gt;--%>
+    <%--<script type="text/javascript">--%>
+        <%--<c:if test="${carModalVisible}" >--%>
+            <%--$(document).ready(showCarModal());--%>
+        <%--</c:if>--%>
+    <%--</script>--%>
+    <c:if test="${not empty dbError}">
+        <jsp:include page="/modal/alert/dbError" />
+        <script type="text/javascript">
+            $("#alertDialog").dialog("open");
+        </script>
+    </c:if>
 </body>
 </html>
