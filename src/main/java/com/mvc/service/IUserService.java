@@ -24,4 +24,5 @@ public interface IUserService {
     Result createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
                       Calendar birthDate, Calendar modifyTime, List<CarModel> cars);
     boolean updateLastLoginTime(UserModel user);
+    List<CarModel>  getUserCars(UserModel user);
 }

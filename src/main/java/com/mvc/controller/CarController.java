@@ -40,7 +40,7 @@ public class CarController {
      */
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
     @ResponseBody
-    public String confirmCars(@RequestParam("carsList") String carsArray, @ModelAttribute("user") UserModel user){
+    public void confirmCars(@RequestParam("carsList") String carsArray, @ModelAttribute("user") UserModel user){
 
         log.info("Potwierdz liste samochodow: " + carsArray);
 
@@ -49,8 +49,27 @@ public class CarController {
 
         user.setCars(cars);
         log.info("user.getCars() = " + user.getCars());
+    }
 
-        return "OK";
+
+    /**
+     * kontroler zaciaga samochody uzytkownika do tabelki
+     */
+    @RequestMapping(value = "/getCars", method = RequestMethod.GET)
+    @ResponseBody
+    public List<CarModel> getCarsForUser(@ModelAttribute("user") UserModel user){
+        log.info("userID " + user.getUserId());
+
+        List<CarModel> cars;
+
+        if(user.getUserId() == 0) {
+            cars = null;
+            cars = user.getCars();
+        } else {
+            cars = userService.getUserCars(user);
+        }
+
+        return cars;
     }
 
 
@@ -66,8 +85,8 @@ public class CarController {
             for(int i=0; i<jsonArray.length(); i+=3){
                 CarModel car = new CarModel();
                 car.setCarBrand(jsonArray.getString(i));
-                car.setCarModel(jsonArray.getString(i));
-                car.setColor(jsonArray.getString(i));
+                car.setCarModel(jsonArray.getString(i+1));
+                car.setColor(jsonArray.getString(i+2));
                 cars.add(car);
             }
         }

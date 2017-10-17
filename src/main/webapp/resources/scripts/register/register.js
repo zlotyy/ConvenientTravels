@@ -15,7 +15,3 @@ $('#password, #confirmPassword').on('keyup', function () {
         $('#password, #confirmPassword').css('border-color', 'red');
     }
 });
-//
-// $('#car').on('mouseover', function () {
-//
-// });

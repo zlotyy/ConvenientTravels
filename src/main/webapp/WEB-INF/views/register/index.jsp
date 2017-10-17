@@ -55,7 +55,6 @@
                         <div class="col-md-9">
                             <form:input path="login" id="login" placeholder="Login" class="form-control" autofocus="autofocus" required="required" />
                             <form:errors path="login" cssclass="error" />
-
                         </div>
                     </div>
                     <div class="form-group">
@@ -129,9 +128,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="car" class="col-md-2 col-md-offset-2 control-label">Wybierz Samochód</label>
+                            <label for="chooseCars" class="col-md-2 col-md-offset-2 control-label">Wybierz Samochód</label>
                             <div class="col-md-8">
-                                <img src="/resources/images/home/car.jpg" id="car" alt="Wybierz samochód" width="60%" height="20%" />
+                                <img src="/resources/images/home/car.jpg" id="chooseCars" alt="Wybierz samochód" width="60%" height="20%" style="cursor: pointer" />
                             </div>
                         </div>
                     </div>
@@ -178,17 +177,5 @@
     <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/dialogs/car.js?version=<%=cacheNumber%>" ></script>
 
-    <%--&lt;%&ndash; skrypt odpowiada za ponowne wyswietlenie modala z wyborem samochodu w momencie gdy klikniemy Dodaj Kolejny &ndash;%&gt;--%>
-    <%--<script type="text/javascript">--%>
-        <%--<c:if test="${carModalVisible}" >--%>
-            <%--$(document).ready(showCarModal());--%>
-        <%--</c:if>--%>
-    <%--</script>--%>
-    <%--<c:if test="${not empty dbError}">--%>
-        <%--<jsp:include page="/modal/alert/dbError" />--%>
-        <%--<script type="text/javascript">--%>
-            <%--$("#alertDialog").dialog("open");--%>
-        <%--</script>--%>
-    <%--</c:if>--%>
 </body>
 </html>

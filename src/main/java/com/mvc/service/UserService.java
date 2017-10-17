@@ -123,4 +123,14 @@ public class UserService implements IUserService {
 
         return userDAO.editUser(user);
     }
+
+    /**
+     * serwis pobiera liste samochodow uzytkownika
+     */
+    @Transactional
+    public List<CarModel>  getUserCars(UserModel user) {
+
+
+        return userDAO.getUserCars(user);
+    }
 }

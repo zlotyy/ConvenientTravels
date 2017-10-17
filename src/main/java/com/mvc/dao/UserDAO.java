@@ -119,4 +119,17 @@ public class UserDAO implements IUserDAO {
             return false;
         }
     }
+
+    /**
+     * metoda pobiera liste samochodow dla podanego uzytkownika
+     */
+    public List<CarModel> getUserCars(UserModel user) {
+        TypedQuery<CarModel> query = entityManager.createQuery("select c from CarModel c where c.user = :user", CarModel.class);
+        query.setParameter("user", user);
+
+        List<CarModel> cars = query.getResultList();
+        log.info("getUserCars() " + cars);
+
+        return cars;
+    }
 }

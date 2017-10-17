@@ -11,4 +11,5 @@ public interface IUserDAO {
     UserModel findByLoginAndPassword(String login, String password);
     UserModel findByLogin(String login);
     boolean editUser(UserModel user);
+    List<CarModel>  getUserCars(UserModel user);
 }

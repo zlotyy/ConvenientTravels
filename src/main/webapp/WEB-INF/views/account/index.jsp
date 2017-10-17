@@ -104,7 +104,7 @@
                 <div class="form-group">
                     <%--<label for="car" class="col-md-1 col-md-offset-1 control-label">Samochód</label>--%>
                     <div class="col-md-9 col-md-offset-3">
-                        <img src="/resources/images/home/car.jpg" id="car" alt="Wybierz samochód" width="30%" height="20%" href="/car" style="margin-top: 15px" />
+                        <img src="/resources/images/home/car.jpg" id="changeCars" alt="Wybierz samochód" width="30%" height="20%" style="margin-top: 15px; cursor: pointer" />
                     </div>
                 </div>
             </div>
@@ -184,8 +184,12 @@
     <%-- jQuery UI javascript --%>
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
+    <%-- Modal z samochodem --%>
+    <jsp:include page="/car" />
+
     <script src="/resources/scripts/account/account.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/dialogs/confirm.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>
+    <script src="/resources/scripts/modals/dialogs/car.js?version=<%=cacheNumber%>" ></script>
 </body>
 </html>

@@ -112,14 +112,14 @@ public class UserController {
         log.info("return_account_index user = " + user);
 
         //oblicz srednia ocen i wstaw do formularza
-        UserRatesDTO userRatesDTO = new UserRatesDTO();
-//        UserRatesCounter uRC = new UserRatesCounter();
-//        userRatesDTO.setUserRates(uRC.returnAverageRate(user.getUserRates()));
-//        userRatesDTO.setDrivingSkills(uRC.returnAverageRate(user.getDrivingSkills()));
-        userRatesDTO.setUserRates(5);
+//        UserRatesDTO userRatesDTO = new UserRatesDTO();
+////        UserRatesCounter uRC = new UserRatesCounter();
+////        userRatesDTO.setUserRates(uRC.returnAverageRate(user.getUserRates()));
+////        userRatesDTO.setDrivingSkills(uRC.returnAverageRate(user.getDrivingSkills()));
+//        userRatesDTO.setUserRates(5);
 
         model.addAttribute("user", user);
-        model.addAttribute("userRates", userRatesDTO);
+//        model.addAttribute("userRates", userRatesDTO);
 
         // Okresla czy w przypadku zmiany hasla zostalo podane poprawne poprzednie haslo
         if (wrongOldPassword != null) {
