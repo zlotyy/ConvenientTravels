@@ -309,10 +309,10 @@ public class UserModel implements Serializable {
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", male=" + male +
-                ", birthDate=" + birthDate +
+                ", birthDate=" + birthDate.getTime() +
                 ", role=" + role +
-                ", modifyTime=" + modifyTime +
-                ", lastLoginTime=" + lastLoginTime +
+                ", modifyTime=" + modifyTime.getTime() +
+                ", lastLoginTime=" + (lastLoginTime != null ? lastLoginTime.getTime() : "" ) +
                 ", isDeleted=" + isDeleted +
                 '}';
     }

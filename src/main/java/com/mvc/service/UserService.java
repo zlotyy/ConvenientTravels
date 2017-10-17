@@ -3,6 +3,7 @@ package com.mvc.service;
 import com.mvc.dao.UserDAO;
 import com.mvc.enums.Male;
 import com.mvc.helpers.Result;
+import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,7 @@ public class UserService implements IUserService {
      */
     @Transactional
     public Result createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                             Calendar birthDate, Calendar modifyTime) {
+                             Calendar birthDate, Calendar modifyTime, List<CarModel> cars) {
 
         UserModel user = new UserModel();
         user.setLogin(login);
@@ -103,7 +104,13 @@ public class UserService implements IUserService {
         user.setBirthDate(birthDate);
         user.setModifyTime(modifyTime);
 
-        return userDAO.createUser(user);
+        if(cars != null) {
+            for (int i = 0; i < cars.size(); i++) {
+                cars.get(i).setUser(user);
+            }
+        }
+
+        return userDAO.createUser(user, cars);
     }
 
     /**

@@ -45,8 +45,6 @@
         <div class="panel panel-primary my-fixed-panel">
             <%-- Modal z alertem --%>
             <jsp:include page="/user/register/wrongPassword/alert" />
-            <%-- Modal z samochodem --%>
-            <jsp:include page="/car" />
 
             <form:form class="form-horizontal" action="/user/register" modelAttribute="user" method="post" id="registerForm" autocomplete="true">
                 <div class="container-fluid">
@@ -173,6 +171,9 @@
     <%-- jQuery UI javascript --%>
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
+    <%-- Modal z samochodem --%>
+    <jsp:include page="/car" />
+
     <script src="/resources/scripts/register/register.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/dialogs/car.js?version=<%=cacheNumber%>" ></script>
@@ -183,11 +184,11 @@
             <%--$(document).ready(showCarModal());--%>
         <%--</c:if>--%>
     <%--</script>--%>
-    <c:if test="${not empty dbError}">
-        <jsp:include page="/modal/alert/dbError" />
-        <script type="text/javascript">
-            $("#alertDialog").dialog("open");
-        </script>
-    </c:if>
+    <%--<c:if test="${not empty dbError}">--%>
+        <%--<jsp:include page="/modal/alert/dbError" />--%>
+        <%--<script type="text/javascript">--%>
+            <%--$("#alertDialog").dialog("open");--%>
+        <%--</script>--%>
+    <%--</c:if>--%>
 </body>
 </html>

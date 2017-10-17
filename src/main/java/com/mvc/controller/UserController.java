@@ -67,11 +67,10 @@ public class UserController {
             log.info("Rejestracja konta - wprowadzono niepoprawne dane, zwroc formularz");
             return "register/index";
         } else {
-            log.info("Rejestracja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
-
+            Result result;
             Calendar timeNow = Calendar.getInstance();
 
-            Result result;
+            log.info("Rejestracja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
 
             try {
                 result = userService.createUser(
@@ -83,7 +82,8 @@ public class UserController {
                         user.getLastname(),
                         user.getMale(),
                         user.getBirthDate(),
-                        timeNow
+                        timeNow,
+                        user.getCars()
                 );
             } catch (DataIntegrityViolationException e){
                 result = new ResultError("Ten login lub email jest już zajęty.");

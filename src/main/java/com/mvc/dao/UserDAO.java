@@ -3,6 +3,7 @@ package com.mvc.dao;
 import com.mvc.helpers.Result;
 import com.mvc.helpers.ResultError;
 import com.mvc.helpers.ResultSuccess;
+import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.sun.org.apache.regexp.internal.RE;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
+import java.util.List;
 
 @Repository("userDAO")
 public class UserDAO implements IUserDAO {
@@ -29,16 +31,25 @@ public class UserDAO implements IUserDAO {
     /**
      * metoda zapisuje uzytkownika do bazy danych
      */
-    public Result createUser(UserModel user) {
+    public Result createUser(UserModel user, List<CarModel> cars) {
         Result result;
 
         try {
             entityManager.persist(user);
+            if(cars != null){
+                for(CarModel car : cars){
+                    entityManager.persist(car);
+                }
+            }
             result = new ResultSuccess();
-            log.info("Zapisano uzytkownika w bazie: " + user);
+            log.info("Zapisano uzytkownika w bazie: " + user + "\nsamochody: " + cars);
         } catch (PersistenceException pE){
             log.error("Nie udalo sie zapisac obiektu do bazy");
             result = new ResultError("Operacja nie powiodła się");
+        }
+
+        if(cars != null) {
+            log.info("Cars dla usera: " + cars);
         }
 
         return result;

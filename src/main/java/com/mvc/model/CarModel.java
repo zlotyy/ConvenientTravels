@@ -68,4 +68,15 @@ public class CarModel implements Serializable {
     public void setUser(UserModel user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "CarModel{" +
+                "carId=" + carId +
+                ", carBrand='" + carBrand + '\'' +
+                ", carModel='" + carModel + '\'' +
+                ", color='" + color + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

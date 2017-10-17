@@ -1,0 +1,44 @@
+1.
+To convert an object to a string, use JSON.stringify:
+
+var json_text = JSON.stringify(your_object, null, 2);
+
+To convert a JSON string to object, use JSON.parse:
+
+var your_object = JSON.parse(json_text);
+
+PRZYKLAD:
+            // zmiana obiektu na string
+            var json_text = JSON.stringify(dataArr, null, 2);
+            console.log(json_text);
+
+            // zmiana stringa na obiekt
+            var obj = JSON.parse(json_text);
+            console.log(obj);
+
+2.
+var myObj = {foo: "bar", "baz": "wockaflockafliz"};
+$.toJSON(myObj);
+
+// Result: {"foo":"bar","baz":"wockaflockafliz"}
+
+
+3.
+JSON.stringify(countries);
+
+
+4.
+type: 'POST',
+url: '/car/confirm',
+headers: {
+    Accept: "application/json; charset=utf-8",
+    "Content-Type" : "application/json; charset=utf-8"
+},
+data: {carsList: dataArr},
+success: function(result) {
+    alert(result);
+    console.log(result);
+}
+
+
+5.
