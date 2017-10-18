@@ -2,11 +2,7 @@ package com.mvc.controller;
 
 import com.mvc.dto.PasswordDTO;
 import com.mvc.dto.UserRatesDTO;
-import com.mvc.helpers.Result;
-import com.mvc.helpers.ResultError;
-import com.mvc.helpers.ResultSuccess;
-import com.mvc.helpers.UserRatesCounter;
-import com.mvc.model.CarModel;
+import com.mvc.helpers.ServiceResult;
 import com.mvc.model.UserModel;
 import com.mvc.service.IUserService;
 import org.slf4j.Logger;
@@ -25,8 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
 
 
 @SessionAttributes(types = UserModel.class)     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
@@ -67,7 +61,7 @@ public class UserController {
             log.info("Rejestracja konta - wprowadzono niepoprawne dane, zwroc formularz");
             return "register/index";
         } else {
-            Result result;
+            ServiceResult<UserModel> result = new ServiceResult<>();
             Calendar timeNow = Calendar.getInstance();
 
             log.info("Rejestracja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
@@ -82,19 +76,20 @@ public class UserController {
                         user.getLastname(),
                         user.getMale(),
                         user.getBirthDate(),
-                        timeNow,
-                        user.getCars()
+                        timeNow
                 );
             } catch (DataIntegrityViolationException e){
-                result = new ResultError("Ten login lub email jest już zajęty.");
+                result.errors.add("Login lub email istnieje już w bazie");
             }
 
-            if(result.isSuccess()){
+            // ZAPISZ SAMOCHODY I JESLI OK TO SUKCES
+
+            if(result.isValid()){
                 log.info("Rejestracja konta - uzytkownik zapisany do bazy");
                 return "redirect:/?registerSuccess";
             } else {
                 log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
-                model.addAttribute("dbError", result.getError());
+                model.addAttribute("dbError", result.errors);                                   //lista bledow
                 return "register/index";
             }
         }

@@ -2,6 +2,7 @@ package com.mvc.controller;
 
 import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
+import com.mvc.service.ICarService;
 import com.mvc.service.IUserService;
 import org.json.JSONArray;
 import org.slf4j.Logger;
@@ -22,6 +23,9 @@ public class CarController {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    ICarService carService;
 
     /**
      * kontroler wyswietla modal z wyborem samochodu
@@ -66,7 +70,7 @@ public class CarController {
             cars = null;
             cars = user.getCars();
         } else {
-            cars = userService.getUserCars(user);
+            cars = carService.getUserCars(user).getData();
         }
 
         return cars;

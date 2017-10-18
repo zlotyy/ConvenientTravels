@@ -45,7 +45,10 @@ $(document).ready(function () {
 
         var carsArray = [];
         $("td").find("input").each(function () {
-            carsArray.push($(this).val());
+            var car;
+            car.carBrand = $(this).val();
+            car.color = $(this).val();
+            carsArray.push(car);
         });
 
         // zmiana obiektu na string

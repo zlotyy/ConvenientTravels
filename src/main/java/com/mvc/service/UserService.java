@@ -1,10 +1,13 @@
 package com.mvc.service;
 
-import com.mvc.dao.UserDAO;
+import com.mvc.dao.ICarDAO;
+import com.mvc.dao.IUserDAO;
 import com.mvc.enums.Male;
-import com.mvc.helpers.Result;
+import com.mvc.helpers.ServiceResult;
 import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -16,9 +19,13 @@ import java.util.List;
 @Service("userService")
 @EnableTransactionManagement
 public class UserService implements IUserService {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    UserDAO userDAO;
+    IUserDAO userDAO;
+
+    @Autowired
+    ICarDAO carDAO;
 
     /**
      * serwis szuka uzytkownika po loginie
@@ -90,27 +97,46 @@ public class UserService implements IUserService {
      * @return
      */
     @Transactional
-    public Result createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                             Calendar birthDate, Calendar modifyTime, List<CarModel> cars) {
+    public ServiceResult<UserModel> createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
+                                    Calendar birthDate, Calendar modifyTime) {
 
-        UserModel user = new UserModel();
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setMail(mail);
-        user.setPhone(phone);
-        user.setName(name);
-        user.setLastname(lastname);
-        user.setMale(male);
-        user.setBirthDate(birthDate);
-        user.setModifyTime(modifyTime);
+        ServiceResult<UserModel> result = new ServiceResult<>();
 
-        if(cars != null) {
-            for (int i = 0; i < cars.size(); i++) {
-                cars.get(i).setUser(user);
-            }
+        try{
+            // sprawdz czy login unikalny (wywolaj serwis)
+
+            log.info("Zapisuje uzytkownika");
+
+            // szyfruj haslo
+            // ustaw date
+
+            UserModel user = new UserModel();
+            user.setLogin(login);
+            user.setPassword(password);
+            user.setMail(mail);
+            user.setPhone(phone);
+            user.setName(name);
+            user.setLastname(lastname);
+            user.setMale(male);
+            user.setBirthDate(birthDate);
+            user.setModifyTime(modifyTime);
+
+            userDAO.createUser(user);
+            result.setData(user);
+
+        } catch (Exception e) {
+            log.error("Blad podczas zapisywania uzytkownika do bazy");
+            result.errors.add("Błąd podczas zapisywania użytkownika do bazy");
         }
-
-        return userDAO.createUser(user, cars);
+        //
+//        if(cars != null) {
+//            for (int i = 0; i < cars.size(); i++) {
+//                cars.get(i).setUser(user);
+//            }
+//        }
+//
+//        return userDAO.createUser(user, cars);
+        return result;
     }
 
     /**
@@ -122,15 +148,5 @@ public class UserService implements IUserService {
         user.setLastLoginTime(timeNow);
 
         return userDAO.editUser(user);
-    }
-
-    /**
-     * serwis pobiera liste samochodow uzytkownika
-     */
-    @Transactional
-    public List<CarModel>  getUserCars(UserModel user) {
-
-
-        return userDAO.getUserCars(user);
     }
 }

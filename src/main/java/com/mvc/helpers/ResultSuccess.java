@@ -1,8 +1,8 @@
-package com.mvc.helpers;
-
-public class ResultSuccess extends Result {
-
-    public ResultSuccess(){
-        this.setSuccess(true);
-    }
-}
+//package com.mvc.helpers;
+//
+//public class ResultSuccess extends Result {
+//
+//    public ResultSuccess(){
+//        this.setSuccess(true);
+//    }
+//}
