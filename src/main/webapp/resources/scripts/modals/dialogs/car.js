@@ -43,12 +43,17 @@ $(document).ready(function () {
 
     $("#dialogSubmit").on("click", function (e) {
 
+        // var carsArray = [];
+        // $("td").find("input").each(function () {
+        //     var car;
+        //     car.carBrand = $(this).val();
+        //     car.color = $(this).val();
+        //     carsArray.push(car);
+        // });
+
         var carsArray = [];
-        $("td").find("input").each(function () {
-            var car;
-            car.carBrand = $(this).val();
-            car.color = $(this).val();
-            carsArray.push(car);
+        $("td").find("input").each(function(){
+            carsArray.push($(this).val());
         });
 
         // zmiana obiektu na string
@@ -76,7 +81,7 @@ $("#chooseCars, #changeCars").click(function () {
         url: '/car/getCars',
         data: {},
         success: function(result) {
-            if(result) {
+            if(result) {                //jesli sa zapisane juz jakies samochody
                 $("#carsTable").empty();
 
                 result.forEach(function (element, index) {

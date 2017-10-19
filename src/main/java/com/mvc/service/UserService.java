@@ -9,6 +9,7 @@ import com.mvc.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,9 @@ public class UserService implements IUserService {
 
     @Autowired
     ICarDAO carDAO;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * serwis szuka uzytkownika po loginie
@@ -98,44 +102,44 @@ public class UserService implements IUserService {
      */
     @Transactional
     public ServiceResult<UserModel> createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                                    Calendar birthDate, Calendar modifyTime) {
+                                    Calendar birthDate, List<CarModel> cars) {
 
         ServiceResult<UserModel> result = new ServiceResult<>();
+        Calendar timeNow = Calendar.getInstance();
 
         try{
             // sprawdz czy login unikalny (wywolaj serwis)
 
             log.info("Zapisuje uzytkownika");
 
-            // szyfruj haslo
-            // ustaw date
 
             UserModel user = new UserModel();
             user.setLogin(login);
-            user.setPassword(password);
+            user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setMail(mail);
             user.setPhone(phone);
             user.setName(name);
             user.setLastname(lastname);
             user.setMale(male);
             user.setBirthDate(birthDate);
-            user.setModifyTime(modifyTime);
+            user.setModifyTime(timeNow);
+            user.setCars(cars);
+
+            if(cars != null) {
+                for (int i = 0; i < cars.size(); i++) {
+                    cars.get(i).setUser(user);
+                }
+            }
 
             userDAO.createUser(user);
+            carDAO.saveCars(cars);
             result.setData(user);
 
         } catch (Exception e) {
             log.error("Blad podczas zapisywania uzytkownika do bazy");
-            result.errors.add("Błąd podczas zapisywania użytkownika do bazy");
+            result.errors.add("Błąd podczas zapisywania użytkownika do bazy danych");
         }
-        //
-//        if(cars != null) {
-//            for (int i = 0; i < cars.size(); i++) {
-//                cars.get(i).setUser(user);
-//            }
-//        }
-//
-//        return userDAO.createUser(user, cars);
+
         return result;
     }
 

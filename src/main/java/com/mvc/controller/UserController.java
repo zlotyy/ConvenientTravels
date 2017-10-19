@@ -3,7 +3,9 @@ package com.mvc.controller;
 import com.mvc.dto.PasswordDTO;
 import com.mvc.dto.UserRatesDTO;
 import com.mvc.helpers.ServiceResult;
+import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
+import com.mvc.service.ICarService;
 import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Calendar;
+import java.util.List;
 
 
 @SessionAttributes(types = UserModel.class)     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
@@ -31,6 +34,9 @@ public class UserController {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    ICarService carService;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -61,35 +67,32 @@ public class UserController {
             log.info("Rejestracja konta - wprowadzono niepoprawne dane, zwroc formularz");
             return "register/index";
         } else {
-            ServiceResult<UserModel> result = new ServiceResult<>();
-            Calendar timeNow = Calendar.getInstance();
+            ServiceResult<UserModel> userServiceResult = new ServiceResult<>();
 
             log.info("Rejestracja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
 
-            try {
-                result = userService.createUser(
+//            try {
+                userServiceResult = userService.createUser(
                         user.getLogin(),
-                        bCryptPasswordEncoder.encode(user.getPassword()),
+                        user.getPassword(),
                         user.getMail(),
                         user.getPhone(),
                         user.getName(),
                         user.getLastname(),
                         user.getMale(),
                         user.getBirthDate(),
-                        timeNow
+                        user.getCars()
                 );
-            } catch (DataIntegrityViolationException e){
-                result.errors.add("Login lub email istnieje już w bazie");
-            }
+//            } catch (DataIntegrityViolationException e){
+//                userServiceResult.errors.add("Login lub email istnieje już w bazie");
+//            }
 
-            // ZAPISZ SAMOCHODY I JESLI OK TO SUKCES
-
-            if(result.isValid()){
+            if(userServiceResult.isValid()){
                 log.info("Rejestracja konta - uzytkownik zapisany do bazy");
                 return "redirect:/?registerSuccess";
             } else {
                 log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
-                model.addAttribute("dbError", result.errors);                                   //lista bledow
+                model.addAttribute("dbError", userServiceResult.errors);                                   //lista bledow
                 return "register/index";
             }
         }

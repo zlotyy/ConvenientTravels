@@ -2,7 +2,7 @@ package com.mvc.model;
 
 import com.mvc.enums.Male;
 import com.mvc.enums.Role;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -98,6 +98,7 @@ public class UserModel implements Serializable {
 
     // Polaczenie 1 User do N Samochodow
     @OneToMany(mappedBy = "user")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<CarModel> cars;
 
     // Polaczenie 1 User do N Rezerwacji

@@ -22,6 +22,6 @@ public interface IUserService {
     boolean editUser(UserModel user);
     boolean editPassword(UserModel user, String newPassword);
     ServiceResult<UserModel> createUser(String login, String password, String mail, String phone, String name, String lastname, Male male,
-                             Calendar birthDate, Calendar modifyTime);
+                             Calendar birthDate, List<CarModel> cars);
     boolean updateLastLoginTime(UserModel user);
 }

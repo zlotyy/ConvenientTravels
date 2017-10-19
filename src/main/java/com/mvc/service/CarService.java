@@ -45,4 +45,30 @@ public class CarService implements ICarService {
 
         return result;
     }
+
+
+    /**
+     * serwis zapisuje liste samochodow uzytkownika
+     */
+    @Transactional
+    public ServiceResult<List<CarModel>> saveUserCars(UserModel user, List<CarModel> cars){
+        ServiceResult<List<CarModel>> result = new ServiceResult<>();
+
+        try {
+            if(cars != null) {
+                for (int i = 0; i < cars.size(); i++) {
+                    cars.get(i).setUser(user);
+                }
+            }
+
+            carDAO.saveCars(cars);
+            result.setData(cars);
+
+        } catch (Exception e){
+            log.error("Blad podczas zapisywania listy samochodow do bazy");
+            result.errors.add("Błąd podczas zapisywania samochodów do bazy danych");
+        }
+
+        return result;
+    }
 }

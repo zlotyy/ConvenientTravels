@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ICarService {
     ServiceResult<List<CarModel>> getUserCars(UserModel user);
+    ServiceResult<List<CarModel>> saveUserCars(UserModel user, List<CarModel> cars);
 }
