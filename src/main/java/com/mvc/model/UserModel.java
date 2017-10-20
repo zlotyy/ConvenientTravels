@@ -1,5 +1,6 @@
 package com.mvc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvc.enums.Male;
 import com.mvc.enums.Role;
 import org.hibernate.annotations.Cascade;
@@ -68,16 +69,19 @@ public class UserModel implements Serializable {
     @Column(name = "UserRates")
     @ElementCollection(targetClass=Integer.class)
     @CollectionTable(name = "User_Rates", joinColumns = @JoinColumn(name = "UserId"))
+    @JsonIgnore
     private List<Integer> userRates;
 
     @Column(name = "PersonalityAssessment")
     @ElementCollection(targetClass=String.class)
     @CollectionTable(name = "User_PersonalityAssessment", joinColumns = @JoinColumn(name = "UserId"))
+    @JsonIgnore
     private List<String> personalityAssessment;
 
     @Column(name = "DrivingSkills")
     @ElementCollection(targetClass=Integer.class)
     @CollectionTable(name = "User_DrivingSkills", joinColumns = @JoinColumn(name = "UserId"))
+    @JsonIgnore
     private List<Integer> drivingSkills;
 
     @Column(name = "ModifyTime")
@@ -94,25 +98,31 @@ public class UserModel implements Serializable {
 
     // Polaczenie 1 User do N Przejazdow
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<DriveModel> drives;
 
     // Polaczenie 1 User do N Samochodow
     @OneToMany(mappedBy = "user")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @JsonIgnore
     private List<CarModel> cars;
 
     // Polaczenie 1 User do N Rezerwacji
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<BookingModel> bookings;
 
     // Polaczenie 1 User do N Sesji
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<SessionActualModel> sessionActual;
 
     @OneToMany(mappedBy = "sender")
+    @JsonIgnore
     private List<MessageModel> message_sender;
 
     @OneToMany(mappedBy = "receiver")
+    @JsonIgnore
     private List<MessageModel> message_receiver;
 
 

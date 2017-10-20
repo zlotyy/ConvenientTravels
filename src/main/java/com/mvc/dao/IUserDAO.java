@@ -8,5 +8,5 @@ public interface IUserDAO {
     void createUser(UserModel user);
     UserModel findByLoginAndPassword(String login, String password);
     UserModel findByLogin(String login);
-    boolean editUser(UserModel user);
+    void editUser(UserModel user);
 }

@@ -104,7 +104,7 @@
                 <div class="form-group">
                     <%--<label for="car" class="col-md-1 col-md-offset-1 control-label">Samochód</label>--%>
                     <div class="col-md-9 col-md-offset-3">
-                        <img src="/resources/images/home/car.jpg" id="changeCars" alt="Wybierz samochód" width="30%" height="20%" style="margin-top: 15px; cursor: pointer" />
+                        <img src="/resources/images/home/car.jpg" id="changeCars" name="changeCars" alt="Wybierz samochód" width="30%" height="20%" style="margin-top: 15px; cursor: pointer" />
                     </div>
                 </div>
             </div>
@@ -158,15 +158,15 @@
                                 </div>
                             </div>
                         </form:form>
-                        <form:form class="form-horizontal" modelAttribute="userRates" method="post" id="ratesForm" name="ratesForm">
-                            <div class="form-group">
-                                <div class="row col-md-8">
-                                    <label for="userRates" class="control-label">Średnia Ocen</label>
-                                    <form:hidden path="userRates" id="userRates" class="form-control" />
-                                    <img src="resources/images/user/rates/0stars.png" />
-                                </div>
-                            </div>
-                        </form:form>
+                        <%--<form:form class="form-horizontal" modelAttribute="userRates" method="post" id="ratesForm" name="ratesForm">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<div class="row col-md-8">--%>
+                                    <%--<label for="userRates" class="control-label">Średnia Ocen</label>--%>
+                                    <%--<form:hidden path="userRates" id="userRates" class="form-control" />--%>
+                                    <%--<img src="/resources/images/user/rates/0stars.png" />--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</form:form>--%>
                     </div>
                 </div>
             </div>

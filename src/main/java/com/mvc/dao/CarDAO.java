@@ -36,11 +36,24 @@ public class CarDAO implements ICarDAO {
         if(cars != null){
             try {
                 for (CarModel car : cars) {
-                    entityManager.persist(car);
+                    entityManager.merge(car);
                 }
             } catch (PersistenceException pE){
                 log.error("Nie udalo sie zapisac obiektu do bazy");
             }
+        }
+    }
+
+    /**
+     * metoda usuwa samochody z listy samochodow
+     */
+    public void deleteCars(List<CarModel> cars){
+        try{
+            for(CarModel car : cars){
+                entityManager.remove(car);
+            }
+        } catch (PersistenceException pE){
+            log.error("Nie udalo sie usunac samochod z bazy");
         }
     }
 }

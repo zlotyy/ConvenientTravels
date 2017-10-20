@@ -1,55 +1,56 @@
-$("#carDialog").dialog({
+$("[name=carDialog]").dialog({
     autoOpen: false,
     modal: true,
     width: 500
 });
 
-$("#dialogClose").on("click", function () {
-    $("#carsTable").find("tr:gt(1)").remove();
-    $("#carDialog").dialog("close");
+$("[name=dialogClose]").on("click", function () {
+    $("[name=carsTable]").find("tr:gt(1)").remove();
+    $('[name=carDialog]').dialog("close");
 });
 
-$("button[title='Close'], #dialogSubmit").on("click", function () {
-    $("#carDialog").dialog("close");
+$("button[title='Close'], [name=dialogSubmit]").on("click", function () {
+    $("[name=carDialog]").dialog("close");
 });
 
-$('#addNextCar').on('click', function(){
-    $('#addCarForm').submit();
+$('[name=addNextCar]').on('click', function(){
+    $('[name=addCarForm]').submit();
 });
 
 function showCarModal(){
-    $("#carDialog").dialog("open");
+    $("[name=carDialog]").dialog("open");
 }
 
 
 // dodaj kolejny samochod
 $(document).ready(function () {
-    $("#addNextCar").on("click", function () {
+    $("[name=addNextCar]").on("click", function () {
 
-        $("#carsTable").append(
+        $("[name=carsTable]").append(
             "<tr>\n" +
-            "                        <td><input name=\"carBrand\" class=\"form-control\" required=\"required\" /></td>\n" +
-            "                        <td><input name=\"carModel\" class=\"form-control\" required=\"required\" /></td>\n" +
-            "                        <td><input name=\"color\" class=\"form-control\" required=\"required\" /></td>\n" +
-            "                    </tr>"
-
+            "                    <td><input name=\"carBrand\" class=\"form-control\" autofocus=\"autofocus\" required=\"required\" /></td>\n" +
+            "                    <td><input name=\"carModel\" class=\"form-control\" required=\"required\" /></td>\n" +
+            "                    <td><input name=\"color\" class=\"form-control\" required=\"required\" /></td>\n" +
+            "                    <td><button type=\"button\" name=\"removeCar\" title=\"Usuń\" class=\"btn btn-default delete\" >\n" +
+            "                        <i class=\"glyphicon glyphicon-remove\" style=\"color: red\"></i>\n" +
+            "                    </button></td>\n" +
+            "                </tr>"
         );
 
     });
 });
 
+// usun samochod    - WAZNE: Jesli element jest dynamicznie dodany, to nie mozna sobie tak po porstu wywolac onClicka, trzeba przekazac rodzica a pozniej dzieci
+$(document).ready(function (e) {
+   $("[name=carsTable]").on('click', 'button[name=removeCar]',function () {
+       $(this).closest("tr").remove();
+   });
+});
+
 // potwierdz samochody Ajaxem
 $(document).ready(function () {
 
-    $("#dialogSubmit").on("click", function (e) {
-
-        // var carsArray = [];
-        // $("td").find("input").each(function () {
-        //     var car;
-        //     car.carBrand = $(this).val();
-        //     car.color = $(this).val();
-        //     carsArray.push(car);
-        // });
+    $("[name=dialogSubmit]").on("click", function (e) {
 
         var carsArray = [];
         $("td").find("input").each(function(){
@@ -66,6 +67,10 @@ $(document).ready(function () {
             data: {carsList: json_cars},
             success: function () {
                 console.log("Samochody zapisane uzytkownikowi");
+            },
+            error: function(jqXHR, exception) {
+                console.log(jqXHR);
+                console.log(exception);
             }
         });
     });
@@ -82,7 +87,7 @@ $("#chooseCars, #changeCars").click(function () {
         data: {},
         success: function(result) {
             if(result) {                //jesli sa zapisane juz jakies samochody
-                $("#carsTable").empty();
+                $("[name=carsTable]").empty();
 
                 result.forEach(function (element, index) {
                     var brand = element.carBrand;
@@ -90,12 +95,15 @@ $("#chooseCars, #changeCars").click(function () {
                     var color = element.color;
                     console.log(brand, model,color);
 
-                    $("#carsTable").append(
+                    $("[name=carsTable]").append(
                         "<tr>\n" +
                         "                        <td><input name=\"carBrand\" class=\"form-control\" required=\"required\" value=" + brand + " /></td>\n" +
                         "                        <td><input name=\"carModel\" class=\"form-control\" required=\"required\" value=" + model + " /></td>\n" +
                         "                        <td><input name=\"color\" class=\"form-control\" required=\"required\" value=" + color + " /></td>\n" +
-                        "                    </tr>"
+                        "                    <td><button type=\"button\" name=\"removeCar\" title=\"Usuń\" class=\"btn btn-default delete\" >\n" +
+                        "                        <i class=\"glyphicon glyphicon-remove\" style=\"color: red\"></i>\n" +
+                        "                    </button></td>\n" +
+                        "                </tr>"
                     );
                 });
             }

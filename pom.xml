@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <!--tu trzymamy wersje bibliotek-->
     <properties>
         <java-version>1.8</java-version>
         <org.springframework-version>4.3.10.RELEASE</org.springframework-version>
@@ -30,6 +29,7 @@
         <jstl-version>1.2</jstl-version>
         <org.apache.commons-version>3.2</org.apache.commons-version>
         <org.json-version>20170516</org.json-version>
+        <jackson.core-version>2.9.2</jackson.core-version>
     </properties>
 
     <dependencies>
@@ -57,9 +57,9 @@
             <scope>provided</scope>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>javax.servlet</groupId>-->
-            <!--<artifactId>jstl</artifactId>-->
-            <!--<version>${javax.servlet.jstl.version}</version>-->
+        <!--<groupId>javax.servlet</groupId>-->
+        <!--<artifactId>jstl</artifactId>-->
+        <!--<version>${javax.servlet.jstl.version}</version>-->
         <!--</dependency>-->
 
         <!-- Spring -->
@@ -173,11 +173,11 @@
             <version>${log4j-version}</version>
         </dependency>
 
-        <!-- Serialization -->
+        <!-- Jackson -->
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${com.google.code.gson-version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.core-version}</version>
         </dependency>
 
         <!-- Apache Common Maths -->

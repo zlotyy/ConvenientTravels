@@ -3,14 +3,12 @@ package com.mvc.controller;
 import com.mvc.dto.PasswordDTO;
 import com.mvc.dto.UserRatesDTO;
 import com.mvc.helpers.ServiceResult;
-import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
 import com.mvc.service.ICarService;
 import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Calendar;
-import java.util.List;
 
 
 @SessionAttributes(types = UserModel.class)     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
@@ -67,12 +63,12 @@ public class UserController {
             log.info("Rejestracja konta - wprowadzono niepoprawne dane, zwroc formularz");
             return "register/index";
         } else {
-            ServiceResult<UserModel> userServiceResult = new ServiceResult<>();
+            ServiceResult<UserModel> result = new ServiceResult<>();
 
             log.info("Rejestracja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
 
 //            try {
-                userServiceResult = userService.createUser(
+            result = userService.createUser(
                         user.getLogin(),
                         user.getPassword(),
                         user.getMail(),
@@ -87,12 +83,12 @@ public class UserController {
 //                userServiceResult.errors.add("Login lub email istnieje już w bazie");
 //            }
 
-            if(userServiceResult.isValid()){
+            if(result.isValid()){
                 log.info("Rejestracja konta - uzytkownik zapisany do bazy");
                 return "redirect:/?registerSuccess";
             } else {
                 log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
-                model.addAttribute("dbError", userServiceResult.errors);                                   //lista bledow
+                model.addAttribute("dbError", result.errors);                                   //lista bledow
                 return "register/index";
             }
         }
@@ -132,17 +128,19 @@ public class UserController {
      * kontroler wywoluje serwis edytujacy dane uzytkownika
      */
     @RequestMapping(value = "/account/edit", method = RequestMethod.POST)
-    public String editUser(@ModelAttribute("user") @Valid UserModel user, BindingResult result){
-        if(result.hasErrors()){
+    public String editUser(@ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
             log.info("Edycja konta - wprowadzono niepoprawne dane, zwroc formularz");
 
             return "account/index";
         } else {
+            ServiceResult<UserModel> result = new ServiceResult<>();
+
             log.info("Edycja konta - dane poprawne, wywolaj serwis zapisujacy do bazy");
 
-            boolean queryResult = userService.editUser(user);
+            result = userService.editUser(user);
 
-            if(queryResult){
+            if(result.isValid()){
                 log.info("Edycja konta - uzytkownik zapisany do bazy");
                 return "redirect:/user/account";
             } else {
@@ -157,17 +155,20 @@ public class UserController {
      * kontroler wywoluje serwis edytujacy haslo uzytkownika
      */
     @RequestMapping(value = "/account/changePassword", method = RequestMethod.POST)
-    public String editPassword(@ModelAttribute("userPassword") @Valid PasswordDTO passwordDTO, BindingResult result, @ModelAttribute("user") @Valid UserModel user){
-        if(result.hasErrors()){
+    public String editPassword(@ModelAttribute("userPassword") @Valid PasswordDTO passwordDTO, BindingResult bindingResult, @ModelAttribute("user") @Valid UserModel user){
+        if(bindingResult.hasErrors()){
             log.info("Edycja hasla - wprowadzono niepoprawne dane, zwroc formularz");
 
             return "account/index";
         } else {
             if(bCryptPasswordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())){
-                log.info("Edycja hasla - wywolaj serwis zapisujacy do bazy");
-                boolean queryResult = userService.editPassword(user, bCryptPasswordEncoder.encode(passwordDTO.getNewPassword()));
+                ServiceResult<UserModel> result = new ServiceResult<>();
 
-                if(queryResult){
+                log.info("Edycja hasla - wywolaj serwis zapisujacy do bazy");
+
+                result = userService.editPassword(user, passwordDTO.getNewPassword());
+
+                if(result.isValid()){
                     log.info("Edycja hasla - uzytkownik zapisany do bazy");
                     return "redirect:/user/account";
                 } else {
@@ -186,11 +187,13 @@ public class UserController {
      */
     @RequestMapping(value = "/account/delete/confirm", method = RequestMethod.POST)
     public String deleteUser(@ModelAttribute("user") @Valid UserModel user, HttpServletRequest request){
+        ServiceResult<UserModel> result = new ServiceResult<>();
+
         log.info("Usuwanie konta - wywolaj serwis zmieniajacy isDeleted na true");
 
-        boolean queryResult = userService.setUserDeleted(user);
+        result = userService.setUserDeleted(user);
 
-        if(queryResult){
+        if(result.isValid()){
             log.info("Usuwanie konta - uzytkownikowi ustawiono isDeleted na true");
 
             HttpSession session = request.getSession(false);

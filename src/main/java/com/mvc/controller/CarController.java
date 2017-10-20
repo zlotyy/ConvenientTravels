@@ -1,5 +1,6 @@
 package com.mvc.controller;
 
+import com.mvc.helpers.ServiceResult;
 import com.mvc.model.CarModel;
 import com.mvc.model.UserModel;
 import com.mvc.service.ICarService;
@@ -48,11 +49,16 @@ public class CarController {
 
         log.info("Potwierdz liste samochodow: " + carsArray);
 
-        List<CarModel> cars = null;
-        cars = JSonCarsToList(carsArray);
+        List<CarModel> cars = JSonCarsToList(carsArray);
 
-        user.setCars(cars);
-        log.info("user.getCars() = " + user.getCars());
+        if(user.getUserId() != 0){
+            ServiceResult<List<CarModel>> result = carService.saveUserCars(user, cars);
+            if(!result.isValid()){
+                log.error("Nie udalo sie zapisac listy samochodow dla uzytkownika");
+            }
+        } else {
+            user.setCars(cars);
+        }
     }
 
 
@@ -67,7 +73,6 @@ public class CarController {
         List<CarModel> cars;
 
         if(user.getUserId() == 0) {
-            cars = null;
             cars = user.getCars();
         } else {
             cars = carService.getUserCars(user).getData();

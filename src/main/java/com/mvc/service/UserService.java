@@ -35,21 +35,40 @@ public class UserService implements IUserService {
      * serwis szuka uzytkownika po loginie
      * @return
      */
-    public UserModel getUser(String login) {
+    public ServiceResult<UserModel> getUser(String login) {
+        ServiceResult<UserModel> result = new ServiceResult<>();
+        UserModel user;
+        try {
+            user = userDAO.findByLogin(login);
+            result.setData(user);
+        } catch (Exception e){
+            log.error("Blad podczas wyszukiwania uzytkownika");
+            result.errors.add("Błąd podczas pobierania danych użytkownika");
+        }
 
-        return userDAO.findByLogin(login);
+        return result;
     }
 
     /**
      * serwis szuka uzytkownika po loginie i hasle
      * @return
      */
-    public UserModel getUser(String login, String password) {
+    public ServiceResult<UserModel> getUser(String login, String password) {
 
-        return userDAO.findByLoginAndPassword(login, password);
+        ServiceResult<UserModel> result = new ServiceResult<>();
+        UserModel user;
+        try {
+            user = userDAO.findByLoginAndPassword(login, password);
+            result.setData(user);
+        } catch (Exception e){
+            log.error("Blad podczas wyszukiwania uzytkownika");
+            result.errors.add("Błąd podczas pobierania danych użytkownika");
+        }
+
+        return result;
     }
 
-    public UserModel getUser(long userId) {
+    public ServiceResult<UserModel> getUser(long userId) {
         return null;
     }
 
@@ -69,10 +88,19 @@ public class UserService implements IUserService {
      * serwis ustawia uzytkowniki parametr isDeleted na true
      */
     @Transactional
-    public boolean setUserDeleted(UserModel user) {
-        user.setDeleted(true);
+    public ServiceResult<UserModel> setUserDeleted(UserModel user) {
+        ServiceResult<UserModel> result = new ServiceResult<>();
 
-        return userDAO.editUser(user);
+        try {
+            user.setDeleted(true);
+            userDAO.editUser(user);
+            result.setData(user);
+        } catch (Exception e){
+            log.error("Blad podczas usuwania uzytkownika");
+            result.errors.add("Błąd podczas usuwania użytkownika");
+        }
+
+        return result;
     }
 
     /**
@@ -80,9 +108,18 @@ public class UserService implements IUserService {
      * @return
      */
     @Transactional
-    public boolean editUser(UserModel user) {
+    public ServiceResult<UserModel> editUser(UserModel user) {
+        ServiceResult<UserModel> result = new ServiceResult<>();
 
-        return userDAO.editUser(user);
+        try {
+            userDAO.editUser(user);
+            result.setData(user);
+        } catch (Exception e){
+            log.error("Blad podczas nadpisywania uzytkownika do bazy");
+            result.errors.add("Błąd podczas edycji użytkownika");
+        }
+
+        return result;
     }
 
     /**
@@ -90,10 +127,19 @@ public class UserService implements IUserService {
      * @return
      */
     @Transactional
-    public boolean editPassword(UserModel user, String newPassword) {
-        user.setPassword(newPassword);
+    public ServiceResult<UserModel> editPassword(UserModel user, String newPassword) {
+        ServiceResult<UserModel> result = new ServiceResult<>();
 
-        return userDAO.editUser(user);
+        try {
+            user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userDAO.editUser(user);
+            result.setData(user);
+        } catch (Exception e){
+            log.error("Blad podczas zmiany hasla");
+            result.errors.add("Błąd podczas zmiany hasła");
+        }
+
+        return result;
     }
 
     /**
@@ -111,7 +157,6 @@ public class UserService implements IUserService {
             // sprawdz czy login unikalny (wywolaj serwis)
 
             log.info("Zapisuje uzytkownika");
-
 
             UserModel user = new UserModel();
             user.setLogin(login);
@@ -148,9 +193,18 @@ public class UserService implements IUserService {
      */
     @Transactional
     public boolean updateLastLoginTime(UserModel user) {
+        boolean result;
         Calendar timeNow = Calendar.getInstance();
-        user.setLastLoginTime(timeNow);
 
-        return userDAO.editUser(user);
+        try {
+            user.setLastLoginTime(timeNow);
+            userDAO.editUser(user);
+            result = true;
+        } catch (Exception e) {
+            log.error("Blad podczas uaktualniania czasu ostatniego logowania uzytkownika");
+            result = false;
+        }
+
+        return result;
     }
 }

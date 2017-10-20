@@ -8,4 +8,5 @@ import java.util.List;
 public interface ICarDAO {
     List<CarModel> getUserCars(UserModel user);
     void saveCars(List<CarModel> cars);
+    void deleteCars(List<CarModel> cars);
 }

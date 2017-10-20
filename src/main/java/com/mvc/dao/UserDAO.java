@@ -79,7 +79,7 @@ public class UserDAO implements IUserDAO {
     /**
      * metoda zapisuje edytowanego uzytkownika do bazy danych
      */
-    public boolean editUser(UserModel user) {
+    public void editUser(UserModel user) {
         // wyszukaj w bazie uzytkownika po ID
         UserModel userFromDB = entityManager.find(UserModel.class, user.getUserId());
         log.info("userFromDB: " + userFromDB);
@@ -87,12 +87,8 @@ public class UserDAO implements IUserDAO {
         try {
             userFromDB = entityManager.merge(user);
             log.info("Po zmianach - userFromDB: " + userFromDB);
-
-            return true;
         } catch (PersistenceException pE){
             log.error("Nie udalo sie nadpisac obiektu w bazie");
-
-            return false;
         }
     }
 

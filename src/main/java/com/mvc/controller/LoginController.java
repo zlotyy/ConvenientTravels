@@ -33,7 +33,7 @@ public class LoginController {
 
         if(principal != null) {
             String login = principal.getName();
-            UserModel user = userService.getUser(login);
+            UserModel user = userService.getUser(login).getData();
             userService.updateLastLoginTime(user);
 
             session.setAttribute("userFromSession", user);
