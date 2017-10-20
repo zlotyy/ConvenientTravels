@@ -4,28 +4,26 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div id="carDialog" name="carDialog" title="${dialogTitle}">
-    <form:form modelAttribute="user" method="post" id="carsForm" role="form" >
+    <form:form method="post" modelAttribute="user" id="carsForm" name="carsForm" role="form" >
         <div class="col-md-12">
             <table class="table">
                 <thead>
-                <tr>
-                    <th width="30%">Marka</th>
-                    <th width="30%">Model</th>
-                    <th width="30%">Kolor</th>
-                    <th width="10%"></th>
-                </tr>
+                    <tr>
+                        <th width="30%">Marka</th>
+                        <th width="30%">Model</th>
+                        <th width="30%">Kolor</th>
+                        <th width="10%"></th>
+                    </tr>
                 </thead>
                 <tbody id="carsTable" name="carsTable">
-                    <%--<c:forEach var="car" items="${user.cars}">--%>
-                <tr>
-                    <td><input name="carBrand" class="form-control" autofocus="autofocus" required="required" /></td>
-                    <td><input name="carModel" class="form-control" required="required" /></td>
-                    <td><input name="color" class="form-control" required="required" /></td>
-                    <td><button type="button" name="removeCar" title="Usuń" class="btn btn-default delete" >
-                        <i class="glyphicon glyphicon-remove" style="color: red"></i>
-                    </button></td>
-                </tr>
-                    <%--</c:forEach>--%>
+                    <tr>
+                        <td><input name="carBrand" class="form-control" autofocus="autofocus" required /></td>
+                        <td><input name="carModel" class="form-control" required /></td>
+                        <td><input name="color" class="form-control" required /></td>
+                        <td><button type="button" name="removeCar" title="Usuń" class="btn btn-default delete" >
+                            <i class="glyphicon glyphicon-remove" style="color: red"></i>
+                        </button></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
