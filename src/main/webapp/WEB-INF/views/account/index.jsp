@@ -46,7 +46,7 @@
                 <form:form class="form-horizontal" action="/user/account/edit" modelAttribute="user" method="post"
                            id="profileForm" name="profileForm">
                     <div class="container-fluid">
-                        <h2 class="col-md-offset-3">Twój profil</h2>
+                        <h2 class="col-md-offset-8" style="margin-top: 30px; margin-bottom: 40px">Twój profil</h2>
                         <br>
                         <div class="form-group">
                             <label for="login" class="col-md-1 col-md-offset-1 control-label">Login</label>
@@ -101,12 +101,7 @@
                         </div>
                     </div>
                 </form:form> <!-- /form -->
-                <div class="form-group">
-                    <%--<label for="car" class="col-md-1 col-md-offset-1 control-label">Samochód</label>--%>
-                    <div class="col-md-9 col-md-offset-3">
-                        <img src="/resources/images/home/car.jpg" id="changeCars" name="changeCars" alt="Wybierz samochód" width="30%" height="20%" style="margin-top: 15px; cursor: pointer" />
-                    </div>
-                </div>
+
             </div>
             <div class="col-md-4">
                 <div class="container-fluid details-margins">
@@ -116,9 +111,18 @@
                         <%-- Modal z alertem --%>
                         <jsp:include page="/user/account/changePassword/alert" />
 
+
+
                         <form:form class="form-horizontal" action="/user/account/changePassword" modelAttribute="userPassword" method="post"
                                    id="passwordForm" name="passwordForm">
-
+                            <div class="form-group">
+                                <div class="row col-md-8">
+                                    <button type="button" name="changeCars" class="btn btn-primary btn-block">Zmień samochód</button>
+                                </div>
+                                <div class="row col-md-8">
+                                    <img src="/resources/images/home/car.jpg" id="changeCars" name="changeCars" alt="Wybierz samochód" width="100%" height="20%" style="margin-top: 15px; margin-bottom: 15px; cursor: pointer;" />
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="row col-md-8">
                                     <button type="button" id="deleteUser" class="btn btn-primary btn-block">Usuń konto</button>

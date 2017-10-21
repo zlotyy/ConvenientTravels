@@ -75,6 +75,88 @@ public class UserDAO implements IUserDAO {
         return user;
     }
 
+    /**
+     * metoda wyszukuje uzytkownika w bazie danych
+     */
+    public UserModel findByEmail(String mail) {
+        TypedQuery<UserModel> query = entityManager.createQuery("select u from UserModel u where u.mail = :mail", UserModel.class);
+        query.setParameter("mail", mail);
+
+        UserModel user = null;
+        try {
+            user = query.getSingleResult();
+            log.info("Znaleziono uzytkownika w bazie: " + user);
+        } catch (NoResultException nRE){
+            log.info("UserDAO.findByEmail() - nie znaleziono uzytkownika w bazie");
+        }
+
+        return user;
+    }
+
+    /**
+     * metoda sprawdza czy podany nieunikalny login nalezy do uzytkownika
+     */
+    public boolean doesLoginBelongToUser(UserModel user) {
+        boolean result;
+
+        TypedQuery<UserModel> query = entityManager.createQuery("select u from UserModel u where u.userId = :userId and u.login = :login", UserModel.class);
+        query.setParameter("userId", user.getUserId());
+        query.setParameter("login", user.getLogin());
+
+        UserModel userFromDB = null;
+        try {
+            userFromDB = query.getSingleResult();
+            log.info("Znaleziono uzytkownika w bazie: " + user);
+            result = true;
+        } catch (NoResultException nRE){
+            log.info("UserDAO.doesLoginBelongToUser() - nie znaleziono uzytkownika w bazie");
+            result = false;
+        }
+
+        return result;
+    }
+
+
+    /**
+     * metoda sprawdza czy podany nieunikalny email nalezy do uzytkownika
+     */
+    public boolean doesEmailBelongToUser(UserModel user) {
+        boolean result;
+
+        TypedQuery<UserModel> query = entityManager.createQuery("select u from UserModel u where u.userId = :userId and u.mail = :mail", UserModel.class);
+        query.setParameter("userId", user.getUserId());
+        query.setParameter("mail", user.getMail());
+
+        UserModel userFromDB = null;
+        try {
+            userFromDB = query.getSingleResult();
+            log.info("Znaleziono uzytkownika w bazie: " + user);
+            result = true;
+        } catch (NoResultException nRE){
+            log.info("UserDAO.doesEmailBelongToUser() - nie znaleziono uzytkownika w bazie");
+            result = false;
+        }
+
+        return result;
+    }
+
+    /**
+     * metoda wyszukuje uzytkownika po id
+     */
+    public UserModel findById(Long id) {
+        TypedQuery<UserModel> query = entityManager.createQuery("select u from UserModel u where u.userId = :userId", UserModel.class);
+        query.setParameter("userId", id);
+
+        UserModel user = null;
+        try {
+            user = query.getSingleResult();
+            log.info("Znaleziono uzytkownika w bazie: " + user);
+        } catch (NoResultException nRE){
+            log.info("UserDAO.findById() - nie znaleziono uzytkownika w bazie");
+        }
+
+        return user;
+    }
 
     /**
      * metoda zapisuje edytowanego uzytkownika do bazy danych

@@ -1,9 +1,9 @@
-<div id="confirmDialog" title="${dialogTitle}">
-    <form action="${dialogFormAction}" method="post" id="confirmDialogForm" name="confirmDialogForm" >
+<div id="confirmDialog" name="confirmDialog" title="${dialogTitle}">
+    <form action="${dialogFormAction}" method="post" name="confirmDialogForm" >
         <p>${dialogContent}</p>
         <div class="form-group pull-right">
-            <button type="submit" id="dialogSubmit" class="btn btn-primary">Potwierdź</button>
-            <button type="button" id="dialogClose" class="btn btn-primary">Anuluj</button>
+            <button type="submit" name="dialogSubmit" class="btn btn-primary">Potwierdź</button>
+            <button type="button" name="dialogClose" class="btn btn-primary">Anuluj</button>
         </div>
     </form>
 </div>

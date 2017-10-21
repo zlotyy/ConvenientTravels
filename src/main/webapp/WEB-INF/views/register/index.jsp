@@ -43,8 +43,6 @@
 
     <div class="container">
         <div class="panel panel-primary my-fixed-panel">
-            <%-- Modal z alertem --%>
-            <jsp:include page="/user/register/wrongPassword/alert" />
 
             <form:form class="form-horizontal" action="/user/register" modelAttribute="user" method="post" id="registerForm" autocomplete="true">
                 <div class="container-fluid">
@@ -130,7 +128,7 @@
                         <div class="form-group">
                             <label for="chooseCars" class="col-md-2 col-md-offset-2 control-label">Wybierz Samochód</label>
                             <div class="col-md-8">
-                                <img src="/resources/images/home/car.jpg" id="chooseCars" alt="Wybierz samochód" width="60%" height="20%" style="cursor: pointer" />
+                                <img src="/resources/images/home/car.jpg" id="chooseCars" name="chooseCars" alt="Wybierz samochód" width="60%" height="20%" style="cursor: pointer" />
                             </div>
                         </div>
                     </div>
@@ -172,6 +170,25 @@
 
     <%-- Modal z samochodem --%>
     <jsp:include page="/car" />
+    <c:if test="${not empty dbError}">
+        <%-- Modal z alertem --%>
+        <jsp:include page="/modal/alert/dbError" />
+        <script type="text/javascript">
+            <c:if test="${not empty dbError}">
+                // modal z alertem
+                $("[name=alertDialog]").dialog({
+                    autoOpen: false,
+                    modal: true
+                });
+
+                $("[name=alertClose]").on("click", function() {
+                    $("[name=alertDialog]").dialog("close");
+                });
+
+                $("[name=alertDialog]").dialog("open");
+            </c:if>
+        </script>
+    </c:if>
 
     <script src="/resources/scripts/register/register.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>

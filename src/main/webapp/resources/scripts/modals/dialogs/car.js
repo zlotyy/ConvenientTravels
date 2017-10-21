@@ -78,7 +78,7 @@ $(document).ready(function () {
 
 
 // pobierz samochody uzytkownika do modala
-$("#chooseCars, #changeCars").click(function () {
+$("[name=chooseCars], [name=changeCars]").click(function () {
     showCarModal();
 
     $.ajax({

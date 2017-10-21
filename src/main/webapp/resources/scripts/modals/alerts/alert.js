@@ -1,9 +1,9 @@
 // modal z alertem
-$("#alertDialog").dialog({
+$("[name=alertDialog]").dialog({
     autoOpen: false,
     modal: true
 });
 
-$("#alertClose").on("click", function() {
-    $("#alertDialog").dialog("close");
+$("[name=alertClose]").on("click", function() {
+    $("[name=alertDialog]").dialog("close");
 });

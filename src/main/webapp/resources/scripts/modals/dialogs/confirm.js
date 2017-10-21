@@ -1,9 +1,9 @@
 // modal z potwierdzeniem
-$("#confirmDialog").dialog({
+$("[name=confirmDialog]").dialog({
     autoOpen: false,
     modal: true
 });
 
-$("#dialogClose").on("click", function () {
-    $("#confirmDialog").dialog("close");
+$("[name=dialogClose]").on("click", function () {
+    $("[name=confirmDialog]").dialog("close");
 });

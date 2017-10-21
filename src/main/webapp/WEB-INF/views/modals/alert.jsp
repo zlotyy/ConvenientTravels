@@ -1,4 +1,4 @@
-<div id="alertDialog" title="${alertTitle}">
+<div id="alertDialog" name="alertDialog" title="${alertTitle}">
     <p>${alertContent}</p>
-    <button type="button" id="alertClose" class="btn btn-primary pull-right">OK</button>
+    <button type="button" name="alertClose" class="btn btn-primary pull-right">OK</button>
 </div>

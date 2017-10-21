@@ -12,10 +12,10 @@ public interface IUserService {
     ServiceResult<UserModel> getUser(String login);
     ServiceResult<UserModel> getUser(String login, String password);
     ServiceResult<UserModel> getUser(long userId);
-    /**
-     * Metoda sprawdza czy login jest unikalny, a jesli nie jest to kieruje do sprawdzenia czy konto jest usuniete
-     */
-    boolean isLoginUnique(String login);
+    ServiceResult<UserModel> isLoginUnique(String login);
+    ServiceResult<UserModel> isEmailUnique(String mail);
+    ServiceResult<UserModel> doesLoginBelongToUser(UserModel user);
+    ServiceResult<UserModel> doesEmailBelongToUser(UserModel user);
     boolean isAccountDeleted(String login);
     List<UserModel> getUsersForGrid(String sortOrder, String search);     // funkcjonalnsc by byla, gdyby bylo konto admina
     ServiceResult<UserModel> setUserDeleted(UserModel user);

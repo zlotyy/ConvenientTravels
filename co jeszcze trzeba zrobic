@@ -1,0 +1,4 @@
+1. zmienic ServiceResult<UserModel> na <boolean>
+2. walidacja czy samochod ma uzupelnione pola
+3. walidacja czy login unikalny
+4. edycja konta - obsluga nieunikalnego loginu

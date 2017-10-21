@@ -29,6 +29,9 @@ public class UserService implements IUserService {
     ICarDAO carDAO;
 
     @Autowired
+    IUserService userService;
+
+    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
@@ -69,11 +72,98 @@ public class UserService implements IUserService {
     }
 
     public ServiceResult<UserModel> getUser(long userId) {
-        return null;
+
+        ServiceResult<UserModel> result = new ServiceResult<>();
+        UserModel user;
+        try {
+            user = userDAO.findById(userId);
+            result.setData(user);
+        } catch (Exception e){
+            log.error("Blad podczas wyszukiwania uzytkownika");
+            result.errors.add("Błąd podczas pobierania danych użytkownika");
+        }
+
+        return result;
     }
 
-    public boolean isLoginUnique(String login) {
-        return false;
+    /**
+     * serwis sprawdza czy login jest unikalny - jesli znajdzie uzytkownika w bazie to zwraca blad
+     */
+    public ServiceResult<UserModel> isLoginUnique(String login) {
+
+        ServiceResult<UserModel> result = new ServiceResult<>();
+        UserModel user;
+
+        try {
+            user = userDAO.findByLogin(login);
+            if(user != null){
+                result.errors.add("Login nie jest unikalny");
+            }
+        } catch(Exception e){
+            log.error("Blad podczas sprawdzania czy login jest unikalny");
+            result.errors.add("Błąd bazy danych");
+        }
+
+        return result;
+    }
+
+
+    /**
+     * serwis sprawdza czy login jest unikalny - jesli znajdzie uzytkownika w bazie to zwraca blad
+     */
+    public ServiceResult<UserModel> isEmailUnique(String mail) {
+
+        ServiceResult<UserModel> result = new ServiceResult<>();
+        UserModel user;
+
+        try {
+            user = userDAO.findByEmail(mail);
+            if(user != null){
+                result.errors.add("Email nie jest unikalny");
+            }
+        } catch(Exception e){
+            log.error("Blad podczas sprawdzania czy email jest unikalny");
+            result.errors.add("Błąd bazy danych");
+        }
+
+        return result;
+    }
+
+    /**
+     * serwis sprawdza czy podany nieunikalny login nalezy do uzytkownika
+     */
+    public ServiceResult<UserModel> doesLoginBelongToUser(UserModel user) {
+        ServiceResult<UserModel> result = new ServiceResult<>();
+
+        try {
+            if(!userDAO.doesLoginBelongToUser(user)){
+                result.errors.add("Login nie nalezy do uzytkownika");
+            }
+        } catch(Exception e){
+            log.error("Blad podczas sprawdzania czy login nalezy do uzytkownika");
+            result.errors.add("Błąd bazy danych");
+        }
+
+        return result;
+    }
+
+
+    /**
+     * serwis sprawdza czy podany nieunikalny email nalezy do uzytkownika
+     */
+    public ServiceResult<UserModel> doesEmailBelongToUser(UserModel user) {
+        ServiceResult<UserModel> result = new ServiceResult<>();
+
+        try {
+            if(!userDAO.doesEmailBelongToUser(user)){
+                result.errors.add("e-mail nie nalezy do uzytkownika");
+            }
+        } catch(Exception e){
+            log.error("Blad podczas sprawdzania czy mail nalezy do uzytkownika");
+            result.errors.add("Błąd bazy danych");
+        }
+
+        return result;
     }
 
     public boolean isAccountDeleted(String login) {
@@ -112,6 +202,25 @@ public class UserService implements IUserService {
         ServiceResult<UserModel> result = new ServiceResult<>();
 
         try {
+            ServiceResult<UserModel> uniqueUser = userService.isLoginUnique(user.getLogin());
+            if(!uniqueUser.isValid()){
+                if(!doesLoginBelongToUser(user).isValid()) {
+                    result.setErrors(uniqueUser.getErrors());
+                    log.info("Login nieunikalny");
+                    return result;
+                }
+            }
+            ServiceResult<UserModel> uniqueMail = userService.isEmailUnique(user.getMail());
+            if(!uniqueMail.isValid()){
+                if(!doesEmailBelongToUser(user).isValid()) {
+                    result.setErrors(uniqueMail.getErrors());
+                    log.info("e-mail nieunikalny");
+                    return result;
+                }
+            }
+
+            log.info("Zapisuje uzytkownika");
+
             userDAO.editUser(user);
             result.setData(user);
         } catch (Exception e){
@@ -154,7 +263,18 @@ public class UserService implements IUserService {
         Calendar timeNow = Calendar.getInstance();
 
         try{
-            // sprawdz czy login unikalny (wywolaj serwis)
+            ServiceResult<UserModel> uniqueUser = userService.isLoginUnique(login);
+            if(!uniqueUser.isValid()){
+                result.setErrors(uniqueUser.getErrors());
+                log.info("Login nieunikalny");
+                return result;
+            }
+            ServiceResult<UserModel> uniqueMail = userService.isEmailUnique(mail);
+            if(!uniqueMail.isValid()){
+                result.setErrors(uniqueMail.getErrors());
+                log.info("e-mail nieunikalny");
+                return result;
+            }
 
             log.info("Zapisuje uzytkownika");
 
@@ -207,4 +327,6 @@ public class UserService implements IUserService {
 
         return result;
     }
+
+
 }
