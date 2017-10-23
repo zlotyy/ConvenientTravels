@@ -9,7 +9,6 @@ import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -59,7 +58,7 @@ public class UserController {
      * kontroler wywoluje serwis zapisujacy uzytkownika do bazy
      */
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public String createUser(@ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult, Model model){
+    public String createUser(@ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult, HttpSession session){
         if(bindingResult.hasErrors()){
             log.info("Rejestracja konta - wprowadzono niepoprawne dane, zwroc formularz");
             return "register/index";
@@ -85,7 +84,8 @@ public class UserController {
                 return "redirect:/?registerSuccess";
             } else {
                 log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
-                model.addAttribute("dbError", result.errors);                                   //lista bledow
+
+                session.setAttribute("dbError", result.errors);                                   //lista bledow
                 return "register/index";
             }
         }
