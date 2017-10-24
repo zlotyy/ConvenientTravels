@@ -34,6 +34,7 @@ public class CarController {
     @RequestMapping(method = RequestMethod.GET)
     public String showModal(Model model, @ModelAttribute("user") UserModel user){
         model.addAttribute("dialogTitle", "Twoje samochody");
+        model.addAttribute("dialogFormName", "carsForm");
 
         return "modals/car";
     }

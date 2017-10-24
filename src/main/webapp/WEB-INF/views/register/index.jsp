@@ -170,12 +170,14 @@
 
     <%-- Modal z samochodem --%>
     <jsp:include page="/car" />
-    <c:if test="${not empty dbError}">
-        <%-- Modal z alertem --%>
+
+    <%-- Modal z alertem - blad z bazy --%>
+    <c:if test="${dbError}">
         <jsp:include page="/modal/alert/dbError" />
         <script type="text/javascript">
-            <c:if test="${not empty dbError}">
-                // modal z alertem
+            console.log("${dbError}");
+            <c:if test="${dbError}">
+
                 $("[name=alertDialog]").dialog({
                     autoOpen: false,
                     modal: true
@@ -186,6 +188,7 @@
                 });
 
                 $("[name=alertDialog]").dialog("open");
+
             </c:if>
         </script>
     </c:if>

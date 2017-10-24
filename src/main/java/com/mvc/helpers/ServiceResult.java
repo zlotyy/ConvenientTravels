@@ -7,11 +7,12 @@ import java.util.List;
 public class ServiceResult<T> {
     private boolean isValid;
     public List<String> errors;
-    private List<String> messages;
+    public List<String> messages;
     private T data;
 
     public ServiceResult(){
         errors = new ArrayList<String>();
+        messages = new ArrayList<String>();
     }
 
     public boolean isValid() {
@@ -44,5 +45,15 @@ public class ServiceResult<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public String errorsToString(){
+        String s = new String();
+
+        for(String error : errors){
+            s = s.concat(error).concat("\n");
+        }
+
+        return s;
     }
 }

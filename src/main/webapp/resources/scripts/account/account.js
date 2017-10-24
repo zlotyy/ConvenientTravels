@@ -33,6 +33,10 @@ $('#newPassword, #confirmPassword').on('keyup', function () {
     }
 });
 
+// zatwierdz zmiany profilu
+$("[name=saveProfileChanges]").on("click", function () {
+    $('[name=profileForm]').submit();
+});
 
 // zmien buttony po zatwierdzeniu formularza
 $('.edit').click(function(){

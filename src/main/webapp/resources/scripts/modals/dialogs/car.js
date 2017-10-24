@@ -4,12 +4,12 @@ $("[name=carDialog]").dialog({
     width: 500
 });
 
-$("[name=dialogClose]").on("click", function () {
+$("[name=carDialogClose]").on("click", function () {
     $("[name=carsTable]").find("tr:gt(1)").remove();
     $('[name=carDialog]').dialog("close");
 });
 
-$("button[title='Close'], [name=dialogSubmit]").on("click", function () {
+$("button[title='Close'], [name=carDialogSubmit]").on("click", function () {
     $("[name=carDialog]").dialog("close");
 });
 
@@ -50,7 +50,7 @@ $(document).ready(function (e) {
 // potwierdz samochody Ajaxem
 $(document).ready(function () {
 
-    $("[name=dialogSubmit]").on("click", function (e) {
+    $("[name=carDialogSubmit]").on("click", function (e) {
 
         var carsArray = [];
         $("td").find("input").each(function(){

@@ -89,7 +89,7 @@
                                     <form:button type="button" class="btn btn-primary btn-block">Edytuj</form:button>
                                 </div>
                                 <div class="row col-md-3 save">
-                                    <form:button type="submit" class="btn btn-primary btn-block">Zapisz</form:button>
+                                    <button type="button" id="saveProfileChanges" name="saveProfileChanges" class="btn btn-primary btn-block">Zapisz</button>
                                 </div>
                                 <div class="col-md-3 cancel">
                                     <form:button type="reset" class="btn btn-primary btn-block">Anuluj</form:button>
@@ -106,15 +106,7 @@
             <div class="col-md-4">
                 <div class="container-fluid details-margins">
                     <div class="form-group">
-                        <%-- Modal z potwierdzeniem --%>
-                        <jsp:include page="/user/account/delete/confirm" />
-                        <%-- Modal z alertem --%>
-                        <jsp:include page="/user/account/changePassword/alert" />
-
-
-
-                        <form:form class="form-horizontal" action="/user/account/changePassword" modelAttribute="userPassword" method="post"
-                                   id="passwordForm" name="passwordForm">
+                        <form class="form-horizontal" >
                             <div class="form-group">
                                 <div class="row col-md-8">
                                     <button type="button" name="changeCars" class="btn btn-primary btn-block">Zmień samochód</button>
@@ -123,11 +115,16 @@
                                     <img src="/resources/images/home/car.jpg" id="changeCars" name="changeCars" alt="Wybierz samochód" width="100%" height="20%" style="margin-top: 15px; margin-bottom: 15px; cursor: pointer;" />
                                 </div>
                             </div>
+                        </form>
+                        <form class="form-horizontal" >
                             <div class="form-group">
                                 <div class="row col-md-8">
                                     <button type="button" id="deleteUser" class="btn btn-primary btn-block">Usuń konto</button>
                                 </div>
                             </div>
+                        </form>
+                        <form:form class="form-horizontal" action="/user/account/changePassword" modelAttribute="userPassword" method="post"
+                                   id="passwordForm" name="passwordForm">
                             <div class="form-group">
                                 <div class="row col-md-8 change-password">
                                     <form:button type="button" class="btn btn-primary btn-block">Zmień hasło</form:button>
@@ -190,6 +187,40 @@
 
     <%-- Modal z samochodem --%>
     <jsp:include page="/car" />
+
+    <%-- Modal z alertem - blad z bazy --%>
+    <c:if test="${dbError}">
+        <jsp:include page="/modal/alert/dbError" />
+        <script type="text/javascript">
+            console.log("${dbError}");
+            <c:if test="${dbError}">
+
+                $("[name=alertDialog]").dialog({
+                    autoOpen: false,
+                    modal: true
+                });
+
+                $("[name=alertClose]").on("click", function() {
+                    $("[name=alertDialog]").dialog("close");
+                });
+
+                $("[name=alertDialog]").dialog("open");
+
+            </c:if>
+
+            // jesli zwrotka ze login lub email nieunikalny to:
+            $('.edit').hide();
+            $('.save, .cancel').show();
+            $("input").prop('disabled', false);
+
+        </script>
+    </c:if>
+
+    <%-- Modal z potwierdzeniem --%>
+    <jsp:include page="/user/account/delete/confirm" />
+
+    <%--&lt;%&ndash; Modal z alertem &ndash;%&gt;--%>
+    <%--<jsp:include page="/user/account/changePassword/alert" />--%>
 
     <script src="/resources/scripts/account/account.js?version=<%=cacheNumber%>" ></script>
     <script src="/resources/scripts/modals/dialogs/confirm.js?version=<%=cacheNumber%>" ></script>

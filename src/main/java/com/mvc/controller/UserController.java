@@ -41,7 +41,8 @@ public class UserController {
      * kontroler przenosi do widoku rejestracji konta
      */
     @RequestMapping(value="/register", method = RequestMethod.GET)
-    public String return_register_index(Model model, @RequestParam(value = "carModalVisible", required = false) String carModalVisible){
+    public String return_register_index(Model model, @RequestParam(value = "carModalVisible", required = false) String carModalVisible,
+                                        HttpSession session){
         UserModel user = new UserModel();
         model.addAttribute("user", user);
 
@@ -58,7 +59,7 @@ public class UserController {
      * kontroler wywoluje serwis zapisujacy uzytkownika do bazy
      */
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public String createUser(@ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult, HttpSession session){
+    public String createUser(@ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult, HttpSession session, Model model){
         if(bindingResult.hasErrors()){
             log.info("Rejestracja konta - wprowadzono niepoprawne dane, zwroc formularz");
             return "register/index";
@@ -85,7 +86,9 @@ public class UserController {
             } else {
                 log.info("Rejestracja konta - nie udalo sie zapisac uzytkownika do bazy");
 
-                session.setAttribute("dbError", result.errors);                                   //lista bledow
+                session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
+                model.addAttribute("dbError", true);
+
                 return "register/index";
             }
         }
@@ -125,7 +128,7 @@ public class UserController {
      * kontroler wywoluje serwis edytujacy dane uzytkownika
      */
     @RequestMapping(value = "/account/edit", method = RequestMethod.POST)
-    public String editUser(Model model, @ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult, HttpSession session){
+    public String editUser(@ModelAttribute("user") @Valid UserModel user, BindingResult bindingResult, HttpSession session, Model model){
         if(bindingResult.hasErrors()){
             log.info("Edycja konta - wprowadzono niepoprawne dane, zwroc formularz");
 
@@ -139,14 +142,18 @@ public class UserController {
 
             if(result.isValid()){
                 log.info("Edycja konta - uzytkownik zapisany do bazy");
+                user = userService.getUser(user.getUserId()).getData();
+                session.setAttribute("userFromSession", user);
                 return "redirect:/user/account";
             } else {
                 log.info("Edycja konta - nie udalo sie zapisac uzytkownika do bazy");
 
                 user = userService.getUser(user.getUserId()).getData();
                 session.setAttribute("userFromSession", user);
+                session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
+                model.addAttribute("dbError", true);
 
-                return "redirect:/user/account";
+                return "account/index";
             }
         }
     }
@@ -186,7 +193,7 @@ public class UserController {
     /**
      * kontroler wywoluje serwis usuwajacy uzytkownika
      */
-    @RequestMapping(value = "/account/delete/confirm", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/delete/confirm/confirmed", method = RequestMethod.POST)
     public String deleteUser(@ModelAttribute("user") @Valid UserModel user, HttpServletRequest request){
         ServiceResult<UserModel> result;
 
@@ -218,7 +225,8 @@ public class UserController {
     public String showConfirmDialog(Model model){
         model.addAttribute("dialogTitle", "Usuwanie konta");
         model.addAttribute("dialogContent", "Czy jesteś pewien, że chcesz usunąć konto?");
-        model.addAttribute("dialogFormAction", "/user/account/delete/confirm");
+        model.addAttribute("dialogFormAction", "/user/account/delete/confirm/confirmed");
+        model.addAttribute("dialogFormName", "deleteConfirmForm");
 
         return "modals/confirm";
     }

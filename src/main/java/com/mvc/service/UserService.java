@@ -97,7 +97,7 @@ public class UserService implements IUserService {
         try {
             user = userDAO.findByLogin(login);
             if(user != null){
-                result.errors.add("Login nie jest unikalny");
+                result.errors.add("Ten login jest już zajęty");
             }
         } catch(Exception e){
             log.error("Blad podczas sprawdzania czy login jest unikalny");
@@ -119,7 +119,7 @@ public class UserService implements IUserService {
         try {
             user = userDAO.findByEmail(mail);
             if(user != null){
-                result.errors.add("Email nie jest unikalny");
+                result.errors.add("Ten adres e-mail jest już zajęty");
             }
         } catch(Exception e){
             log.error("Blad podczas sprawdzania czy email jest unikalny");
@@ -185,6 +185,7 @@ public class UserService implements IUserService {
             user.setDeleted(true);
             userDAO.editUser(user);
             result.setData(user);
+            result.messages.add("Twoje konto zostało usunięte");
         } catch (Exception e){
             log.error("Blad podczas usuwania uzytkownika");
             result.errors.add("Błąd podczas usuwania użytkownika");
@@ -243,6 +244,7 @@ public class UserService implements IUserService {
             user.setPassword(bCryptPasswordEncoder.encode(newPassword));
             userDAO.editUser(user);
             result.setData(user);
+            result.messages.add("Hasło zostało zmienione");
         } catch (Exception e){
             log.error("Blad podczas zmiany hasla");
             result.errors.add("Błąd podczas zmiany hasła");

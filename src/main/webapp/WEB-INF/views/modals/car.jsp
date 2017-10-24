@@ -35,8 +35,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group pull-right">
-                <button type="button" id="dialogSubmit" name="dialogSubmit" class="btn btn-primary">Potwierdź</button>
-                <button type="reset" id="dialogClose" name="dialogClose" class="btn btn-primary">Odrzuć</button>
+                <button type="button" id="carDialogSubmit" name="carDialogSubmit" class="btn btn-primary">Potwierdź</button>
+                <button type="reset" id="carDialogClose" name="carDialogClose" class="btn btn-primary">Odrzuć</button>
             </div>
         </div>
     </form:form>

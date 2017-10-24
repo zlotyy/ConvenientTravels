@@ -1,4 +1,5 @@
 1. zmienic ServiceResult<UserModel> na <boolean>
 2. walidacja czy samochod ma uzupelnione pola
-3. walidacja czy login unikalny
-4. edycja konta - obsluga nieunikalnego loginu
+5. usunac z sesji dbError po wyswietleniu modala    - chyba nie trzeba
+6. przerobic rejestracje i edycje konta na DTO
+7. po wpisaniu istniejacego loginu/maila nie dziala modal samochodow
