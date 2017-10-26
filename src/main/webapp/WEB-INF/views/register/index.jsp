@@ -149,7 +149,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-5 col-md-offset-5">
-                                <a href="/"><form:button type="button" class="btn btn-primary btn-block">Anuluj</form:button></a>
+                                <a href="/"><form:button type="button" class="btn btn-danger btn-block">Anuluj</form:button></a>
                             </div>
                         </div>
                     </div>

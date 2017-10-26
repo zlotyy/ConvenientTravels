@@ -92,7 +92,7 @@
                                     <button type="button" id="saveProfileChanges" name="saveProfileChanges" class="btn btn-primary btn-block">Zapisz</button>
                                 </div>
                                 <div class="col-md-3 cancel">
-                                    <form:button type="reset" class="btn btn-primary btn-block">Anuluj</form:button>
+                                    <form:button type="reset" class="btn btn-danger btn-block">Anuluj</form:button>
                                 </div>
 
                                 <input type="hidden" name="${_csrf.parameterName}"
@@ -119,7 +119,7 @@
                         <form class="form-horizontal" >
                             <div class="form-group">
                                 <div class="row col-md-8">
-                                    <button type="button" id="deleteUser" class="btn btn-primary btn-block">Usuń konto</button>
+                                    <button type="button" id="deleteUser" class="btn btn-danger btn-block">Usuń konto</button>
                                 </div>
                             </div>
                         </form>
