@@ -7,6 +7,7 @@ $(function () {
 
 $( document ).ready(function() {
     $("#RoundTrip").change(function(){
-        $("#DateTimePicker_RoundTrip_Departure, #DateTimePicker_RoundTrip_Arrival").find("input").prop('disabled', !this.checked);
+        $("#DateTimePicker_RoundTrip").find("input").prop('disabled', !this.checked);
+        $("#DateTimePicker_RoundTrip").find("input").val('');
     })
 })

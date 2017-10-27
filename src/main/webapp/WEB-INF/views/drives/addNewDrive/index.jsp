@@ -13,6 +13,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <!-- Latest compiled and minified CSS -->
@@ -46,27 +47,27 @@
                     <h2>Dokąd zmierzasz?</h2>
                     <br>
                 </div>
-                <form class="form-horizontal">
+                <form class="form-horizontal" id="driveDTO" name="driveForm" action="/drives/addNewDrive" method="post">
                     <div class="container-fluid">
                         <div class="col-md-3" style="float: left">
                             <fieldset>
                                 <legend>Miejsce wyjazdu</legend>
                                 <div class="form-group row">
-                                    <input class="form-control" placeholder="Miasto" autofocus="autofocus"
+                                    <input name="cityStart" class="form-control" placeholder="Miasto" autofocus="autofocus"
                                            required="required"/>
                                 </div>
                                 <div class="form-group row">
-                                    <input class="form-control" placeholder="Ulica" required="required"/>
+                                    <input name="streetStart" class="form-control" placeholder="Ulica" required="required"/>
                                 </div>
                                 <div class="form-group row">
-                                    <input class="form-control" placeholder="Przystanek" required="required"/>
+                                    <input name="busStopStart" class="form-control" placeholder="Przystanek" required="required"/>
                                 </div>
                             </fieldset>
                             <fieldset>
                                 <legend>Czas wyjazdu</legend>
                                 <div class="form-group row">
                                     <div class='input-group date' name='datetimepicker'>
-                                        <input type='text' class="form-control" required />
+                                        <input name="startDate" type='text' class="form-control" required />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -78,24 +79,19 @@
                             <fieldset>
                                 <legend>Miejsce docelowe</legend>
                                 <div class="form-group row">
-                                    <input class="form-control" placeholder="Miasto" required="required"/>
+                                    <input name="cityArrival" class="form-control" placeholder="Miasto" required="required"/>
                                 </div>
                                 <div class="form-group row">
-                                    <input class="form-control" placeholder="Ulica" required="required"/>
+                                    <input name="streetArrival" class="form-control" placeholder="Ulica" required="required"/>
                                 </div>
                                 <div class="form-group row">
-                                    <button type="button" class="btn btn-primary form-control">Miejsca pośrednie</button>
+                                    <div style="height: 34px"><%-- w celu zrobienia odstepu przed miejscami posrednimi --%></div>
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <legend>Czas przyjazdu</legend>
+                                <legend>Miejsca pośrednie</legend>
                                 <div class="form-group row">
-                                    <div class='input-group date' name='datetimepicker'>
-                                        <input type='text' class="form-control" required />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
+                                    <button type="button" class="btn btn-primary form-control">Wybierz miejsca pośrednie</button>
                                 </div>
                             </fieldset>
                         </div>
@@ -105,7 +101,7 @@
                                 <div class="form-group row">
                                     <label for="PassengersCount" class="col-md-3 control-label">Pasażerów:</label>
                                     <div class="col-md-4">
-                                        <select class="form-control" id="PassengersCount">
+                                        <select name="passengersQuantity" class="form-control" id="PassengersCount">
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -114,57 +110,54 @@
                                     </div>
                                     <label for="Price" class="col-md-2 control-label">Koszt:</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control" id="Price" placeholder="zł" required>
+                                        <input name="cost" type="text" class="form-control" id="Price" placeholder="zł" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="LuggageSize" class="col-md-2 control-label">Bagaż:</label>
                                     <div class="col-md-5">
-                                        <select class="form-control" id="LuggageSize">
+                                        <select name="luggageSize" class="form-control" id="LuggageSize">
                                             <option>Mały</option>
                                             <option>Średni</option>
                                             <option>Duży</option>
                                         </select>
                                     </div>
                                     <div class="col-md-5">
-                                        <label class="control-label"><input type="checkbox"> Można palić</label>
+                                        <label class="control-label"><input name="isSmokePermitted" type="checkbox"> Można palić</label>
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset style="margin-top: 30px">
-                                <%--<legend><input type="checkbox" id="RoundTrip" /> Przejazd w obie strony</legend>--%>
-                                <div class="col-md-12 form-group row">
-                                    <label><input type="checkbox" id="RoundTrip" /> Przejazd w obie strony</label>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label class="control-label"><input name="isRoundTrip" id="RoundTrip" type="checkbox"> Przejazd w obie strony</label>
+                                    </div>
                                 </div>
-                                <div class="round-trip">
-                                    <div class="form-group row">
-                                        <label class="col-md-5 control-label">Czas wyjazdu:</label>
-                                        <div class="input-group date" name='datetimepicker' id="DateTimePicker_RoundTrip_Departure">
-                                            <input type='text' class="form-control" disabled />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
+                                <fieldset style="margin-top: 20px">
+                                    <legend>Czas powrotu</legend>
+                                    <%--<div class="col-md-12 form-group row">--%>
+                                    <%--<label><input type="checkbox" id="RoundTrip" /> Przejazd w obie strony</label>--%>
+                                    <%--</div>--%>
+                                    <div class="round-trip">
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                                <div class='input-group date' name='datetimepicker' id="DateTimePicker_RoundTrip">
+                                                    <input name="returnDate" type='text' class="form-control" disabled />
+                                                    <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-5 control-label">Czas przyjazdu:</label>
-                                        <div class='input-group date' name='datetimepicker' id="DateTimePicker_RoundTrip_Arrival">
-                                            <input type='text' class="form-control" disabled />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                </fieldset>
                             </fieldset>
                         </div>
                         <div class="col-md-7">
                             <div class="form-group">
                                 <label for="DriverComment">Komentarz na temat przejazdu:</label>
-                                <textarea class="form-control" rows="5" id="DriverComment"></textarea>
+                                <textarea name="driverComment" class="form-control" rows="5" id="DriverComment"></textarea>
                             </div>
                         </div>
-                        <div class="col-md-4" style="float: right; margin-top: 80px">
+                        <div class="col-md-4" style="float: right; margin-top: 100px">
                             <div class="col-md-5 row">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-block">Dodaj przejazd</button>

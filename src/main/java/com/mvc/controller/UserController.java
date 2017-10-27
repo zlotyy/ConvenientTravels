@@ -41,8 +41,7 @@ public class UserController {
      * kontroler przenosi do widoku rejestracji konta
      */
     @RequestMapping(value="/register", method = RequestMethod.GET)
-    public String return_register_index(Model model, @RequestParam(value = "carModalVisible", required = false) String carModalVisible,
-                                        HttpSession session){
+    public String return_register_index(Model model, @RequestParam(value = "carModalVisible", required = false) String carModalVisible){
         UserModel user = new UserModel();
         model.addAttribute("user", user);
 

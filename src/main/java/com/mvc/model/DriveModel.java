@@ -1,6 +1,7 @@
 package com.mvc.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -18,27 +19,26 @@ public class DriveModel {
     private long driveId;
 
     @Column(name = "InsertUserId")
-    @NotEmpty(message = "Pole nie moze byc puste")
+    @NotNull(message = "Pole nie moze byc puste")
     private long insertUserId;
 
     @Column(name = "StartDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty(message = "Pole nie moze byc puste")
+    @NotNull(message = "Pole nie moze byc puste")
     private Calendar startDate;
 
     @Column(name = "ReturnDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty(message = "Pole nie moze byc puste")
     private Calendar returnDate;
 
     @Column(name = "InsertDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty(message = "Pole nie moze byc puste")
+    @NotNull(message = "Pole nie moze byc puste")
     private Calendar insertDate;
 
     @Column(name = "ModificationDate")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty(message = "Pole nie moze byc puste")
+    @NotNull(message = "Pole nie moze byc puste")
     private Calendar modificationDate;
 
     @Column(name = "SearchData")
@@ -67,11 +67,13 @@ public class DriveModel {
     @Column(name = "StopOverCities")
     @ElementCollection(targetClass=String.class)
     @CollectionTable(name = "Drive_StopOverCities", joinColumns = @JoinColumn(name = "DriveId"))
+    @JsonIgnore
     private List<String> stopOverCities;
 
     @Column(name = "StopOverStreets")
     @ElementCollection(targetClass=String.class)
     @CollectionTable(name = "Drive_StopOverStreet", joinColumns = @JoinColumn(name = "DriveId"))
+    @JsonIgnore
     private List<String> stopOverStreets;
 
     @Column(name = "IsRoundTrip")
@@ -79,20 +81,22 @@ public class DriveModel {
     private boolean isRoundTrip;
 
     @Column(name = "Cost")
-    @NotEmpty(message = "Pole nie moze byc puste")
+    @NotNull(message = "Pole nie moze byc puste")
     private int cost;
 
-    @Column(name = "IsDeleted")
+    @Column(name = "IsDeleted", columnDefinition = "tinyint(1) default 1")
     @NotNull(message = "Pole nie moze byc puste")
     private boolean isDeleted;
 
     // Polaczenie 1 User do N Przejazdow
     @ManyToOne
     @JoinColumn(name = "UserId")
+    @JsonIgnore
     private UserModel user;
 
     // Polaczenie 1 Przejazd do N Rezerwacji
     @OneToMany(mappedBy = "drive")
+    @JsonIgnore
     private List<BookingModel> booking;
 
 
