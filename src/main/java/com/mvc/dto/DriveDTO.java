@@ -2,7 +2,6 @@ package com.mvc.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvc.enums.LuggageSize;
-import com.mvc.enums.Male;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -12,10 +11,10 @@ import java.util.List;
 
 public class DriveDTO {
 
-    @NotNull(message = "Pole nie moze byc puste")
-    private Calendar startDate;
+    @NotEmpty(message = "Pole nie moze byc puste")
+    private String startDate;
 
-    private Calendar returnDate;
+    private String returnDate;
 
     @NotEmpty(message = "Pole nie moze byc puste")
     private String cityStart;
@@ -36,7 +35,7 @@ public class DriveDTO {
     private List<String> stopOverStreets;
 
     @NotNull(message = "Pole nie moze byc puste")
-    private boolean isRoundTrip;
+    private String isRoundTrip;
 
     @NotNull(message = "Pole nie moze byc puste")
     private int cost;
@@ -47,25 +46,25 @@ public class DriveDTO {
     @NotNull(message = "Pole nie moze byc puste")
     private int passengersQuantity;
 
-    private boolean isSmokePermitted;
+    private String isSmokePermitted;
 
     private String driverComment;
 
 
 
-    public Calendar getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Calendar startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Calendar getReturnDate() {
+    public String getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Calendar returnDate) {
+    public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
     }
 
@@ -125,12 +124,20 @@ public class DriveDTO {
         this.stopOverStreets = stopOverStreets;
     }
 
-    public boolean isRoundTrip() {
+    public String getIsRoundTrip() {
         return isRoundTrip;
     }
 
-    public void setRoundTrip(boolean roundTrip) {
-        isRoundTrip = roundTrip;
+    public void setIsRoundTrip(String isRoundTrip) {
+        this.isRoundTrip = isRoundTrip;
+    }
+
+    public String getIsSmokePermitted() {
+        return isSmokePermitted;
+    }
+
+    public void setIsSmokePermitted(String isSmokePermitted) {
+        this.isSmokePermitted = isSmokePermitted;
     }
 
     public int getCost() {
@@ -157,14 +164,6 @@ public class DriveDTO {
         this.passengersQuantity = passengersQuantity;
     }
 
-    public boolean isSmokePermitted() {
-        return isSmokePermitted;
-    }
-
-    public void setSmokePermitted(boolean smokePermitted) {
-        isSmokePermitted = smokePermitted;
-    }
-
     public String getDriverComment() {
         return driverComment;
     }
@@ -185,11 +184,11 @@ public class DriveDTO {
                 ", streetArrival='" + streetArrival + '\'' +
                 ", stopOverCities=" + stopOverCities +
                 ", stopOverStreets=" + stopOverStreets +
-                ", isRoundTrip=" + isRoundTrip +
+                ", isRoundTrip='" + isRoundTrip + '\'' +
                 ", cost=" + cost +
                 ", luggageSize=" + luggageSize +
                 ", passengersQuantity=" + passengersQuantity +
-                ", isSmokePermitted=" + isSmokePermitted +
+                ", isSmokePermitted='" + isSmokePermitted + '\'' +
                 ", driverComment='" + driverComment + '\'' +
                 '}';
     }

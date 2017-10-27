@@ -117,18 +117,18 @@
                                     <label for="LuggageSize" class="col-md-2 control-label">Bagaż:</label>
                                     <div class="col-md-5">
                                         <select name="luggageSize" class="form-control" id="LuggageSize">
-                                            <option>Mały</option>
-                                            <option>Średni</option>
-                                            <option>Duży</option>
+                                            <option value="MALY">Mały</option>
+                                            <option value="SREDNI">Średni</option>
+                                            <option value="DUZY">Duży</option>
                                         </select>
                                     </div>
                                     <div class="col-md-5">
-                                        <label class="control-label"><input name="isSmokePermitted" type="checkbox"> Można palić</label>
+                                        <label class="control-label"><input name="isSmokePermitted" type="checkbox" value="true"> Można palić</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label class="control-label"><input name="isRoundTrip" id="RoundTrip" type="checkbox"> Przejazd w obie strony</label>
+                                        <label class="control-label"><input name="isRoundTrip" id="RoundTrip" type="checkbox" value="true"> Przejazd w obie strony</label>
                                     </div>
                                 </div>
                                 <fieldset style="margin-top: 20px">

@@ -1,7 +1,17 @@
 package com.mvc.enums;
 
 public enum LuggageSize {
-    MAŁY,
-    ŚREDNI,
-    DUŻY
+    MALY("Mały"),
+    SREDNI("Średni"),
+    DUZY("Duży");
+
+    private String luggageSize;
+
+    LuggageSize(String luggageSize) {
+        this.luggageSize = luggageSize;
+    }
+
+    public String getLuggageSize(){
+        return luggageSize;
+    }
 }

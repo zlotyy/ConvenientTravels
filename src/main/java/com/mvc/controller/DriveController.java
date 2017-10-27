@@ -46,6 +46,16 @@ public class DriveController {
             return "drives/addNewDrive/index";
         } else {
             log.info("Dodawanie przejazdu - dane poprawne, wywolaj serwis zapisujacy do bazy");
+            boolean isSmokePermitted;
+            boolean isRoundTrip;
+
+            if(driveDTO.getIsSmokePermitted().equals("true")){
+                isSmokePermitted = true;
+            }
+            if(driveDTO.getIsRoundTrip().equals("true")){
+                isRoundTrip = true;
+            }
+
 
             return "redirect:/";
         }
