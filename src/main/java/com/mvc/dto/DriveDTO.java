@@ -34,7 +34,6 @@ public class DriveDTO {
     @JsonIgnore
     private List<String> stopOverStreets;
 
-    @NotNull(message = "Pole nie moze byc puste")
     private String isRoundTrip;
 
     @NotNull(message = "Pole nie moze byc puste")

@@ -1,8 +1,11 @@
 package com.mvc.controller;
 
 import com.mvc.dto.DriveDTO;
+import com.mvc.helpers.DateFormatHelper;
+import com.mvc.helpers.ServiceResult;
 import com.mvc.model.DriveModel;
 import com.mvc.model.UserModel;
+import com.mvc.service.IDriveService;
 import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +16,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Calendar;
 
+@SessionAttributes(types = UserModel.class)
 @Controller("driveController")
 @RequestMapping("/drives")
 public class DriveController {
@@ -25,6 +30,9 @@ public class DriveController {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    IDriveService driveService;
 
     @RequestMapping(value = "/addNewDrive", method = RequestMethod.GET)
     public String return_addNewDrive_index(Model model, HttpSession session){
@@ -40,24 +48,69 @@ public class DriveController {
     }
 
     @RequestMapping(value = "/addNewDrive", method = RequestMethod.POST)
-    public String addNewDrive(@ModelAttribute("driveDTO") @Valid DriveDTO driveDTO, BindingResult bindingResult){
+    public String addNewDrive(@ModelAttribute("driveDTO") @Valid DriveDTO driveDTO, BindingResult bindingResult,
+                              HttpSession session, Model model){
         if(bindingResult.hasErrors()){
             log.info("Dodawanie przejazdu - wprowadzono niepoprawne dane");
             return "drives/addNewDrive/index";
         } else {
             log.info("Dodawanie przejazdu - dane poprawne, wywolaj serwis zapisujacy do bazy");
-            boolean isSmokePermitted;
-            boolean isRoundTrip;
+            ServiceResult<DriveModel> result;
+            boolean isSmokePermitted = false;
+            boolean isRoundTrip = false;
+            Calendar startDate = null;
+            Calendar returnDate = null;
+            UserModel insertUser = (UserModel)session.getAttribute("userFromSession");
 
-            if(driveDTO.getIsSmokePermitted().equals("true")){
-                isSmokePermitted = true;
+            // Parsowanie daty na Calendar
+            DateFormatHelper dateFormatHelper = new DateFormatHelper(driveDTO.getStartDate(), "yyyy-MM-dd HH:mm");
+            if(driveDTO.getStartDate() != null){
+                startDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
             }
-            if(driveDTO.getIsRoundTrip().equals("true")){
-                isRoundTrip = true;
+            dateFormatHelper = new DateFormatHelper(driveDTO.getReturnDate(), "yyyy-MM-dd HH:mm");
+            if(driveDTO.getReturnDate() != null){
+                returnDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
             }
 
+            // Parsowanie Stringa na boolean
+            if(driveDTO.getIsSmokePermitted() != null){
+                if(driveDTO.getIsSmokePermitted().equals("true"))
+                    isSmokePermitted = true;
+            }
+            if(driveDTO.getIsRoundTrip() != null) {
+                if (driveDTO.getIsRoundTrip().equals("true"))
+                    isRoundTrip = true;
+            }
 
-            return "redirect:/";
+            result = driveService.addNewDrive(
+                    driveDTO.getCityStart(),
+                    driveDTO.getStreetStart(),
+                    driveDTO.getBusStopStart(),
+                    driveDTO.getCityArrival(),
+                    driveDTO.getStreetArrival(),
+                    startDate,
+                    returnDate,
+                    driveDTO.getPassengersQuantity(),
+                    driveDTO.getCost(),
+                    driveDTO.getLuggageSize(),
+                    isSmokePermitted,
+                    isRoundTrip,
+                    driveDTO.getDriverComment(),
+                    driveDTO.getStopOverCities(),
+                    driveDTO.getStopOverStreets(),
+                    insertUser
+            );
+
+            if(result.isValid()){
+                log.info("Dodawanie przejazdu - przejazd zapisany do bazy");
+                return "redirect:/drives/myDrives";
+            } else {
+
+                session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
+                model.addAttribute("dbError", true);
+
+                return "drives/addNewDrive/index";
+            }
         }
     }
 

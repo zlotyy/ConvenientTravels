@@ -1,28 +1,59 @@
 package com.mvc.helpers;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DateFormatHelper {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    String date;
+    String pattern;
     Calendar calendar;
 
-    DateFormatHelper(Calendar calendar){
-        this.calendar = calendar;
+    /**
+     * @param date: String
+     * @param pattern: np "yyyy-MM-dd HH:mm"
+     */
+    public DateFormatHelper(String date, String pattern){
+        this.date = date;
+        this.pattern = pattern;
+        calendar = Calendar.getInstance();
     }
 
-    public void setDateFormat(){
-//        calendar.add(Calendar.DATE, 1);
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//        NOT IMPLEMENTED YET
+    /**
+     * metoda zamienia Stringa na Calendar w podanym formacie
+     */
+    public Calendar stringToCalendar_DateTimeFormat(){
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+
+        try {
+            calendar.setTime(format.parse(date));
+        } catch (ParseException e) {
+            log.error("Blad podczas parsowania Stringa na Calendar");
+            e.printStackTrace();
+        }
+
+        return calendar;
     }
 
-    public void setTimeFormat(){
-//        NOT IMPLEMENTED YET
+
+    public String getDate() {
+        return date;
     }
 
-    public void setDateTimeFormat(){
-//        NOT IMPLEMENTED YET
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 }

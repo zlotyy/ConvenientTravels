@@ -97,7 +97,7 @@ public class UserModel implements Serializable {
     private boolean isDeleted;
 
     // Polaczenie 1 User do N Przejazdow
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "insertUser")
     @JsonIgnore
     private List<DriveModel> drives;
 

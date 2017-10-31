@@ -1,16 +1,19 @@
 package com.mvc.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvc.enums.LuggageSize;
 import com.mvc.enums.Male;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "DriveDetails")
-public class DriveDetailsModel {
+public class DriveDetailsModel implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "DetailId")
@@ -27,7 +30,7 @@ public class DriveDetailsModel {
     private LuggageSize luggageSize;
 
     @Column(name = "PassengersQuantity")
-    @NotEmpty(message = "Pole nie moze byc puste")
+    @NotNull(message = "Pole nie moze byc puste")
     private int passengersQuantity;
 
     @Column(name = "IsSmokePermitted")
@@ -49,6 +52,7 @@ public class DriveDetailsModel {
 
     @OneToOne
     @JoinColumn(name = "DriveId")
+    @JsonIgnore
     private DriveModel drive;
 
 

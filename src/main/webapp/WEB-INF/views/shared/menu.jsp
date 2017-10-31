@@ -27,7 +27,7 @@
                         <li><a href="/drives/searchDrive">Wyszukaj przejazd</a></li>
                         <li><a href="/drives/myDrives">Moje przejazdy</a></li>
                         <li><a href="/drives/myBookings">Moje rezerwacje</a></li>
-                        <li><a href="/messages/myMessages">Wiadomości</a></li>
+                        <%--<li><a href="/messages/myMessages">Wiadomości</a></li>--%>
                     </sec:authorize>
 
                     <sec:authorize access="!hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')">

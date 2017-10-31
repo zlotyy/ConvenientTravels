@@ -12,15 +12,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "Drive")
-public class DriveModel {
+public class DriveModel implements Serializable  {
     @Id
     @GeneratedValue
     @Column(name = "DriveId")
     private long driveId;
 
-    @Column(name = "InsertUserId")
-    @NotNull(message = "Pole nie moze byc puste")
-    private long insertUserId;
+//    @Column(name = "InsertUserId")
+//    @NotNull(message = "Pole nie moze byc puste")
+//    private long insertUserId;
 
     @Column(name = "StartDate")
     @Temporal(TemporalType.TIMESTAMP)
@@ -90,9 +90,9 @@ public class DriveModel {
 
     // Polaczenie 1 User do N Przejazdow
     @ManyToOne
-    @JoinColumn(name = "UserId")
+    @JoinColumn(name = "InsertUserId")
     @JsonIgnore
-    private UserModel user;
+    private UserModel insertUser;
 
     // Polaczenie 1 Przejazd do N Rezerwacji
     @OneToMany(mappedBy = "drive")
@@ -109,13 +109,13 @@ public class DriveModel {
         this.driveId = driveId;
     }
 
-    public long getInsertUserId() {
-        return insertUserId;
-    }
-
-    public void setInsertUserId(long insertUserId) {
-        this.insertUserId = insertUserId;
-    }
+//    public long getInsertUserId() {
+//        return insertUserId;
+//    }
+//
+//    public void setInsertUserId(long insertUserId) {
+//        this.insertUserId = insertUserId;
+//    }
 
     public Calendar getStartDate() {
         return startDate;
@@ -245,12 +245,12 @@ public class DriveModel {
         isDeleted = deleted;
     }
 
-    public UserModel getUser() {
-        return user;
+    public UserModel getInsertUser() {
+        return insertUser;
     }
 
-    public void setUser(UserModel user) {
-        this.user = user;
+    public void setInsertUser(UserModel insertUser) {
+        this.insertUser = insertUser;
     }
 
     public List<BookingModel> getBooking() {
