@@ -5,7 +5,7 @@ $("[name=carDialog]").dialog({
 });
 
 $("[name=carDialogClose]").on("click", function () {
-    $("[name=carsTable]").find("tr:gt(1)").remove();
+    $("[name=carsTable]").find("tr:gt(0)").remove();
     $('[name=carDialog]').dialog("close");
 });
 
@@ -13,9 +13,9 @@ $("button[title='Close'], [name=carDialogSubmit]").on("click", function () {
     $("[name=carDialog]").dialog("close");
 });
 
-$('[name=addNextCar]').on('click', function(){
-    $('[name=addCarForm]').submit();
-});
+// $('[name=carDialogSubmit]').on('click', function(){
+//     $('[name=carsForm]').submit();
+// });
 
 function showCarModal(){
     $("[name=carDialog]").dialog("open");

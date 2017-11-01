@@ -3,24 +3,26 @@ package com.mvc.controller;
 import com.mvc.dto.DriveDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
+import com.mvc.model.CarModel;
 import com.mvc.model.DriveModel;
+import com.mvc.model.StopOverPlaceModel;
 import com.mvc.model.UserModel;
 import com.mvc.service.IDriveService;
 import com.mvc.service.IUserService;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @SessionAttributes(types = UserModel.class)
 @Controller("driveController")
@@ -96,8 +98,7 @@ public class DriveController {
                     isSmokePermitted,
                     isRoundTrip,
                     driveDTO.getDriverComment(),
-                    driveDTO.getStopOverCities(),
-                    driveDTO.getStopOverStreets(),
+                    driveDTO.getStopOverPlaces(),
                     insertUser
             );
 
@@ -105,6 +106,7 @@ public class DriveController {
                 log.info("Dodawanie przejazdu - przejazd zapisany do bazy");
                 return "redirect:/drives/myDrives";
             } else {
+                log.info("Dodawanie przejazdu - nie udalo sie zapisac przejazdu do bazy");
 
                 session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
                 model.addAttribute("dbError", true);
@@ -113,6 +115,55 @@ public class DriveController {
             }
         }
     }
+
+
+    /**
+     * kontroler wyswietla modal z miastami posrednimi
+     */
+    @RequestMapping(value = "/stopOverPlaces", method = RequestMethod.GET)
+    public String showStopOverPlacesModal(Model model, @ModelAttribute("driveDTO") DriveModel drive){
+        model.addAttribute("dialogTitle", "Miejsca pośrednie podróży");
+
+        return "modals/stopOverPlaces";
+    }
+
+    /**
+     * kontroler potwierdza miejsca posrednie dla przejazdu
+     * @param placesArray lista miejsc posrednich w postaci JSON stringa
+     */
+    @RequestMapping(value = "/stopOverPlaces/confirm", method = RequestMethod.POST)
+    @ResponseBody
+    public void confirmStopOverPlaces(@RequestParam("placesList") String placesArray, @ModelAttribute("driveDTO") DriveDTO driveDTO){
+
+        log.info("Potwierdz liste miejsc posrednich: " + placesArray);
+
+        List<StopOverPlaceModel> stopOverPlaces = JSonPlacesToList(placesArray);
+
+        driveDTO.setStopOverPlaces(stopOverPlaces);
+    }
+
+    /**
+     * metoda zamienia JSON stringa na liste miejsc posrednich
+     */
+    private List<StopOverPlaceModel> JSonPlacesToList(String placesArray){
+        List<StopOverPlaceModel> places = null;
+        JSONArray jsonArray = new JSONArray(placesArray);
+
+        if(jsonArray != null){
+            places = new ArrayList<>();
+            for(int i=0; i<jsonArray.length(); i+=2){
+                StopOverPlaceModel place = new StopOverPlaceModel();
+                place.setStopOverCity(jsonArray.getString(i));
+                place.setStopOverStreet(jsonArray.getString(i+1));
+                places.add(place);
+            }
+        }
+        log.info("JSonPlacesToList() - Lista miejsc posrednich: " + places);
+
+        return places;
+    }
+
+
 
     @RequestMapping("/searchDrive")
     public String return_searchDrive_index(){
@@ -131,6 +182,4 @@ public class DriveController {
 
         return "drives/myBookings/index";
     }
-
-
 }

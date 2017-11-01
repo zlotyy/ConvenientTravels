@@ -4,3 +4,4 @@
 6. przerobic rejestracje i edycje konta na DTO
 7. po wpisaniu istniejacego loginu/maila nie dziala modal samochodow
 8. przywrocic obsluge errorow
+9. register GET - carModalVisible - sprawdzic czy potrzebne

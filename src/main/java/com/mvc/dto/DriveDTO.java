@@ -2,6 +2,7 @@ package com.mvc.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvc.enums.LuggageSize;
+import com.mvc.model.StopOverPlaceModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -28,11 +29,11 @@ public class DriveDTO {
 
     private String streetArrival;
 
-    @JsonIgnore
-    private List<String> stopOverCities;
-
-    @JsonIgnore
-    private List<String> stopOverStreets;
+//    @JsonIgnore
+//    private List<String> stopOverCities;
+//
+//    @JsonIgnore
+//    private List<String> stopOverStreets;
 
     private String isRoundTrip;
 
@@ -48,6 +49,8 @@ public class DriveDTO {
     private String isSmokePermitted;
 
     private String driverComment;
+
+    private List<StopOverPlaceModel> stopOverPlaces;
 
 
 
@@ -107,21 +110,21 @@ public class DriveDTO {
         this.streetArrival = streetArrival;
     }
 
-    public List<String> getStopOverCities() {
-        return stopOverCities;
-    }
-
-    public void setStopOverCities(List<String> stopOverCities) {
-        this.stopOverCities = stopOverCities;
-    }
-
-    public List<String> getStopOverStreets() {
-        return stopOverStreets;
-    }
-
-    public void setStopOverStreets(List<String> stopOverStreets) {
-        this.stopOverStreets = stopOverStreets;
-    }
+//    public List<String> getStopOverCities() {
+//        return stopOverCities;
+//    }
+//
+//    public void setStopOverCities(List<String> stopOverCities) {
+//        this.stopOverCities = stopOverCities;
+//    }
+//
+//    public List<String> getStopOverStreets() {
+//        return stopOverStreets;
+//    }
+//
+//    public void setStopOverStreets(List<String> stopOverStreets) {
+//        this.stopOverStreets = stopOverStreets;
+//    }
 
     public String getIsRoundTrip() {
         return isRoundTrip;
@@ -171,24 +174,31 @@ public class DriveDTO {
         this.driverComment = driverComment;
     }
 
+    public List<StopOverPlaceModel> getStopOverPlaces() {
+        return stopOverPlaces;
+    }
+
+    public void setStopOverPlaces(List<StopOverPlaceModel> stopOverPlaces) {
+        this.stopOverPlaces = stopOverPlaces;
+    }
+
     @Override
     public String toString() {
         return "DriveDTO{" +
-                "startDate=" + startDate +
-                ", returnDate=" + returnDate +
+                "startDate='" + startDate + '\'' +
+                ", returnDate='" + returnDate + '\'' +
                 ", cityStart='" + cityStart + '\'' +
                 ", streetStart='" + streetStart + '\'' +
                 ", busStopStart='" + busStopStart + '\'' +
                 ", cityArrival='" + cityArrival + '\'' +
                 ", streetArrival='" + streetArrival + '\'' +
-                ", stopOverCities=" + stopOverCities +
-                ", stopOverStreets=" + stopOverStreets +
                 ", isRoundTrip='" + isRoundTrip + '\'' +
                 ", cost=" + cost +
                 ", luggageSize=" + luggageSize +
                 ", passengersQuantity=" + passengersQuantity +
                 ", isSmokePermitted='" + isSmokePermitted + '\'' +
                 ", driverComment='" + driverComment + '\'' +
+                ", stopOverPlaces=" + stopOverPlaces +
                 '}';
     }
 }

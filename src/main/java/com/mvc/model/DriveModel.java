@@ -2,6 +2,7 @@ package com.mvc.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -64,17 +65,19 @@ public class DriveModel implements Serializable  {
     @Column(name = "IsFreeWay")
     private boolean isFreeWay;
 
-    @Column(name = "StopOverCities")
-    @ElementCollection(targetClass=String.class)
-    @CollectionTable(name = "Drive_StopOverCities", joinColumns = @JoinColumn(name = "DriveId"))
-    @JsonIgnore
-    private List<String> stopOverCities;
-
-    @Column(name = "StopOverStreets")
-    @ElementCollection(targetClass=String.class)
-    @CollectionTable(name = "Drive_StopOverStreet", joinColumns = @JoinColumn(name = "DriveId"))
-    @JsonIgnore
-    private List<String> stopOverStreets;
+//    @Column(name = "StopOverCities")
+//    @ElementCollection(targetClass=String.class)
+//    @CollectionTable(name = "Drive_StopOverCities", joinColumns = @JoinColumn(name = "DriveId"))
+//    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+//    @JsonIgnore
+//    private List<String> stopOverCities;
+//
+//    @Column(name = "StopOverStreets")
+//    @ElementCollection(targetClass=String.class)
+//    @CollectionTable(name = "Drive_StopOverStreets", joinColumns = @JoinColumn(name = "DriveId"))
+//    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+//    @JsonIgnore
+//    private List<String> stopOverStreets;
 
     @Column(name = "IsRoundTrip")
     @NotNull(message = "Pole nie moze byc puste")
@@ -98,6 +101,11 @@ public class DriveModel implements Serializable  {
     @OneToMany(mappedBy = "drive")
     @JsonIgnore
     private List<BookingModel> booking;
+
+    // Polaczenie 1 Przejazd do N Miejsc posrednich
+    @OneToMany(mappedBy = "drive")
+    @JsonIgnore
+    private List<StopOverPlaceModel> stopOverPlaces;
 
 
 
@@ -205,21 +213,21 @@ public class DriveModel implements Serializable  {
         isFreeWay = freeWay;
     }
 
-    public List<String> getStopOverCities() {
-        return stopOverCities;
-    }
-
-    public void setStopOverCities(List<String> stopOverCities) {
-        this.stopOverCities = stopOverCities;
-    }
-
-    public List<String> getStopOverStreets() {
-        return stopOverStreets;
-    }
-
-    public void setStopOverStreets(List<String> stopOverStreets) {
-        this.stopOverStreets = stopOverStreets;
-    }
+//    public List<String> getStopOverCities() {
+//        return stopOverCities;
+//    }
+//
+//    public void setStopOverCities(List<String> stopOverCities) {
+//        this.stopOverCities = stopOverCities;
+//    }
+//
+//    public List<String> getStopOverStreets() {
+//        return stopOverStreets;
+//    }
+//
+//    public void setStopOverStreets(List<String> stopOverStreets) {
+//        this.stopOverStreets = stopOverStreets;
+//    }
 
     public boolean isRoundTrip() {
         return isRoundTrip;
@@ -259,5 +267,13 @@ public class DriveModel implements Serializable  {
 
     public void setBooking(List<BookingModel> booking) {
         this.booking = booking;
+    }
+
+    public List<StopOverPlaceModel> getStopOverPlaces() {
+        return stopOverPlaces;
+    }
+
+    public void setStopOverPlaces(List<StopOverPlaceModel> stopOverPlaces) {
+        this.stopOverPlaces = stopOverPlaces;
     }
 }

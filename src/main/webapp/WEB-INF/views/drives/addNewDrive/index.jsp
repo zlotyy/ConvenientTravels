@@ -14,6 +14,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <!-- Latest compiled and minified CSS -->
@@ -91,7 +92,7 @@
                             <fieldset>
                                 <legend>Miejsca pośrednie</legend>
                                 <div class="form-group row">
-                                    <button type="button" class="btn btn-primary form-control">Wybierz miejsca pośrednie</button>
+                                    <button name="chooseStopOverPlaces" type="button" class="btn btn-primary form-control">Wybierz miejsca pośrednie</button>
                                 </div>
                             </fieldset>
                         </div>
@@ -184,18 +185,40 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-
     <%-- jQuery UI javascript --%>
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
     <%-- Moment JS - bez tego nie dziala DateTimePicker --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script>
-
     <%-- Bootstrap DateTimePicker JS --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
+    <%-- Modal z miejscami posrednimi --%>
+    <jsp:include page="/drives/stopOverPlaces" />
+
+    <%-- Modal z alertem - blad z bazy --%>
+    <c:if test="${dbError}">
+        <jsp:include page="/modal/alert/dbError" />
+        <script type="text/javascript">
+            console.log("${dbError}");
+            <c:if test="${dbError}">
+
+                $("[name=alertDialog]").dialog({
+                    autoOpen: false,
+                    modal: true
+                });
+
+                $("[name=alertClose]").on("click", function() {
+                    $("[name=alertDialog]").dialog("close");
+                });
+
+                $("[name=alertDialog]").dialog("open");
+
+            </c:if>
+        </script>
+    </c:if>
+
     <script src="/resources/scripts/drive/addNewDrive.js?version=<%=cacheNumber%>"></script>
-    <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>" ></script>
-    <script src="/resources/scripts/modals/dialogs/car.js?version=<%=cacheNumber%>" ></script>
+    <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>"></script>
+    <script src="/resources/scripts/modals/dialogs/stopOverPlaces.js?version=<%=cacheNumber%>"></script>
 </body>
 </html>

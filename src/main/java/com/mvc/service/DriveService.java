@@ -5,6 +5,7 @@ import com.mvc.enums.LuggageSize;
 import com.mvc.helpers.ServiceResult;
 import com.mvc.model.DriveDetailsModel;
 import com.mvc.model.DriveModel;
+import com.mvc.model.StopOverPlaceModel;
 import com.mvc.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class DriveService implements IDriveService {
     public ServiceResult<DriveModel> addNewDrive(String cityStart, String streetStart, String busStopStart,
                                                  String cityArrival, String streetArrival, Calendar startDate, Calendar returnDate,
                                                  int passengersQuantity, int cost, LuggageSize luggageSize, boolean isSmokePermitted,
-                                                 boolean isRoundTrip, String driverComment, List<String> stopOverCities, List<String> stopOverStreets,
+                                                 boolean isRoundTrip, String driverComment, List<StopOverPlaceModel> stopOverPlaces,
                                                  UserModel insertUser) {
         ServiceResult<DriveModel> result = new ServiceResult<>();
         Calendar timeNow = Calendar.getInstance();
@@ -53,8 +54,7 @@ public class DriveService implements IDriveService {
             drive.setReturnDate(returnDate);
             drive.setCost(cost);
             drive.setRoundTrip(isRoundTrip);
-            drive.setStopOverCities(stopOverCities);
-            drive.setStopOverStreets(stopOverStreets);
+            drive.setStopOverPlaces(stopOverPlaces);
             drive.setInsertDate(timeNow);
             drive.setModificationDate(timeNow);
             drive.setInsertUser(insertUser);
@@ -65,7 +65,15 @@ public class DriveService implements IDriveService {
             driveDetails.setDriverComment(driverComment);
             driveDetails.setDrive(drive);
 
+
+            if(stopOverPlaces != null) {
+                for (int i = 0; i < stopOverPlaces.size(); i++) {
+                    stopOverPlaces.get(i).setDrive(drive);
+                }
+            }
+
             driveDAO.addNewDrive(drive, driveDetails);
+            driveDAO.saveStopOverPlaces(stopOverPlaces);
             result.setData(drive);
 
         } catch (Exception e) {
