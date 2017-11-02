@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-@SessionAttributes(types = UserModel.class)
+@SessionAttributes(types = {UserModel.class})
 @Controller("driveController")
 @RequestMapping("/drives")
 public class DriveController {
@@ -63,6 +63,7 @@ public class DriveController {
             Calendar startDate = null;
             Calendar returnDate = null;
             UserModel insertUser = (UserModel)session.getAttribute("userFromSession");
+            List<StopOverPlaceModel> stopOverPlaces = (List<StopOverPlaceModel>) session.getAttribute("stopOverPlacesToSave");
 
             // Parsowanie daty na Calendar
             DateFormatHelper dateFormatHelper = new DateFormatHelper(driveDTO.getStartDate(), "yyyy-MM-dd HH:mm");
@@ -98,7 +99,7 @@ public class DriveController {
                     isSmokePermitted,
                     isRoundTrip,
                     driveDTO.getDriverComment(),
-                    driveDTO.getStopOverPlaces(),
+                    stopOverPlaces,
                     insertUser
             );
 
@@ -133,13 +134,13 @@ public class DriveController {
      */
     @RequestMapping(value = "/stopOverPlaces/confirm", method = RequestMethod.POST)
     @ResponseBody
-    public void confirmStopOverPlaces(@RequestParam("placesList") String placesArray, @ModelAttribute("driveDTO") DriveDTO driveDTO){
+    public void confirmStopOverPlaces(@RequestParam("placesList") String placesArray, HttpSession session){
 
         log.info("Potwierdz liste miejsc posrednich: " + placesArray);
 
         List<StopOverPlaceModel> stopOverPlaces = JSonPlacesToList(placesArray);
 
-        driveDTO.setStopOverPlaces(stopOverPlaces);
+        session.setAttribute("stopOverPlacesToSave", stopOverPlaces);
     }
 
     /**
@@ -163,6 +164,16 @@ public class DriveController {
         return places;
     }
 
+
+    /**
+     * kontroler zaciaga miejsca posrednie przejazdu do tabelki
+     */
+    @RequestMapping(value = "/stopOverPlaces/getPlaces", method = RequestMethod.GET)
+    @ResponseBody
+    public List<StopOverPlaceModel> getStopOverPlacesForDrive(@ModelAttribute("driveDTO") DriveDTO driveDTO, @SessionAttribute("stopOverPlacesToSave") List<StopOverPlaceModel> stopOverPlaces){
+
+        return stopOverPlaces;
+    }
 
 
     @RequestMapping("/searchDrive")
