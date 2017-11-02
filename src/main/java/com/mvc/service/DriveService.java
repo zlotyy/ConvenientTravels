@@ -7,6 +7,7 @@ import com.mvc.model.DriveDetailsModel;
 import com.mvc.model.DriveModel;
 import com.mvc.model.StopOverPlaceModel;
 import com.mvc.model.UserModel;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,96 @@ public class DriveService implements IDriveService {
         } catch (Exception e) {
             log.error("Blad podczas zapisywania przejazdu do bazy");
             result.errors.add("Błąd podczas tworzenia nowego przejazdu");
+        }
+
+        return result;
+    }
+
+
+    /**
+     * serwis pobiera wszystkie przejazdy uzytkownika
+     * @return
+     */
+    @Transactional
+    public ServiceResult<List<DriveModel>> getUserDrives(UserModel user) {
+        ServiceResult<List<DriveModel>> result = new ServiceResult<>();
+
+        try {
+            log.info("Pobieram przejazdy dla uzytkownika");
+
+            List<DriveModel> drives = driveDAO.getUserDrives(user);
+            for(DriveModel drive : drives) {
+                Hibernate.initialize(drive.getStopOverPlaces());
+                Hibernate.initialize(drive.getBookings());
+            }
+
+            if(drives == null){
+                log.info("Nie mozna znalezc przejazdow dla uzytkownika: " + user);
+                result.errors.add("Brak przejazdów dla użytkownika");
+            } else {
+                result.setData(drives);
+            }
+        } catch(Exception e){
+            log.error("Blad podczas pobierania przejazdow");
+            result.errors.add("Błąd podczas pobierania przejazdów z bazy danych");
+        }
+
+        return result;
+    }
+
+    /**
+     * Serwis pobiera szczegoly przejazdu
+     */
+    @Transactional
+    public ServiceResult<DriveDetailsModel> getDriveDetails(DriveModel drive){
+        ServiceResult<DriveDetailsModel> result = new ServiceResult<>();
+        DriveDetailsModel driveDetails;
+
+        try {
+            log.info("Pobieram szczegoly przejazdu");
+            driveDetails = driveDAO.getDriveDetails(drive);
+            result.setData(driveDetails);
+        } catch(Exception e){
+            log.error("Blad podczas pobierania szczegolow przejazdu");
+            result.errors.add("Błąd podczas pobierania szczegółów przejazdu z bazy danych");
+        }
+
+        return result;
+    }
+
+    /**
+     * serwis ustawia przejazdowi parametr isDeleted na true
+     */
+    @Transactional
+    public ServiceResult<DriveModel> setDriveDeleted(DriveModel drive) {
+        ServiceResult<DriveModel> result = new ServiceResult<>();
+
+        try {
+            drive.setDeleted(true);
+            driveDAO.editDrive(drive);
+            result.setData(drive);
+            result.messages.add("Przejazd został usunięty");
+        } catch (Exception e){
+            log.error("Blad podczas usuwania przejazdu");
+            result.errors.add("Błąd podczas usuwania przejazdu");
+        }
+
+        return result;
+    }
+
+    /**
+     * serwis wyszukuje przejazd po id
+     */
+    public ServiceResult<DriveModel> getDrive(long driveId) {
+
+        ServiceResult<DriveModel> result = new ServiceResult<>();
+        DriveModel drive;
+        try {
+            drive = driveDAO.findById(driveId);
+            result.setData(drive);
+        } catch (Exception e){
+            log.error("Blad podczas wyszukiwania przejazdu");
+            result.errors.add("Błąd podczas pobierania danych przejazdu");
         }
 
         return result;

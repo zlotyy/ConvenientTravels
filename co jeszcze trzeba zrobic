@@ -5,3 +5,19 @@
 7. po wpisaniu istniejacego loginu/maila nie dziala modal samochodow
 8. przywrocic obsluge errorow
 9. register GET - carModalVisible - sprawdzic czy potrzebne
+
+
+
+
+
+
+!!! WAZNE - w toString nie uzywac dolaczonych encji - leci StackOverflowError !!!
+
+Hibernate.initialize - uzywamy w serwisie!!
+bo tam jest @Transactional czyli sesja Hibernate nie jest jeszcze zamknieta
+gdy inicjalizujemy liste, uzywamy petli i dla kazdego elementu dajemy initialize!
+
+
+
+@RequestParam:                              @PathVariable
+/drives/myDrives/delete?driveId=id          /drives/myDrives/delete/id

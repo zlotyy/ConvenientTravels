@@ -24,6 +24,11 @@ public class DateFormatHelper {
         calendar = Calendar.getInstance();
     }
 
+    public DateFormatHelper(Calendar calendar, String pattern){
+        this.calendar = calendar;
+        this.pattern = pattern;
+    }
+
     /**
      * metoda zamienia Stringa na Calendar w podanym formacie
      */
@@ -40,6 +45,15 @@ public class DateFormatHelper {
         return calendar;
     }
 
+    /**
+     * metoda zamienia Calendar na Stringa w podanym formacie
+     */
+    public String calendarToString_DateTimeFormat(){
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        date = format.format(calendar.getTime());
+
+        return date;
+    }
 
     public String getDate() {
         return date;

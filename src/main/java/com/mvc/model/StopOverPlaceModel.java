@@ -63,7 +63,7 @@ public class StopOverPlaceModel implements Serializable {
                 "stopOverPlaceId=" + stopOverPlaceId +
                 ", stopOverCity='" + stopOverCity + '\'' +
                 ", stopOverStreet='" + stopOverStreet + '\'' +
-                ", drive=" + drive +
+//                ", drive=" + drive +
                 '}';
     }
 }

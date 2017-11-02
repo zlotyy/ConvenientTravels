@@ -143,4 +143,21 @@ public class DriveDetailsModel implements Serializable {
     public void setDrive(DriveModel drive) {
         this.drive = drive;
     }
+
+    @Override
+    public String toString() {
+        return "DriveDetailsModel{" +
+                "detailId=" + detailId +
+                ", timeFlexibility=" + timeFlexibility +
+                ", maxBypassTime=" + maxBypassTime +
+                ", luggageSize=" + luggageSize +
+                ", passengersQuantity=" + passengersQuantity +
+                ", isSmokePermitted=" + isSmokePermitted +
+                ", isAnimalPermitted=" + isAnimalPermitted +
+                ", prefferedMale=" + prefferedMale +
+                ", driverComment='" + driverComment + '\'' +
+//                ", passengersComments=" + passengersComments +
+                ", drive=" + drive +
+                '}';
+    }
 }

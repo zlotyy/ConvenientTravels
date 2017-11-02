@@ -3,12 +3,11 @@ package com.mvc.controller;
 import com.mvc.dto.DriveDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
-import com.mvc.model.CarModel;
-import com.mvc.model.DriveModel;
-import com.mvc.model.StopOverPlaceModel;
-import com.mvc.model.UserModel;
+import com.mvc.model.*;
 import com.mvc.service.IDriveService;
 import com.mvc.service.IUserService;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -36,11 +36,13 @@ public class DriveController {
     @Autowired
     IDriveService driveService;
 
+
+    /**
+     * kontroler wyswietla formatke dodawania przejazdu
+     */
     @RequestMapping(value = "/addNewDrive", method = RequestMethod.GET)
-    public String return_addNewDrive_index(Model model, HttpSession session){
-        UserModel user = (UserModel) session.getAttribute("userFromSession");
+    public String return_addNewDrive_index(Model model){
         DriveDTO driveDTO = new DriveDTO();
-        Calendar timeNow = Calendar.getInstance();
 
         model.addAttribute("driveDTO", driveDTO);
 
@@ -179,13 +181,51 @@ public class DriveController {
     @RequestMapping("/searchDrive")
     public String return_searchDrive_index(){
 
+
         return "drives/searchDrive/index";
     }
 
     @RequestMapping("/myDrives")
-    public String return_myDrives_index(){
+    public String return_myDrives_index(@SessionAttribute("userFromSession") UserModel user, Model model){
+        List<DriveModel> allDrives = driveService.getUserDrives(user).getData();
+        List<DriveModel> notDeletedDrives = new ArrayList<>();
+        for(DriveModel drive : allDrives){
+            if(!drive.isDeleted())
+                notDeletedDrives.add(drive);
+        }
+        model.addAttribute("userDrives", notDeletedDrives);
+
+        // zmiana formatu daty z Calendar na Stringa
+        List<String> startDates = new ArrayList<>();
+        for(DriveModel drive : notDeletedDrives){
+            DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
+            String startDate = dateFormatHelper.calendarToString_DateTimeFormat();
+            startDates.add(startDate);
+        }
+        model.addAttribute("drivesStartDates", startDates);
+
+        // obliczanie ilosci miejsc
+        List<Integer> bookedPlaces = new ArrayList<>();
+        List<Integer> maxPlaces = new ArrayList<>();
+        for(DriveModel drive : notDeletedDrives){
+            DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
+
+            bookedPlaces.add(drive.getBookings().size());
+            maxPlaces.add(driveDetails.getPassengersQuantity());
+        }
+        model.addAttribute("drivesBookedPlaces", bookedPlaces);
+        model.addAttribute("drivesMaxPlaces", maxPlaces);
 
         return "drives/myDrives/index";
+    }
+
+    @RequestMapping(value = "/myDrives/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public void removeDrive(@RequestParam(value = "driveId", required = true) Long driveId){
+        DriveModel drive = driveService.getDrive(driveId).getData();
+        ServiceResult<DriveModel> result = driveService.setDriveDeleted(drive);
+
+        log.info("Pomyslnie usunieto przejazd");
     }
 
     @RequestMapping("/myBookings")

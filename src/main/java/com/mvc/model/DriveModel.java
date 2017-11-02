@@ -19,10 +19,6 @@ public class DriveModel implements Serializable  {
     @Column(name = "DriveId")
     private long driveId;
 
-//    @Column(name = "InsertUserId")
-//    @NotNull(message = "Pole nie moze byc puste")
-//    private long insertUserId;
-
     @Column(name = "StartDate")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull(message = "Pole nie moze byc puste")
@@ -65,20 +61,6 @@ public class DriveModel implements Serializable  {
     @Column(name = "IsFreeWay")
     private boolean isFreeWay;
 
-//    @Column(name = "StopOverCities")
-//    @ElementCollection(targetClass=String.class)
-//    @CollectionTable(name = "Drive_StopOverCities", joinColumns = @JoinColumn(name = "DriveId"))
-//    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-//    @JsonIgnore
-//    private List<String> stopOverCities;
-//
-//    @Column(name = "StopOverStreets")
-//    @ElementCollection(targetClass=String.class)
-//    @CollectionTable(name = "Drive_StopOverStreets", joinColumns = @JoinColumn(name = "DriveId"))
-//    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-//    @JsonIgnore
-//    private List<String> stopOverStreets;
-
     @Column(name = "IsRoundTrip")
     @NotNull(message = "Pole nie moze byc puste")
     private boolean isRoundTrip;
@@ -100,7 +82,7 @@ public class DriveModel implements Serializable  {
     // Polaczenie 1 Przejazd do N Rezerwacji
     @OneToMany(mappedBy = "drive")
     @JsonIgnore
-    private List<BookingModel> booking;
+    private List<BookingModel> bookings;
 
     // Polaczenie 1 Przejazd do N Miejsc posrednich
     @OneToMany(mappedBy = "drive")
@@ -116,14 +98,6 @@ public class DriveModel implements Serializable  {
     public void setDriveId(long driveId) {
         this.driveId = driveId;
     }
-
-//    public long getInsertUserId() {
-//        return insertUserId;
-//    }
-//
-//    public void setInsertUserId(long insertUserId) {
-//        this.insertUserId = insertUserId;
-//    }
 
     public Calendar getStartDate() {
         return startDate;
@@ -213,22 +187,6 @@ public class DriveModel implements Serializable  {
         isFreeWay = freeWay;
     }
 
-//    public List<String> getStopOverCities() {
-//        return stopOverCities;
-//    }
-//
-//    public void setStopOverCities(List<String> stopOverCities) {
-//        this.stopOverCities = stopOverCities;
-//    }
-//
-//    public List<String> getStopOverStreets() {
-//        return stopOverStreets;
-//    }
-//
-//    public void setStopOverStreets(List<String> stopOverStreets) {
-//        this.stopOverStreets = stopOverStreets;
-//    }
-
     public boolean isRoundTrip() {
         return isRoundTrip;
     }
@@ -261,12 +219,12 @@ public class DriveModel implements Serializable  {
         this.insertUser = insertUser;
     }
 
-    public List<BookingModel> getBooking() {
-        return booking;
+    public List<BookingModel> getBookings() {
+        return bookings;
     }
 
-    public void setBooking(List<BookingModel> booking) {
-        this.booking = booking;
+    public void setBookings(List<BookingModel> bookings) {
+        this.bookings = bookings;
     }
 
     public List<StopOverPlaceModel> getStopOverPlaces() {
@@ -275,5 +233,29 @@ public class DriveModel implements Serializable  {
 
     public void setStopOverPlaces(List<StopOverPlaceModel> stopOverPlaces) {
         this.stopOverPlaces = stopOverPlaces;
+    }
+
+    @Override
+    public String toString() {
+        return "DriveModel{" +
+                "driveId=" + driveId +
+                ", startDate=" + (startDate != null ? startDate.getTime() : "" ) +
+                ", returnDate=" + (returnDate != null ? returnDate.getTime() : "" ) +
+                ", insertDate=" + (insertDate != null ? insertDate.getTime() : "" ) +
+                ", modificationDate=" + (modificationDate != null ? modificationDate.getTime() : "" ) +
+                ", searchData='" + searchData + '\'' +
+                ", cityStart='" + cityStart + '\'' +
+                ", streetStart='" + streetStart + '\'' +
+                ", busStopStart='" + busStopStart + '\'' +
+                ", cityArrival='" + cityArrival + '\'' +
+                ", streetArrival='" + streetArrival + '\'' +
+                ", isFreeWay=" + isFreeWay +
+                ", isRoundTrip=" + isRoundTrip +
+                ", cost=" + cost +
+                ", isDeleted=" + isDeleted +
+                ", insertUser=" + insertUser +
+//                ", bookings=" + bookings +
+//                ", stopOverPlaces=" + stopOverPlaces +
+                '}';
     }
 }

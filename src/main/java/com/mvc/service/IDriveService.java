@@ -2,6 +2,7 @@ package com.mvc.service;
 
 import com.mvc.enums.LuggageSize;
 import com.mvc.helpers.ServiceResult;
+import com.mvc.model.DriveDetailsModel;
 import com.mvc.model.DriveModel;
 import com.mvc.model.StopOverPlaceModel;
 import com.mvc.model.UserModel;
@@ -15,6 +16,8 @@ public interface IDriveService {
                                           int passengersQuantity, int cost, LuggageSize luggageSize, boolean isSmokePermitted,
                                           boolean isRoundTrip, String driverComment, List<StopOverPlaceModel> stopOverPlaces,
                                           UserModel insertUser);
-
-
+    ServiceResult<List<DriveModel>> getUserDrives(UserModel user);
+    ServiceResult<DriveDetailsModel> getDriveDetails(DriveModel drive);
+    ServiceResult<DriveModel> setDriveDeleted(DriveModel drive);
+    ServiceResult<DriveModel> getDrive(long driveId);
 }
