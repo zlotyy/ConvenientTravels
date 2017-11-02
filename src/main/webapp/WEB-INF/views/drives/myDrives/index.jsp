@@ -44,7 +44,7 @@
                     <br>
                 </div>
                 <div>
-                    <table class="table">
+                    <table class="table" name="myDrivesTable">
                         <thead>
                             <tr>
                                 <th width="30%">Miejsce wyjazdu</th>
@@ -54,7 +54,7 @@
                                 <th width="10%"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody name="myDrivesTableBody">
                             <c:forEach items="${userDrives}" var="drive" varStatus="status">
                                 <c:set var = "i" value = "${status.index}"/>
                                     <tr>
@@ -66,9 +66,9 @@
                                             <button type="button" name="editDrive" title="Edytuj" class="btn btn-default delete" >
                                                 <i class="glyphicon glyphicon-edit" style="color: blue"></i>
                                             </button>
-                                            <button type="button" name="removeDrive" title="Usuń" class="btn btn-default delete" onclick="ajaxRemoveDrive(${drive.driveId})" >
+                                            <a href="/drives/myDrives/delete?driveId=${drive.driveId}" ><button type="button" name="removeDrive" title="Usuń" class="btn btn-default delete" <%--onclick="ajaxRemoveDrive(${drive.driveId})"--%> >
                                                 <i class="glyphicon glyphicon-remove" style="color: red"></i>
-                                            </button>
+                                            </button></a>
                                         </td>
                                     </tr>
                             </c:forEach>
@@ -96,18 +96,24 @@
     <script type="text/javascript">
 
             // potwierdz usuniecie przejazdu
-            function ajaxRemoveDrive(id) {
+//            function ajaxRemoveDrive(id) {
+//
+//                $.ajax({
+//                    type: 'POST',
+//                    url: '/drives/myDrives/delete?driveId='+id,
+//                    data: {},
+//                    success: function (result) {
+//                        console.log("Przejazd usuniety");
+//                    }
+//                });
+//
+//            }
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/drives/myDrives/delete?driveId='+id,
-                    data: {},
-                    success: function () {
-                        console.log("Przejazd usuniety");
-                    }
-                });
-
-            }
+            $("[name=myDrivesTableBody]").find("tr").hover(function(){
+                $(this).css("background-color", "buttonface");
+            }, function(){
+                $(this).css("background-color", "white");
+            });
 
     </script>
 

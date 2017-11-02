@@ -219,13 +219,14 @@ public class DriveController {
         return "drives/myDrives/index";
     }
 
-    @RequestMapping(value = "/myDrives/delete", method = RequestMethod.POST)
-    @ResponseBody
-    public void removeDrive(@RequestParam(value = "driveId", required = true) Long driveId){
+    @RequestMapping(value = "/myDrives/delete", method = {RequestMethod.POST, RequestMethod.GET})
+    public String removeDrive(@RequestParam(value = "driveId", required = true) Long driveId){
         DriveModel drive = driveService.getDrive(driveId).getData();
         ServiceResult<DriveModel> result = driveService.setDriveDeleted(drive);
 
         log.info("Pomyslnie usunieto przejazd");
+
+        return "redirect:/drives/myDrives";
     }
 
     @RequestMapping("/myBookings")
