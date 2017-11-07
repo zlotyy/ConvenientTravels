@@ -229,6 +229,19 @@ public class DriveController {
         return "redirect:/drives/myDrives";
     }
 
+    /**
+     * kontroler wyswietla modal z potwierdzeniem operacji
+     */
+    @RequestMapping(value = "/myDrives/delete/confirm", method = RequestMethod.GET)
+    public String showConfirmDialog(Model model){
+        model.addAttribute("dialogTitle", "Usuwanie przejazdu");
+        model.addAttribute("dialogContent", "Czy jesteś pewien, że chcesz usunąć przejazd?");
+        model.addAttribute("dialogFormAction", "/drives/myDrives/delete/confirm/confirmed");
+        model.addAttribute("dialogFormName", "deleteConfirmForm");
+
+        return "modals/confirmOnGrid";
+    }
+
     @RequestMapping("/myBookings")
     public String return_myBookings_index(){
 

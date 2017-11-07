@@ -66,9 +66,11 @@
                                             <button type="button" name="editDrive" title="Edytuj" class="btn btn-default delete" >
                                                 <i class="glyphicon glyphicon-edit" style="color: blue"></i>
                                             </button>
-                                            <a href="/drives/myDrives/delete?driveId=${drive.driveId}" ><button type="button" name="removeDrive" title="Usuń" class="btn btn-default delete" <%--onclick="ajaxRemoveDrive(${drive.driveId})"--%> >
+                                            <%--<a href="/drives/myDrives/delete?driveId=${drive.driveId}" >--%>
+                                                <button type="button" name="removeDrive" title="Usuń" class="btn btn-default delete" onclick="setDriveToDeleteId(${drive.driveId})" >
                                                 <i class="glyphicon glyphicon-remove" style="color: red"></i>
-                                            </button></a>
+                                                </button>
+                                            <%--</a>--%>
                                         </td>
                                     </tr>
                             </c:forEach>
@@ -93,32 +95,35 @@
     <%-- Bootstrap DateTimePicker JS --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
+
+
+    <%--&lt;%&ndash; Modal z potwierdzeniem &ndash;%&gt;--%>
+    <jsp:include page="/drives/myDrives/delete/confirm" />
+
     <script type="text/javascript">
 
-            // potwierdz usuniecie przejazdu
-//            function ajaxRemoveDrive(id) {
-//
-//                $.ajax({
-//                    type: 'POST',
-//                    url: '/drives/myDrives/delete?driveId='+id,
-//                    data: {},
-//                    success: function (result) {
-//                        console.log("Przejazd usuniety");
-//                    }
-//                });
-//
-//            }
+        // usuwanie elementu z listy:
+        // podczas klikniecia przycisku usuwania elementu pobierz jego ID
+        // zmien atrybut ACTION dla formularza
+        // potwierdz formularz
 
-            $("[name=myDrivesTableBody]").find("tr").hover(function(){
-                $(this).css("background-color", "buttonface");
-            }, function(){
-                $(this).css("background-color", "white");
-            });
+        var driveId;
+
+        function setDriveToDeleteId(id){
+            driveId = id;
+        }
+
+        $("[name=dialogSubmit]").on("click", function () {
+            $("[name=deleteConfirmForm]").attr("action", "/drives/myDrives/delete?driveId=" + driveId);
+            console.log("Action: " + $("[name=deleteConfirmForm]").attr("action"));
+
+            $("[name=deleteConfirmForm]").submit();
+        });
 
     </script>
 
-    <script src="/resources/scripts/drive/myDrives.js"></script>
-
+    <script src="/resources/scripts/drive/myDrives.js?version=<%=cacheNumber%>"></script>
+    <script src="/resources/scripts/modals/dialogs/confirm.js?version=<%=cacheNumber%>" ></script>
 
 </body>
 </html>
