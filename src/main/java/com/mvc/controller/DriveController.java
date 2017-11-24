@@ -178,12 +178,26 @@ public class DriveController {
     }
 
 
-    @RequestMapping("/searchDrive")
+    /**
+     * kontroler wyswietla wyszukiwarke przejazdow
+     * @return
+     */
+    @RequestMapping(value = "/searchDrive", method = RequestMethod.GET)
     public String return_searchDrive_index(){
-
 
         return "drives/searchDrive/index";
     }
+
+    /**
+     * kontroler wyswietla liste przejazdow zgodnie z filtrami ustawionymi przez uzytkownika
+     * @return
+     */
+    @RequestMapping(value = "/searchDrive/drivesList", method = RequestMethod.GET)
+    public String searchDrive(){
+
+        return "drives/searchDrive/drivesList";
+    }
+
 
     @RequestMapping("/myDrives")
     public String return_myDrives_index(@SessionAttribute("userFromSession") UserModel user, Model model){

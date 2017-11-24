@@ -48,9 +48,105 @@
                     <h2>Znajdź przejazd</h2>
                     <br>
                 </div>
-                <form class="form-horizontal" id="driveDTO" name="driveForm" action="/drives/addNewDrive" method="post">
+                <form class="form-horizontal" id="driveDTO" name="driveForm" action="/drives/searchDrive" method="post">
                     <div class="container-fluid">
+                        <div class="col-md-12" style="margin-top:50px;">
+                            <div class="col-md-3" style="float: left">
+                                <fieldset>
+                                    <legend>Miejsce wyjazdu</legend>
+                                    <div class="form-group row">
+                                        <input name="cityStart" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" autofocus="autofocus"
+                                               required="required"/>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3 col-md-offset-1">
+                                <fieldset>
+                                    <legend>Czas wyjazdu</legend>
+                                    <div class="form-group row">
+                                        <div class='input-group date' name='datetimepicker'>
+                                            <input name="startDate" type='text' class="form-control" required />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-4 col-md-offset-1" style="float: right">
+                                <fieldset>
+                                    <legend>Miejsce docelowe</legend>
+                                    <div class="form-group row">
+                                        <input name="cityArrival" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" required="required"/>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
                         <div class="col-md-12">
+                            <div class="col-md-3" style="margin-top: 20px">
+                                <fieldset>
+                                    <legend>Szczegóły przejazdu</legend>
+                                    <div class="form-group row">
+                                        <label for="Price" class="col-md-6 control-label">Maks. koszt:</label>
+                                        <div class="col-md-6">
+                                            <input name="cost" type="text" class="form-control" id="Price" placeholder="zł" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="LuggageSize" class="col-md-4 control-label">Bagaż:</label>
+                                        <div class="col-md-8">
+                                            <select name="luggageSize" class="form-control" id="LuggageSize">
+                                                <option value="">Bez różnicy</option>
+                                                <option value="MALY">Mały</option>
+                                                <option value="SREDNI">Średni</option>
+                                                <option value="DUZY">Duży</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <%--<div class="form-group row">--%>
+                                        <%--<label class="col-md-6 control-label">Można palić:</label>--%>
+                                        <%--<div class="col-md-6" style="margin-top: 7px; margin-left: 0px;">--%>
+                                            <%--<input name="isSmokePermitted" type="checkbox" value="true">--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-3 col-md-offset-1" style="margin-top: 20px">
+                                <fieldset>
+                                    <legend>Czas powrotu</legend>
+                                    <%--<div class="col-md-12 form-group row">--%>
+                                    <%--<label><input type="checkbox" id="RoundTrip" /> Przejazd w obie strony</label>--%>
+                                    <%--</div>--%>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label class="control-label"><input name="isRoundTrip" id="RoundTrip" type="checkbox" value="true"> Przejazd w obie strony</label>
+                                        </div>
+                                    </div>
+                                    <div class="round-trip">
+                                        <div class="form-group row">
+                                            <div class='input-group date' name='datetimepicker' id="DateTimePicker_RoundTrip">
+                                                <input name="returnDate" type='text' class="form-control" disabled required="required" />
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-4 col-md-offset-1" style="margin-top: 113px">
+                                <div class="col-md-6 row">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-block">Szukaj przejazdu</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="float: right">
+                                    <div class="form-group">
+                                        <button type="reset" class="btn btn-danger btn-block">Resetuj wybór</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -73,5 +169,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script>
     <%-- Bootstrap DateTimePicker JS --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="/resources/scripts/drive/searchDrive.js?version=<%=cacheNumber%>"></script>
 </body>
 </html>
