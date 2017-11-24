@@ -13,7 +13,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -50,123 +49,127 @@
                 </div>
                 <form class="form-horizontal" id="driveDTO" name="driveForm" action="/drives/addNewDrive" method="post">
                     <div class="container-fluid">
-                        <div class="col-md-3" style="float: left">
-                            <fieldset>
-                                <legend>Miejsce wyjazdu</legend>
-                                <div class="form-group row">
-                                    <input name="cityStart" class="form-control" placeholder="Miasto" autofocus="autofocus"
-                                           required="required"/>
-                                </div>
-                                <div class="form-group row">
-                                    <input name="streetStart" class="form-control" placeholder="Ulica" required="required"/>
-                                </div>
-                                <div class="form-group row">
-                                    <input name="busStopStart" class="form-control" placeholder="Przystanek" required="required"/>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Czas wyjazdu</legend>
-                                <div class="form-group row">
-                                    <div class='input-group date' name='datetimepicker'>
-                                        <input name="startDate" type='text' class="form-control" required />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
+                        <div class="col-md-12">
+                            <div class="col-md-3" style="float: left">
+                                <fieldset>
+                                    <legend>Miejsce wyjazdu</legend>
+                                    <div class="form-group row">
+                                        <input name="cityStart" class="form-control" placeholder="Miasto" autofocus="autofocus"
+                                               required="required"/>
                                     </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-3 col-md-offset-1">
-                            <fieldset>
-                                <legend>Miejsce docelowe</legend>
-                                <div class="form-group row">
-                                    <input name="cityArrival" class="form-control" placeholder="Miasto" required="required"/>
-                                </div>
-                                <div class="form-group row">
-                                    <input name="streetArrival" class="form-control" placeholder="Ulica" required="required"/>
-                                </div>
-                                <div class="form-group row">
-                                    <div style="height: 34px"><%-- w celu zrobienia odstepu przed miejscami posrednimi --%></div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Miejsca pośrednie</legend>
-                                <div class="form-group row">
-                                    <button name="chooseStopOverPlaces" type="button" class="btn btn-primary form-control">Wybierz miejsca pośrednie</button>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-4 col-md-offset-1" style="float: right">
-                            <fieldset>
-                                <legend>Szczegóły przejazdu</legend>
-                                <div class="form-group row">
-                                    <label for="PassengersCount" class="col-md-3 control-label">Pasażerów:</label>
-                                    <div class="col-md-4">
-                                        <select name="passengersQuantity" class="form-control" id="PassengersCount">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                        </select>
+                                    <div class="form-group row">
+                                        <input name="streetStart" class="form-control" placeholder="Ulica" required="required"/>
                                     </div>
-                                    <label for="Price" class="col-md-2 control-label">Koszt:</label>
-                                    <div class="col-md-3">
-                                        <input name="cost" type="text" class="form-control" id="Price" placeholder="zł" required>
+                                    <div class="form-group row">
+                                        <input name="exactPlaceStart" class="form-control" placeholder="Dokładne miejsce, np. Lotnisko Balice"/>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="LuggageSize" class="col-md-2 control-label">Bagaż:</label>
-                                    <div class="col-md-5">
-                                        <select name="luggageSize" class="form-control" id="LuggageSize">
-                                            <option value="MALY">Mały</option>
-                                            <option value="SREDNI">Średni</option>
-                                            <option value="DUZY">Duży</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label class="control-label"><input name="isSmokePermitted" type="checkbox" value="true"> Można palić</label>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <label class="control-label"><input name="isRoundTrip" id="RoundTrip" type="checkbox" value="true"> Przejazd w obie strony</label>
-                                    </div>
-                                </div>
-                                <fieldset style="margin-top: 20px">
-                                    <legend>Czas powrotu</legend>
-                                    <%--<div class="col-md-12 form-group row">--%>
-                                    <%--<label><input type="checkbox" id="RoundTrip" /> Przejazd w obie strony</label>--%>
-                                    <%--</div>--%>
-                                    <div class="round-trip">
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <div class='input-group date' name='datetimepicker' id="DateTimePicker_RoundTrip">
-                                                    <input name="returnDate" type='text' class="form-control" disabled />
-                                                    <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                                </span>
-                                                </div>
-                                            </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Czas wyjazdu</legend>
+                                    <div class="form-group row">
+                                        <div class='input-group date' name='datetimepicker'>
+                                            <input name="startDate" type='text' class="form-control" required />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
                                         </div>
                                     </div>
                                 </fieldset>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="form-group">
-                                <label for="DriverComment">Komentarz na temat przejazdu:</label>
-                                <textarea name="driverComment" class="form-control" rows="5" id="DriverComment"></textarea>
+                            </div>
+                            <div class="col-md-3 col-md-offset-1">
+                                <fieldset>
+                                    <legend>Miejsce docelowe</legend>
+                                    <div class="form-group row">
+                                        <input name="cityArrival" class="form-control" placeholder="Miasto" required="required"/>
+                                    </div>
+                                    <div class="form-group row">
+                                        <input name="streetArrival" class="form-control" placeholder="Ulica" required="required"/>
+                                    </div>
+                                    <div class="form-group row">
+                                        <input name="exactPlaceArrival" class="form-control" placeholder="Dokładne miejsce, np. Lotnisko Balice"/>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Miejsca pośrednie</legend>
+                                    <div class="form-group row">
+                                        <button name="chooseStopOverPlaces" type="button" class="btn btn-primary form-control">Wybierz miejsca pośrednie</button>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-4 col-md-offset-1" style="float: right">
+                                <fieldset>
+                                    <legend>Szczegóły przejazdu</legend>
+                                    <div class="form-group row">
+                                        <label for="PassengersCount" class="col-md-3 control-label">Pasażerów:</label>
+                                        <div class="col-md-4">
+                                            <select name="passengersQuantity" class="form-control" id="PassengersCount">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                        <label for="Price" class="col-md-2 control-label">Koszt:</label>
+                                        <div class="col-md-3">
+                                            <input name="cost" type="text" class="form-control" id="Price" placeholder="zł" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="LuggageSize" class="col-md-2 control-label">Bagaż:</label>
+                                        <div class="col-md-5">
+                                            <select name="luggageSize" class="form-control" id="LuggageSize">
+                                                <option value="MALY">Mały</option>
+                                                <option value="SREDNI">Średni</option>
+                                                <option value="DUZY">Duży</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label class="control-label"><input name="isSmokePermitted" type="checkbox" value="true"> Można palić</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label class="control-label"><input name="isRoundTrip" id="RoundTrip" type="checkbox" value="true"> Przejazd w obie strony</label>
+                                        </div>
+                                    </div>
+                                    <fieldset style="margin-top: 20px">
+                                        <legend>Czas powrotu</legend>
+                                        <%--<div class="col-md-12 form-group row">--%>
+                                        <%--<label><input type="checkbox" id="RoundTrip" /> Przejazd w obie strony</label>--%>
+                                        <%--</div>--%>
+                                        <div class="round-trip">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <div class='input-group date' name='datetimepicker' id="DateTimePicker_RoundTrip">
+                                                        <input name="returnDate" type='text' class="form-control" disabled required="required" />
+                                                        <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </fieldset>
                             </div>
                         </div>
-                        <div class="col-md-4" style="float: right; margin-top: 100px">
-                            <div class="col-md-5 row">
+                        <div class="col-md-12">
+                            <div class="col-md-7">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block">Dodaj przejazd</button>
+                                    <label for="DriverComment">Komentarz na temat przejazdu:</label>
+                                    <textarea name="driverComment" class="form-control" rows="5" id="DriverComment"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-5" style="float: right">
-                                <div class="form-group">
-                                    <button type="reset" class="btn btn-danger btn-block">Anuluj</button>
+                            <div class="col-md-4" style="float: right; margin-top: 100px">
+                                <div class="col-md-5 row">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-block">Dodaj przejazd</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="float: right">
+                                    <div class="form-group">
+                                        <button type="reset" class="btn btn-danger btn-block">Anuluj</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

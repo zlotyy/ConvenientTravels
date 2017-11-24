@@ -17,12 +17,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @SessionAttributes(types = {UserModel.class})
 @Controller("driveController")
@@ -90,9 +89,10 @@ public class DriveController {
             result = driveService.addNewDrive(
                     driveDTO.getCityStart(),
                     driveDTO.getStreetStart(),
-                    driveDTO.getBusStopStart(),
+                    driveDTO.getExactPlaceStart(),
                     driveDTO.getCityArrival(),
                     driveDTO.getStreetArrival(),
+                    driveDTO.getExactPlaceArrival(),
                     startDate,
                     returnDate,
                     driveDTO.getPassengersQuantity(),
@@ -219,28 +219,167 @@ public class DriveController {
         return "drives/myDrives/index";
     }
 
+    /**
+     * kontroler wywoluje serwis usuwajacy przejazd
+     */
     @RequestMapping(value = "/myDrives/delete", method = {RequestMethod.POST, RequestMethod.GET})
     public String removeDrive(@RequestParam(value = "driveId", required = true) Long driveId){
         DriveModel drive = driveService.getDrive(driveId).getData();
         ServiceResult<DriveModel> result = driveService.setDriveDeleted(drive);
 
-        log.info("Pomyslnie usunieto przejazd");
-
-        return "redirect:/drives/myDrives";
+        if(result.isValid()){
+            log.info("Pomyslnie usunieto przejazd");
+            return "redirect:/drives/myDrives";
+        } else {
+            log.error("Blad podczas usuwania przejazdu");
+            // OBSLUZYC ALERT Z ERROREM
+            return "drives/myDrives/index";
+        }
     }
 
     /**
      * kontroler wyswietla modal z potwierdzeniem operacji
      */
-    @RequestMapping(value = "/myDrives/delete/confirm", method = RequestMethod.GET)
+    @RequestMapping(value = "/myDrives/delete/modal", method = RequestMethod.GET)
     public String showConfirmDialog(Model model){
         model.addAttribute("dialogTitle", "Usuwanie przejazdu");
-        model.addAttribute("dialogContent", "Czy jesteś pewien, że chcesz usunąć przejazd?");
+        model.addAttribute("dialogContent", "Czy jesteś pewien, że chcesz usunąć przejazd?\nJeśli się na to zdecydujesz, niezwłocznie poinformuj o tym pasażerów!");
         model.addAttribute("dialogFormAction", "/drives/myDrives/delete/confirm/confirmed");
         model.addAttribute("dialogFormName", "deleteConfirmForm");
 
         return "modals/confirmOnGrid";
     }
+
+
+    /**
+     * kontroler wyswietla widok edycji przejazdu
+     */
+    @RequestMapping(value = "/myDrives/edit", method = RequestMethod.GET)
+    public String editDrive(@RequestParam(value = "driveId", required = true) Long driveId, Model model){
+        DriveModel drive = driveService.getDrive(driveId).getData();
+        DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
+        DriveDTO driveDTO = new DriveDTO();
+        String startDate = null;
+        String returnDate = null;
+        String isSmokePermitted = null;
+        String isRoundTrip = null;
+
+        // zamiana daty z Calendar na Stringa
+        DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
+        if(drive.getStartDate() != null){
+            startDate = dateFormatHelper.calendarToString_DateTimeFormat();
+        }
+        dateFormatHelper = new DateFormatHelper(drive.getReturnDate(), "yyyy-MM-dd HH:mm");
+        if(drive.getReturnDate() != null){
+            returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
+        }
+        if(driveDetails.isSmokePermitted()){
+            isSmokePermitted = "true";
+        }
+        if(drive.isRoundTrip()){
+            isRoundTrip = "true";
+        }
+
+        driveDTO.setCityStart(drive.getCityStart());
+        driveDTO.setStreetStart(drive.getStreetStart());
+        driveDTO.setExactPlaceStart(drive.getExactPlaceStart());
+        driveDTO.setStartDate(startDate);
+        driveDTO.setCityArrival(drive.getCityArrival());
+        driveDTO.setStreetArrival(drive.getStreetArrival());
+        driveDTO.setExactPlaceArrival(drive.getExactPlaceArrival());
+        driveDTO.setPassengersQuantity(driveDetails.getPassengersQuantity());
+        driveDTO.setCost(drive.getCost());
+        driveDTO.setLuggageSize(driveDetails.getLuggageSize());
+        driveDTO.setIsSmokePermitted(isSmokePermitted);
+        driveDTO.setIsRoundTrip(isRoundTrip);
+        driveDTO.setReturnDate(returnDate);
+        driveDTO.setDriverComment(driveDetails.getDriverComment());
+
+        model.addAttribute("driveDTO", driveDTO);
+        model.addAttribute("driveId", driveId);
+
+        return "drives/myDrives/editDrive";
+    }
+
+    /**
+     * kontroler wywoluje serwis edytujacy dane przejazdu
+     */
+    @RequestMapping(value = "/myDrives/edit", method = RequestMethod.POST)
+    public String editDrive(@ModelAttribute("driveDTO") @Valid DriveDTO driveDTO, BindingResult bindingResult, HttpSession session, Model model,
+                           @RequestParam(value = "driveId", required = true) Long driveId){
+        if(bindingResult.hasErrors()){
+            log.info("Edycja przejazdu - wprowadzono niepoprawne dane, zwroc formularz");
+
+            return "drives/myDrives/editDrive";
+        } else {
+            ServiceResult<DriveModel> result;
+            boolean isSmokePermitted = false;
+            boolean isRoundTrip = false;
+            Calendar startDate = null;
+            Calendar returnDate = null;
+            List<StopOverPlaceModel> stopOverPlaces = null; //(List<StopOverPlaceModel>) session.getAttribute("stopOverPlacesToSave");
+
+            // Parsowanie daty na Calendar
+            DateFormatHelper dateFormatHelper = new DateFormatHelper(driveDTO.getStartDate(), "yyyy-MM-dd HH:mm");
+            if(driveDTO.getStartDate() != null){
+                startDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
+            }
+            dateFormatHelper = new DateFormatHelper(driveDTO.getReturnDate(), "yyyy-MM-dd HH:mm");
+            if(driveDTO.getReturnDate() != null){
+                returnDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
+            }
+
+            // Parsowanie Stringa na boolean
+            if(driveDTO.getIsSmokePermitted() != null){
+                if(driveDTO.getIsSmokePermitted().equals("true"))
+                    isSmokePermitted = true;
+            }
+            if(driveDTO.getIsRoundTrip() != null) {
+                if (driveDTO.getIsRoundTrip().equals("true"))
+                    isRoundTrip = true;
+            }
+
+            log.info("Edycja przejazdu - dane poprawne, wywolaj serwis zapisujacy do bazy");
+
+            result = driveService.editDrive(
+                    driveDTO.getCityStart(),
+                    driveDTO.getStreetStart(),
+                    driveDTO.getExactPlaceStart(),
+                    startDate,
+                    driveDTO.getCityArrival(),
+                    driveDTO.getStreetArrival(),
+                    driveDTO.getExactPlaceArrival(),
+                    stopOverPlaces,
+                    driveDTO.getPassengersQuantity(),
+                    driveDTO.getCost(),
+                    driveDTO.getLuggageSize(),
+                    isSmokePermitted,
+                    isRoundTrip,
+                    returnDate,
+                    driveDTO.getDriverComment(),
+                    driveId
+                    );
+
+            if(result.isValid()){
+                log.info("Edycja przejazdu - przejazd zapisany do bazy");
+                return "redirect:/drives/myDrives";
+            } else {
+                log.info("Edycja przejazdu - nie udalo sie zapisac przejazdu do bazy");
+
+                session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
+                return "account/index";
+            }
+        }
+    }
+//
+//    /**
+//     * kontroler wyswietla modal ze szczegolami przejazdu
+//     */
+//    @RequestMapping(value = "/myDrives/driveDetails/modal", method = RequestMethod.GET)
+//    public String editDrive(){
+//
+//        return "modals/myDrives/driveDetails";
+//    }
 
     @RequestMapping("/myBookings")
     public String return_myBookings_index(){

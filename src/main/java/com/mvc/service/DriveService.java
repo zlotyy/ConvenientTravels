@@ -32,8 +32,8 @@ public class DriveService implements IDriveService {
      * @return
      */
     @Transactional
-    public ServiceResult<DriveModel> addNewDrive(String cityStart, String streetStart, String busStopStart,
-                                                 String cityArrival, String streetArrival, Calendar startDate, Calendar returnDate,
+    public ServiceResult<DriveModel> addNewDrive(String cityStart, String streetStart, String exactPlaceStart,
+                                                 String cityArrival, String streetArrival, String exactPlaceArrival, Calendar startDate, Calendar returnDate,
                                                  int passengersQuantity, int cost, LuggageSize luggageSize, boolean isSmokePermitted,
                                                  boolean isRoundTrip, String driverComment, List<StopOverPlaceModel> stopOverPlaces,
                                                  UserModel insertUser) {
@@ -48,9 +48,10 @@ public class DriveService implements IDriveService {
 
             drive.setCityStart(cityStart);
             drive.setStreetStart(streetStart);
-            drive.setBusStopStart(busStopStart);
+            drive.setExactPlaceStart(exactPlaceStart);
             drive.setCityArrival(cityArrival);
             drive.setStreetArrival(streetArrival);
+            drive.setExactPlaceArrival(exactPlaceArrival);
             drive.setStartDate(startDate);
             drive.setReturnDate(returnDate);
             drive.setCost(cost);
@@ -152,6 +153,50 @@ public class DriveService implements IDriveService {
         } catch (Exception e){
             log.error("Blad podczas usuwania przejazdu");
             result.errors.add("Błąd podczas usuwania przejazdu");
+        }
+
+        return result;
+    }
+
+    /**
+     * serwis edytuje przejazd
+     */
+    @Transactional
+    public ServiceResult<DriveModel> editDrive(String cityStart, String streetStart, String exactPlaceStart, Calendar startDate, String cityArrival,
+                                               String streetArrival, String exactPlaceArrival, List<StopOverPlaceModel> stopOverPlaces, int passengersQuantity, int cost,
+                                               LuggageSize luggageSize, boolean isSmokePermitted, boolean isRoundTrip, Calendar returnDate,
+                                               String driverComment, long driveId) {
+        ServiceResult<DriveModel> result = new ServiceResult<>();
+
+        try {
+            DriveModel drive = this.getDrive(driveId).getData();
+            DriveDetailsModel driveDetails = this.getDriveDetails(drive).getData();
+
+            drive.setCityStart(cityStart);
+            drive.setStreetStart(streetStart);
+            drive.setExactPlaceStart(exactPlaceStart);
+            drive.setStartDate(startDate);
+            drive.setCityArrival(cityArrival);
+            drive.setExactPlaceArrival(exactPlaceArrival);
+            drive.setStreetArrival(streetArrival);
+            drive.setStopOverPlaces(stopOverPlaces);
+            drive.setCost(cost);
+            drive.setRoundTrip(isRoundTrip);
+            drive.setReturnDate(returnDate);
+
+            driveDetails.setPassengersQuantity(passengersQuantity);
+            driveDetails.setLuggageSize(luggageSize);
+            driveDetails.setSmokePermitted(isSmokePermitted);
+            driveDetails.setDriverComment(driverComment);
+
+            log.info("Edytuje przejazd");
+
+            driveDAO.editDrive(drive);
+            result.setData(drive);
+            result.messages.add("Przejazd został edytowany");
+        } catch (Exception e){
+            log.error("Blad podczas edycji przejazdu");
+            result.errors.add("Błąd podczas edycji przejazdu");
         }
 
         return result;

@@ -5,7 +5,7 @@
 7. po wpisaniu istniejacego loginu/maila nie dziala modal samochodow
 8. przywrocic obsluge errorow
 9. register GET - carModalVisible - sprawdzic czy potrzebne
-
+10. jak nie uda sie usunac/edytowac przejazdu, to pokaz alert
 
 
 

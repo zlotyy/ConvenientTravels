@@ -224,6 +224,7 @@ public class UserService implements IUserService {
 
             userDAO.editUser(user);
             result.setData(user);
+            result.messages.add("Użytkownik został edytowany");
         } catch (Exception e){
             log.error("Blad podczas nadpisywania uzytkownika do bazy");
             result.errors.add("Błąd podczas edycji użytkownika");

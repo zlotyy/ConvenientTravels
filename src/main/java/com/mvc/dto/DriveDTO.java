@@ -22,18 +22,14 @@ public class DriveDTO {
 
     private String streetStart;
 
-    private String busStopStart;
+    private String exactPlaceStart;
 
     @NotEmpty(message = "Pole nie moze byc puste")
     private String cityArrival;
 
     private String streetArrival;
 
-//    @JsonIgnore
-//    private List<String> stopOverCities;
-//
-//    @JsonIgnore
-//    private List<String> stopOverStreets;
+    private String exactPlaceArrival;
 
     private String isRoundTrip;
 
@@ -86,12 +82,20 @@ public class DriveDTO {
         this.streetStart = streetStart;
     }
 
-    public String getBusStopStart() {
-        return busStopStart;
+    public String getExactPlaceStart() {
+        return exactPlaceStart;
     }
 
-    public void setBusStopStart(String busStopStart) {
-        this.busStopStart = busStopStart;
+    public void setExactPlaceStart(String exactPlaceStart) {
+        this.exactPlaceStart = exactPlaceStart;
+    }
+
+    public String getExactPlaceArrival() {
+        return exactPlaceArrival;
+    }
+
+    public void setExactPlaceArrival(String exactPlaceArrival) {
+        this.exactPlaceArrival = exactPlaceArrival;
     }
 
     public String getCityArrival() {
@@ -109,22 +113,6 @@ public class DriveDTO {
     public void setStreetArrival(String streetArrival) {
         this.streetArrival = streetArrival;
     }
-
-//    public List<String> getStopOverCities() {
-//        return stopOverCities;
-//    }
-//
-//    public void setStopOverCities(List<String> stopOverCities) {
-//        this.stopOverCities = stopOverCities;
-//    }
-//
-//    public List<String> getStopOverStreets() {
-//        return stopOverStreets;
-//    }
-//
-//    public void setStopOverStreets(List<String> stopOverStreets) {
-//        this.stopOverStreets = stopOverStreets;
-//    }
 
     public String getIsRoundTrip() {
         return isRoundTrip;
@@ -189,9 +177,10 @@ public class DriveDTO {
                 ", returnDate='" + returnDate + '\'' +
                 ", cityStart='" + cityStart + '\'' +
                 ", streetStart='" + streetStart + '\'' +
-                ", busStopStart='" + busStopStart + '\'' +
+                ", exactPlaceStart='" + exactPlaceStart + '\'' +
                 ", cityArrival='" + cityArrival + '\'' +
                 ", streetArrival='" + streetArrival + '\'' +
+                ", exactPlaceArrival='" + exactPlaceArrival + '\'' +
                 ", isRoundTrip='" + isRoundTrip + '\'' +
                 ", cost=" + cost +
                 ", luggageSize=" + luggageSize +

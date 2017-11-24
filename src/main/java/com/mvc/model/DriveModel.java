@@ -48,8 +48,11 @@ public class DriveModel implements Serializable  {
     @Column(name = "StreetStart")
     private String streetStart;
 
-    @Column(name = "BusStopStart")
-    private String busStopStart;
+//    @Column(name = "BusStopStart")
+//    private String busStopStart;
+
+    @Column(name = "ExactPlaceStart")
+    private String exactPlaceStart;
 
     @Column(name = "CityArrival")
     @NotEmpty(message = "Pole nie moze byc puste")
@@ -57,6 +60,9 @@ public class DriveModel implements Serializable  {
 
     @Column(name = "StreetArrival")
     private String streetArrival;
+
+    @Column(name = "ExactPlaceArrival")
+    private String exactPlaceArrival;
 
     @Column(name = "IsFreeWay")
     private boolean isFreeWay;
@@ -155,12 +161,29 @@ public class DriveModel implements Serializable  {
         this.streetStart = streetStart;
     }
 
-    public String getBusStopStart() {
-        return busStopStart;
+//    public String getBusStopStart() {
+//        return busStopStart;
+//    }
+//
+//    public void setBusStopStart(String busStopStart) {
+//        this.busStopStart = busStopStart;
+//    }
+
+
+    public String getExactPlaceStart() {
+        return exactPlaceStart;
     }
 
-    public void setBusStopStart(String busStopStart) {
-        this.busStopStart = busStopStart;
+    public void setExactPlaceStart(String exactPlaceStart) {
+        this.exactPlaceStart = exactPlaceStart;
+    }
+
+    public String getExactPlaceArrival() {
+        return exactPlaceArrival;
+    }
+
+    public void setExactPlaceArrival(String exactPlaceArrival) {
+        this.exactPlaceArrival = exactPlaceArrival;
     }
 
     public String getCityArrival() {
@@ -246,9 +269,10 @@ public class DriveModel implements Serializable  {
                 ", searchData='" + searchData + '\'' +
                 ", cityStart='" + cityStart + '\'' +
                 ", streetStart='" + streetStart + '\'' +
-                ", busStopStart='" + busStopStart + '\'' +
+                ", exactPlaceStart='" + exactPlaceStart + '\'' +
                 ", cityArrival='" + cityArrival + '\'' +
                 ", streetArrival='" + streetArrival + '\'' +
+                ", exactPlaceArrival='" + exactPlaceArrival + '\'' +
                 ", isFreeWay=" + isFreeWay +
                 ", isRoundTrip=" + isRoundTrip +
                 ", cost=" + cost +

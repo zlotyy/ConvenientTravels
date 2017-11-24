@@ -58,19 +58,19 @@
                             <c:forEach items="${userDrives}" var="drive" varStatus="status">
                                 <c:set var = "i" value = "${status.index}"/>
                                     <tr>
-                                        <td>${drive.cityStart}, ${drive.streetStart} ${drive.busStopStart}</td>
-                                        <td>${drive.cityArrival}, ${drive.streetArrival}</td>
+                                        <td>${drive.cityStart}, ${drive.streetStart} ${drive.exactPlaceStart}</td>
+                                        <td>${drive.cityArrival}, ${drive.streetArrival}, ${drive.exactPlaceArrival}</td>
                                         <td>${drivesStartDates[i]}</td>
                                         <td class="text-center">${drivesBookedPlaces[i]}/${drivesMaxPlaces[i]}</td>
                                         <td>
-                                            <button type="button" name="editDrive" title="Edytuj" class="btn btn-default delete" >
-                                                <i class="glyphicon glyphicon-edit" style="color: blue"></i>
-                                            </button>
-                                            <%--<a href="/drives/myDrives/delete?driveId=${drive.driveId}" >--%>
-                                                <button type="button" name="removeDrive" title="Usuń" class="btn btn-default delete" onclick="setDriveToDeleteId(${drive.driveId})" >
-                                                <i class="glyphicon glyphicon-remove" style="color: red"></i>
+                                            <a href="/drives/myDrives/edit?driveId=${drive.driveId}" >
+                                                <button type="button" name="editDrive" title="Edytuj" class="btn btn-default delete" >
+                                                    <i class="glyphicon glyphicon-edit" style="color: blue"></i>
                                                 </button>
-                                            <%--</a>--%>
+                                            </a>
+                                            <button type="button" name="removeDrive" title="Usuń" class="btn btn-default delete" onclick="setDriveToProcessId(${drive.driveId})" >
+                                                <i class="glyphicon glyphicon-remove" style="color: red"></i>
+                                            </button>
                                         </td>
                                     </tr>
                             </c:forEach>
@@ -98,7 +98,7 @@
 
 
     <%--&lt;%&ndash; Modal z potwierdzeniem &ndash;%&gt;--%>
-    <jsp:include page="/drives/myDrives/delete/confirm" />
+    <jsp:include page="/drives/myDrives/delete/modal" />
 
     <script type="text/javascript">
 
@@ -107,14 +107,14 @@
         // zmien atrybut ACTION dla formularza
         // potwierdz formularz
 
-        var driveId;
+        var driveToProcessId;       // id przejazdu ktory bedzie usuwany lub edytowany
 
-        function setDriveToDeleteId(id){
-            driveId = id;
+        function setDriveToProcessId(id){
+            driveToProcessId = id;
         }
 
         $("[name=dialogSubmit]").on("click", function () {
-            $("[name=deleteConfirmForm]").attr("action", "/drives/myDrives/delete?driveId=" + driveId);
+            $("[name=deleteConfirmForm]").attr("action", "/drives/myDrives/delete?driveId=" + driveToProcessId);
             console.log("Action: " + $("[name=deleteConfirmForm]").attr("action"));
 
             $("[name=deleteConfirmForm]").submit();
