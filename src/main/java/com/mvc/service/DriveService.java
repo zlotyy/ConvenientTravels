@@ -219,4 +219,35 @@ public class DriveService implements IDriveService {
 
         return result;
     }
+
+
+    /**
+     * serwis wyszukuje przejazdy wedlug wybranych filtrow
+     */
+    public ServiceResult<List<DriveModel>> getDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize) {
+        ServiceResult<List<DriveModel>> result = new ServiceResult<>();
+        Calendar timeNow = Calendar.getInstance();
+
+        try {
+            log.info("Pobieram przejazdy wedlug filtrow");
+
+            List<DriveModel> drives = driveDAO.findDrives(startPlace, arrivalPlace, startDate, returnDate, isRoundTrip, maxCost, luggageSize, timeNow);
+//            for(DriveModel drive : drives) {
+//                Hibernate.initialize(drive.getStopOverPlaces());
+//                Hibernate.initialize(drive.getBookings());
+//            }
+
+            if(drives == null){
+                log.info("Nie mozna znalezc przejazdow");
+                result.errors.add("Brak wyników spełniających kryteria");
+            } else {
+                result.setData(drives);
+            }
+        } catch (Exception e){
+            log.error("Blad podczas wyszukiwania przejazdow");
+            result.errors.add("Błąd podczas wyszukiwania przejazdów w bazie");
+        }
+
+        return result;
+    }
 }

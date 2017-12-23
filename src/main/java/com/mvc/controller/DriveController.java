@@ -1,13 +1,12 @@
 package com.mvc.controller;
 
 import com.mvc.dto.DriveDTO;
+import com.mvc.dto.SearchDrivesDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
 import com.mvc.model.*;
 import com.mvc.service.IDriveService;
 import com.mvc.service.IUserService;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @SessionAttributes(types = {UserModel.class})
@@ -183,7 +180,11 @@ public class DriveController {
      * @return
      */
     @RequestMapping(value = "/searchDrive", method = RequestMethod.GET)
-    public String return_searchDrive_index(){
+    public String return_searchDrive_index(Model model){
+
+        SearchDrivesDTO searchDrivesDTO = new SearchDrivesDTO();
+
+        model.addAttribute("searchDrivesDTO", searchDrivesDTO);
 
         return "drives/searchDrive/index";
     }
@@ -192,10 +193,52 @@ public class DriveController {
      * kontroler wyswietla liste przejazdow zgodnie z filtrami ustawionymi przez uzytkownika
      * @return
      */
-    @RequestMapping(value = "/searchDrive/drivesList", method = RequestMethod.GET)
-    public String searchDrive(){
+    @RequestMapping(value = "/searchDrive", method = RequestMethod.POST)
+    public String searchDrive(@ModelAttribute("searchDrivesDTO") SearchDrivesDTO searchDrivesDTO, HttpSession session){
+        log.info("Wyszukiwanie przejazdu - wywolaj serwis szukajacy przejazdy");
+        ServiceResult<List<DriveModel>> result;
+        boolean isRoundTrip = false;
+        Calendar startDate = null;
+        Calendar returnDate = null;
 
-        return "drives/searchDrive/drivesList";
+        // Parsowanie daty na Calendar
+        DateFormatHelper dateFormatHelper = new DateFormatHelper(searchDrivesDTO.getStartDate(), "yyyy-MM-dd HH:mm");
+        if(searchDrivesDTO.getStartDate() != null){
+            startDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
+        }
+        dateFormatHelper = new DateFormatHelper(searchDrivesDTO.getReturnDate(), "yyyy-MM-dd HH:mm");
+        if(searchDrivesDTO.getReturnDate() != null){
+            returnDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
+        }
+
+        // Parsowanie Stringa na boolean
+        if(searchDrivesDTO.getIsRoundTrip() != null) {
+            if (searchDrivesDTO.getIsRoundTrip().equals("true"))
+                isRoundTrip = true;
+        }
+
+        result = driveService.getDrives(
+                searchDrivesDTO.getStartPlace(),
+                searchDrivesDTO.getArrivalPlace(),
+                startDate,
+                returnDate,
+                isRoundTrip,
+                searchDrivesDTO.getMaxCost(),
+                searchDrivesDTO.getLuggageSize()
+        );
+
+        //todo: dokonczyc DAO z wyszukiwaniem przejazdu - odkomentowac filtry
+        //todo: zrobic liste wyszukanych przejazdow - zeby szybciej sie testowalo filtry
+
+        if(result.isValid()){
+            log.info("Wyszukiwanie przejazdow - zwracam wyniki");
+            return "drives/searchDrive/drivesList";
+        } else {
+            log.info("Wyszukiwanie przejazdow - blad podczas pobierania przejazdow z bazy");
+
+            session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
+            return "redirect:/drives/searchDrive";
+        }
     }
 
 

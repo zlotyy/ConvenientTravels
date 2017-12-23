@@ -48,15 +48,14 @@
                     <h2>Znajdź przejazd</h2>
                     <br>
                 </div>
-                <form class="form-horizontal" id="driveDTO" name="driveForm" action="/drives/searchDrive" method="post">
+                <form class="form-horizontal" id="searchDrivesDTO" name="searchDrivesForm" action="/drives/searchDrive" method="post">
                     <div class="container-fluid">
                         <div class="col-md-12" style="margin-top:50px;">
                             <div class="col-md-3" style="float: left">
                                 <fieldset>
                                     <legend>Miejsce wyjazdu</legend>
                                     <div class="form-group row">
-                                        <input name="cityStart" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" autofocus="autofocus"
-                                               required="required"/>
+                                        <input name="startPlace" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" autofocus="autofocus" />
                                     </div>
                                 </fieldset>
                             </div>
@@ -65,7 +64,7 @@
                                     <legend>Czas wyjazdu</legend>
                                     <div class="form-group row">
                                         <div class='input-group date' name='datetimepicker'>
-                                            <input name="startDate" type='text' class="form-control" required />
+                                            <input name="startDate" type='text' class="form-control" />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -77,7 +76,7 @@
                                 <fieldset>
                                     <legend>Miejsce docelowe</legend>
                                     <div class="form-group row">
-                                        <input name="cityArrival" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" required="required"/>
+                                        <input name="arrivalPlace" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" required />
                                     </div>
                                 </fieldset>
                             </div>
@@ -89,7 +88,7 @@
                                     <div class="form-group row">
                                         <label for="Price" class="col-md-6 control-label">Maks. koszt:</label>
                                         <div class="col-md-6">
-                                            <input name="cost" type="text" class="form-control" id="Price" placeholder="zł" >
+                                            <input name="maxCost" type="text" class="form-control" id="Price" placeholder="zł" >
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -126,7 +125,7 @@
                                     <div class="round-trip">
                                         <div class="form-group row">
                                             <div class='input-group date' name='datetimepicker' id="DateTimePicker_RoundTrip">
-                                                <input name="returnDate" type='text' class="form-control" disabled required="required" />
+                                                <input name="returnDate" type='text' class="form-control" disabled />
                                                 <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                 </span>

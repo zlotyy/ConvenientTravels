@@ -1,13 +1,12 @@
 package com.mvc.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.mvc.enums.LuggageSize;
 import com.mvc.model.StopOverPlaceModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Calendar;
 import java.util.List;
 
 public class DriveDTO {

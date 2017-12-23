@@ -1,11 +1,13 @@
 package com.mvc.dao;
 
+import com.mvc.enums.LuggageSize;
 import com.mvc.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.List;
 
 @Repository("driveDAO")
@@ -109,5 +111,45 @@ public class DriveDAO implements IDriveDAO {
         }
 
         return drive;
+    }
+
+    /**
+     * metoda wyszukuje przejazdy wedlug filtrow
+     */
+    public List<DriveModel> findDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize, Calendar nowDate) {
+        Query query = entityManager.createQuery("select d from DriveModel d join DriveDetailsModel dDM on d.driveId = dDM.drive.driveId where " +
+                "(d.cityStart like :startPlace" +
+                " or d.streetStart like :startPlace" +
+                " or d.exactPlaceStart like :startPlace)" +
+                " and (d.cityArrival like :arrivalPlace" +
+                " or d.streetArrival like :arrivalPlace" +
+                " or d.exactPlaceArrival like :arrivalPlace)" //+
+//                " and (d.isRoundTrip = :isRoundTrip)" +
+//                " and (d.cost <= :maxCost)" +
+//                " and (dDM.luggageSize like :luggageSize)" +
+//                " and (d.startDate >= :startDate)" +
+//               " and (d.returnDate <= :returnDate)" +
+//                " and (d.startDate >= :nowDate)"
+        );
+
+        query.setParameter("startPlace", "%"+startPlace+"%");
+        query.setParameter("arrivalPlace", "%"+arrivalPlace+"%");
+//        query.setParameter("isRoundTrip", isRoundTrip);
+//        query.setParameter("maxCost", maxCost);
+//        query.setParameter("luggageSize", "%"+luggageSize+"%");
+//        query.setParameter("startDate", startDate, TemporalType.TIMESTAMP);
+//        query.setParameter("returnDate", returnDate, TemporalType.TIMESTAMP);
+//        query.setParameter("nowDate", nowDate, TemporalType.TIMESTAMP);
+
+        List<DriveModel> drives = null;
+
+        try {
+            drives = query.getResultList();
+            log.info("Znaleziono przejazdy w bazie. Ilosc: " + drives.size());
+        } catch (NoResultException nRE){
+            log.info("DriveDAO.getDrives() - nie znaleziono przejazdow w bazie");
+        }
+
+        return drives;
     }
 }
