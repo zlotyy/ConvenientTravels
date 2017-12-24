@@ -194,7 +194,8 @@ public class DriveController {
      * @return
      */
     @RequestMapping(value = "/searchDrive", method = RequestMethod.POST)
-    public String searchDrive(@ModelAttribute("searchDrivesDTO") SearchDrivesDTO searchDrivesDTO, HttpSession session){
+    public String searchDrive(@ModelAttribute("searchDrivesDTO") SearchDrivesDTO searchDrivesDTO,
+                              Model model, HttpSession session, @SessionAttribute("userFromSession") UserModel session_User){
         log.info("Wyszukiwanie przejazdu - wywolaj serwis szukajacy przejazdy");
         ServiceResult<List<DriveModel>> result;
         boolean isRoundTrip = false;
@@ -224,14 +225,60 @@ public class DriveController {
                 returnDate,
                 isRoundTrip,
                 searchDrivesDTO.getMaxCost(),
-                searchDrivesDTO.getLuggageSize()
+                searchDrivesDTO.getLuggageSize(),
+                session_User
         );
 
         //todo: dokonczyc DAO z wyszukiwaniem przejazdu - odkomentowac filtry
-        //todo: zrobic liste wyszukanych przejazdow - zeby szybciej sie testowalo filtry
+        //todo: wyszukujemy w dokladny dzien
+        //todo: przerobic enuma LuggageSize tak aby mozna bylo wyszukiwac dowolne (dodac enuma "%%")
 
         if(result.isValid()){
             log.info("Wyszukiwanie przejazdow - zwracam wyniki");
+
+            List<DriveModel> drives = result.getData();
+
+            // zmiana formatu daty z Calendar na Stringa
+            List<String> startDates = new ArrayList<>();
+            for(DriveModel drive : drives){
+                dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
+                String date = dateFormatHelper.calendarToString_DateTimeFormat();
+                startDates.add(date);
+            }
+
+            // obliczanie ilosci miejsc w celu wyswietlenia ilosci wolnych miejsc
+            List<String> availableSeats = new ArrayList<>();
+            for(DriveModel drive : drives){
+                DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
+
+                int bookedSeats = drive.getBookings().size();
+                int maxSeats = driveDetails.getPassengersQuantity();
+
+                availableSeats.add((maxSeats - bookedSeats) + "/" + maxSeats);
+            }
+
+            // pobieranie miejsc posrednich i parsowanie na Stringa
+            List<String> stopOverPlaces = new ArrayList<>();
+            for(DriveModel drive : drives){
+                List<StopOverPlaceModel> list = drive.getStopOverPlaces();
+                String tmp = "";
+
+                for(StopOverPlaceModel place : list){
+                    // dodaj enter przed kolejnym elementem
+                    if(!list.get(0).equals(place)){
+                        tmp += "<br>";
+                    }
+                    tmp += place.getStopOverCity() + ", " + place.getStopOverStreet();
+                }
+
+                stopOverPlaces.add(tmp);
+            }
+
+            model.addAttribute("stopOverPlaces", stopOverPlaces);
+            model.addAttribute("availableSeats", availableSeats);
+            model.addAttribute("drivesStartDates", startDates);
+            model.addAttribute("filteredDrives", drives);
+
             return "drives/searchDrive/drivesList";
         } else {
             log.info("Wyszukiwanie przejazdow - blad podczas pobierania przejazdow z bazy");

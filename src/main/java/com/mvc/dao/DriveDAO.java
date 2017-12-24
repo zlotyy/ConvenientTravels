@@ -116,30 +116,38 @@ public class DriveDAO implements IDriveDAO {
     /**
      * metoda wyszukuje przejazdy wedlug filtrow
      */
-    public List<DriveModel> findDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize, Calendar nowDate) {
+    public List<DriveModel> findDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize, Calendar nowDate, UserModel searchingUser) {
         Query query = entityManager.createQuery("select d from DriveModel d join DriveDetailsModel dDM on d.driveId = dDM.drive.driveId where " +
-                "(d.cityStart like :startPlace" +
+                "d.isDeleted = false" +
+                " and d.insertUser not like :insertUser" +
+                " and (d.cityStart like :startPlace" +
                 " or d.streetStart like :startPlace" +
                 " or d.exactPlaceStart like :startPlace)" +
                 " and (d.cityArrival like :arrivalPlace" +
                 " or d.streetArrival like :arrivalPlace" +
-                " or d.exactPlaceArrival like :arrivalPlace)" //+
+                " or d.exactPlaceArrival like :arrivalPlace)" +
 //                " and (d.isRoundTrip = :isRoundTrip)" +
-//                " and (d.cost <= :maxCost)" +
-//                " and (dDM.luggageSize like :luggageSize)" +
-//                " and (d.startDate >= :startDate)" +
-//               " and (d.returnDate <= :returnDate)" +
-//                " and (d.startDate >= :nowDate)"
+                " and (d.cost <= :maxCost)" +
+                " and (dDM.luggageSize like :luggageSize)" +
+                " and (d.startDate >= :startDate)" +
+//                " and (d.returnDate <= :returnDate)" +
+                " and (d.startDate >= :nowDate)"
         );
 
+        query.setParameter("insertUser", searchingUser);
         query.setParameter("startPlace", "%"+startPlace+"%");
         query.setParameter("arrivalPlace", "%"+arrivalPlace+"%");
 //        query.setParameter("isRoundTrip", isRoundTrip);
-//        query.setParameter("maxCost", maxCost);
-//        query.setParameter("luggageSize", "%"+luggageSize+"%");
-//        query.setParameter("startDate", startDate, TemporalType.TIMESTAMP);
+        query.setParameter("maxCost", maxCost);
+        query.setParameter("luggageSize", "%"+luggageSize+"%");
+//        if(luggageSize == null){
+//            query.setParameter("luggageSize", "%%");
+//        } else {
+//            query.setParameter("luggageSize", "%"+luggageSize+"%");
+//        }
+        query.setParameter("startDate", startDate, TemporalType.DATE);
 //        query.setParameter("returnDate", returnDate, TemporalType.TIMESTAMP);
-//        query.setParameter("nowDate", nowDate, TemporalType.TIMESTAMP);
+        query.setParameter("nowDate", nowDate, TemporalType.TIMESTAMP);
 
         List<DriveModel> drives = null;
 

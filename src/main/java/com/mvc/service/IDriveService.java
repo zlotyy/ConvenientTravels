@@ -25,5 +25,5 @@ public interface IDriveService {
                                         LuggageSize luggageSize, boolean isSmokePermitted, boolean isRoundTrip, Calendar returnDate,
                                         String driverComment, long driveId);
     ServiceResult<List<DriveModel>> getDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate,
-                                              boolean isRoundTrip, int maxCost, LuggageSize luggageSize);
+                                              boolean isRoundTrip, int maxCost, LuggageSize luggageSize, UserModel searchingUser);
 }

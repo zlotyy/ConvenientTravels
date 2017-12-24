@@ -1,18 +1,10 @@
 <%--Wazne - dzieki temu nie trzeba czyscic cache'a css i js--%>
 <%@ page import="java.util.Random" %>
-<%@ page import="java.util.Calendar" %>
 <%
     int cacheNumber = 1;
     Random r = new Random();
     cacheNumber = r.nextInt();
 %>
-<%--
-  Created by IntelliJ IDEA.
-  User: zloty
-  Date: 2017-09-06
-  Time: 11:48
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
@@ -58,7 +50,7 @@
                             <c:forEach items="${userDrives}" var="drive" varStatus="status">
                                 <c:set var = "i" value = "${status.index}"/>
                                     <tr>
-                                        <td>${drive.cityStart}, ${drive.streetStart} ${drive.exactPlaceStart}</td>
+                                        <td>${drive.cityStart}, ${drive.streetStart}, ${drive.exactPlaceStart}</td>
                                         <td>${drive.cityArrival}, ${drive.streetArrival}, ${drive.exactPlaceArrival}</td>
                                         <td>${drivesStartDates[i]}</td>
                                         <td class="text-center">${drivesBookedPlaces[i]}/${drivesMaxPlaces[i]}</td>

@@ -55,7 +55,7 @@
                                 <fieldset>
                                     <legend>Miejsce wyjazdu</legend>
                                     <div class="form-group row">
-                                        <input name="startPlace" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" autofocus="autofocus" />
+                                        <input name="startPlace" class="form-control" placeholder="Miasto/Ulica/Dokładne miejsce" autofocus="autofocus" required />
                                     </div>
                                 </fieldset>
                             </div>
@@ -88,7 +88,7 @@
                                     <div class="form-group row">
                                         <label for="Price" class="col-md-6 control-label">Maks. koszt:</label>
                                         <div class="col-md-6">
-                                            <input name="maxCost" type="text" class="form-control" id="Price" placeholder="zł" >
+                                            <input name="maxCost" type="text" class="form-control" id="Price" placeholder="zł" required >
                                         </div>
                                     </div>
                                     <div class="form-group row">

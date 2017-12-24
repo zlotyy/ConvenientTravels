@@ -16,5 +16,5 @@ public interface IDriveDAO {
     DriveDetailsModel getDriveDetails(DriveModel drive);
     void editDrive(DriveModel drive);
     DriveModel findById(Long driveId);
-    List<DriveModel> findDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize, Calendar nowDate);
+    List<DriveModel> findDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize, Calendar nowDate, UserModel searchingUser);
 }

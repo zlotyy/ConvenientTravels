@@ -224,18 +224,19 @@ public class DriveService implements IDriveService {
     /**
      * serwis wyszukuje przejazdy wedlug wybranych filtrow
      */
-    public ServiceResult<List<DriveModel>> getDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize) {
+    @Transactional
+    public ServiceResult<List<DriveModel>> getDrives(String startPlace, String arrivalPlace, Calendar startDate, Calendar returnDate, boolean isRoundTrip, int maxCost, LuggageSize luggageSize, UserModel searchingUser) {
         ServiceResult<List<DriveModel>> result = new ServiceResult<>();
         Calendar timeNow = Calendar.getInstance();
 
         try {
             log.info("Pobieram przejazdy wedlug filtrow");
 
-            List<DriveModel> drives = driveDAO.findDrives(startPlace, arrivalPlace, startDate, returnDate, isRoundTrip, maxCost, luggageSize, timeNow);
-//            for(DriveModel drive : drives) {
-//                Hibernate.initialize(drive.getStopOverPlaces());
-//                Hibernate.initialize(drive.getBookings());
-//            }
+            List<DriveModel> drives = driveDAO.findDrives(startPlace, arrivalPlace, startDate, returnDate, isRoundTrip, maxCost, luggageSize, timeNow, searchingUser);
+            for(DriveModel drive : drives) {
+                Hibernate.initialize(drive.getStopOverPlaces());
+                Hibernate.initialize(drive.getBookings());
+            }
 
             if(drives == null){
                 log.info("Nie mozna znalezc przejazdow");

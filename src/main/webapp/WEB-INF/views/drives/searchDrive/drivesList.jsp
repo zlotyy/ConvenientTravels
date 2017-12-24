@@ -32,7 +32,7 @@
         <div class="panel panel-primary my-fixed-panel">
             <div class="panel-body">
                 <div class="text-center">
-                    <h2>Przejazdy na trasie Kraków-Zagorzany</h2>
+                    <h2>Przejazdy na trasie ${searchDrivesDTO.startPlace}-${searchDrivesDTO.arrivalPlace}</h2>
                     <br>
                 </div>
                 <div>
@@ -48,41 +48,17 @@
                             </tr>
                         </thead>
                         <tbody name="searchedDrivesTableBody">
-                            <%--<c:forEach items="${userDrives}" var="drive" varStatus="status">--%>
-                                <%--<c:set var = "i" value = "${status.index}"/>--%>
-                                <%--<tr>--%>
-                                    <%--<td>${drive.cityStart}, ${drive.streetStart} ${drive.exactPlaceStart}</td>--%>
-                                    <%--<td>${drive.cityArrival}, ${drive.streetArrival}, ${drive.exactPlaceArrival}</td>--%>
-                                    <%--<td>${drivesStartDates[i]}</td>--%>
-                                    <%--<td class="text-center">${drivesBookedPlaces[i]}/${drivesMaxPlaces[i]}</td>--%>
-                                    <%--<td>--%>
-                                        <%--<a href="/drives/myDrives/edit?driveId=${drive.driveId}" >--%>
-                                            <%--<button type="button" name="editDrive" title="Edytuj" class="btn btn-default delete" >--%>
-                                                <%--<i class="glyphicon glyphicon-edit" style="color: blue"></i>--%>
-                                            <%--</button>--%>
-                                        <%--</a>--%>
-                                        <%--<button type="button" name="removeDrive" title="Usuń" class="btn btn-default delete" onclick="setDriveToProcessId(${drive.driveId})" >--%>
-                                            <%--<i class="glyphicon glyphicon-remove" style="color: red"></i>--%>
-                                        <%--</button>--%>
-                                    <%--</td>--%>
-                                <%--</tr>--%>
-                            <%--</c:forEach>--%>
-                            <tr>
-                                <td>Kraków, Majówny</td>
-                                <td>Zagorzany, Zagorzany</td>
-                                <td>Kraków, al. Mickiewicza<br>Michałowice<br>Słomniki, rynek<br>Miechów, centrum</td>
-                                <td>2017-11-27 10:00</td>
-                                <td class="text-center">1/3</td>
-                                <td>15 zł</td>
-                            </tr>
-                            <tr>
-                                <td>Kraków, Lublańska</td>
-                                <td>Działoszyce, centrum</td>
-                                <td>Michałowice<br>Słomniki<br>Miechów<br>Dziaduszyce</td>
-                                <td>2017-11-31 12:00</td>
-                                <td class="text-center">1/3</td>
-                                <td>16 zł</td>
-                            </tr>
+                            <c:forEach items="${filteredDrives}" var="drive" varStatus="status">
+                                <c:set var = "i" value = "${status.index}"/>
+                                <tr>
+                                    <td>${drive.cityStart}, ${drive.streetStart}, ${drive.exactPlaceStart}</td>
+                                    <td>${drive.cityArrival}, ${drive.streetArrival}, ${drive.exactPlaceArrival}</td>
+                                    <td>${stopOverPlaces[i]}</td>
+                                    <td>${drivesStartDates[i]}</td>
+                                    <td class="text-center">${availableSeats[i]}</td>
+                                    <td>${drive.cost} zł</td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>
