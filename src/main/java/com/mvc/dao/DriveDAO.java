@@ -128,7 +128,7 @@ public class DriveDAO implements IDriveDAO {
                 " or d.exactPlaceArrival like :arrivalPlace)" +
 //                " and (d.isRoundTrip = :isRoundTrip)" +
                 " and (d.cost <= :maxCost)" +
-                " and (dDM.luggageSize like :luggageSize)" +
+//                " and (dDM.luggageSize like :luggageSize)" +
                 " and (d.startDate >= :startDate)" +
 //                " and (d.returnDate <= :returnDate)" +
                 " and (d.startDate >= :nowDate)"
@@ -139,12 +139,7 @@ public class DriveDAO implements IDriveDAO {
         query.setParameter("arrivalPlace", "%"+arrivalPlace+"%");
 //        query.setParameter("isRoundTrip", isRoundTrip);
         query.setParameter("maxCost", maxCost);
-        query.setParameter("luggageSize", "%"+luggageSize+"%");
-//        if(luggageSize == null){
-//            query.setParameter("luggageSize", "%%");
-//        } else {
-//            query.setParameter("luggageSize", "%"+luggageSize+"%");
-//        }
+//        query.setParameter("luggageSize", luggageSize);
         query.setParameter("startDate", startDate, TemporalType.DATE);
 //        query.setParameter("returnDate", returnDate, TemporalType.TIMESTAMP);
         query.setParameter("nowDate", nowDate, TemporalType.TIMESTAMP);

@@ -6,7 +6,7 @@
 8. przywrocic obsluge errorow
 9. register GET - carModalVisible - sprawdzic czy potrzebne
 10. jak nie uda sie usunac/edytowac przejazdu, to pokaz alert
-
+11. zaczytywac miejsca posrednie przy edycji przejazdu
 
 
 

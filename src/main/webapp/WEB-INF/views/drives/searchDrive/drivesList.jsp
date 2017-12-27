@@ -50,9 +50,9 @@
                         <tbody name="searchedDrivesTableBody">
                             <c:forEach items="${filteredDrives}" var="drive" varStatus="status">
                                 <c:set var = "i" value = "${status.index}"/>
-                                <tr>
-                                    <td>${drive.cityStart}, ${drive.streetStart}, ${drive.exactPlaceStart}</td>
-                                    <td>${drive.cityArrival}, ${drive.streetArrival}, ${drive.exactPlaceArrival}</td>
+                                <tr name="driveToBookRow" onclick="window.location.href='/drives/bookDrive?driveId=${drive.driveId}'" >
+                                    <td>${drive.cityStart} ${drive.streetStart} ${drive.exactPlaceStart}</td>
+                                    <td>${drive.cityArrival} ${drive.streetArrival} ${drive.exactPlaceArrival}</td>
                                     <td>${stopOverPlaces[i]}</td>
                                     <td>${drivesStartDates[i]}</td>
                                     <td class="text-center">${availableSeats[i]}</td>
@@ -82,6 +82,37 @@
 
 
     <script src="/resources/scripts/drive/searchDrive.js?version=<%=cacheNumber%>"></script>
+
+    <script type="text/javascript">
+
+        var driveToBookId;       // id przejazdu ktory bedzie rezerwowany
+
+        function setDriveToBookId(id){
+            driveToBookId = id;
+        }
+
+
+        $("[name=searchedDrivesTableBody]").find("tr").hover(function(){
+            $(this).css("background-color", "buttonface");
+        }, function(){
+            $(this).css("background-color", "white");
+        });
+
+
+
+
+//        $("[name=driveToBookRow]").on("click", function() {
+//            window.location.href = "/drives/"
+//        });
+//
+//        $("[name=dialogSubmit]").on("click", function () {
+//            $("[name=deleteConfirmForm]").attr("action", "/drives/myDrives/delete?driveId=" + driveToProcessId);
+//            console.log("Action: " + $("[name=deleteConfirmForm]").attr("action"));
+//
+//            $("[name=deleteConfirmForm]").submit();
+//        });
+
+    </script>
 
 </body>
 </html>

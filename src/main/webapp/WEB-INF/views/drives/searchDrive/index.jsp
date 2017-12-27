@@ -95,7 +95,7 @@
                                         <label for="LuggageSize" class="col-md-4 control-label">Bagaż:</label>
                                         <div class="col-md-8">
                                             <select name="luggageSize" class="form-control" id="LuggageSize">
-                                                <option value="">Bez różnicy</option>
+                                                <option value="">Dowolny</option>
                                                 <option value="MALY">Mały</option>
                                                 <option value="SREDNI">Średni</option>
                                                 <option value="DUZY">Duży</option>

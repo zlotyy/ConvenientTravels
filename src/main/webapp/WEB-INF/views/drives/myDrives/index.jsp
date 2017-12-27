@@ -50,8 +50,8 @@
                             <c:forEach items="${userDrives}" var="drive" varStatus="status">
                                 <c:set var = "i" value = "${status.index}"/>
                                     <tr>
-                                        <td>${drive.cityStart}, ${drive.streetStart}, ${drive.exactPlaceStart}</td>
-                                        <td>${drive.cityArrival}, ${drive.streetArrival}, ${drive.exactPlaceArrival}</td>
+                                        <td>${drive.cityStart} ${drive.streetStart} ${drive.exactPlaceStart}</td>
+                                        <td>${drive.cityArrival} ${drive.streetArrival} ${drive.exactPlaceArrival}</td>
                                         <td>${drivesStartDates[i]}</td>
                                         <td class="text-center">${drivesBookedPlaces[i]}/${drivesMaxPlaces[i]}</td>
                                         <td>
@@ -89,7 +89,7 @@
 
 
 
-    <%--&lt;%&ndash; Modal z potwierdzeniem &ndash;%&gt;--%>
+    <%-- Modal z potwierdzeniem --%>
     <jsp:include page="/drives/myDrives/delete/modal" />
 
     <script type="text/javascript">

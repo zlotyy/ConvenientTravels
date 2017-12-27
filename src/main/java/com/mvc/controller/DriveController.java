@@ -231,7 +231,8 @@ public class DriveController {
 
         //todo: dokonczyc DAO z wyszukiwaniem przejazdu - odkomentowac filtry
         //todo: wyszukujemy w dokladny dzien
-        //todo: przerobic enuma LuggageSize tak aby mozna bylo wyszukiwac dowolne (dodac enuma "%%")
+        //todo: max koszt - zrobic aby byl niewymagany
+        //todo: wyszukujemy tez w miastach posrednich
 
         if(result.isValid()){
             log.info("Wyszukiwanie przejazdow - zwracam wyniki");
@@ -475,19 +476,59 @@ public class DriveController {
             }
         }
     }
-//
-//    /**
-//     * kontroler wyswietla modal ze szczegolami przejazdu
-//     */
-//    @RequestMapping(value = "/myDrives/driveDetails/modal", method = RequestMethod.GET)
-//    public String editDrive(){
-//
-//        return "modals/myDrives/driveDetails";
-//    }
 
     @RequestMapping("/myBookings")
     public String return_myBookings_index(){
 
         return "drives/myBookings/index";
+    }
+
+
+    @RequestMapping(value = "/bookDrive", method = RequestMethod.GET)
+    public String bookDrive(Model model, @RequestParam(value = "driveId", required = true) Long driveId){
+
+        DriveModel drive = driveService.getDrive(driveId).getData();
+        DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
+        DriveDTO driveDTO = new DriveDTO();
+        String startDate = null;
+        String returnDate = null;
+        String isSmokePermitted = null;
+        String isRoundTrip = null;
+
+        // zamiana daty z Calendar na Stringa
+        DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
+        if(drive.getStartDate() != null){
+            startDate = dateFormatHelper.calendarToString_DateTimeFormat();
+        }
+        dateFormatHelper = new DateFormatHelper(drive.getReturnDate(), "yyyy-MM-dd HH:mm");
+        if(drive.getReturnDate() != null){
+            returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
+        }
+        if(driveDetails.isSmokePermitted()){
+            isSmokePermitted = "true";
+        }
+        if(drive.isRoundTrip()){
+            isRoundTrip = "true";
+        }
+
+        driveDTO.setCityStart(drive.getCityStart());
+        driveDTO.setStreetStart(drive.getStreetStart());
+        driveDTO.setExactPlaceStart(drive.getExactPlaceStart());
+        driveDTO.setStartDate(startDate);
+        driveDTO.setCityArrival(drive.getCityArrival());
+        driveDTO.setStreetArrival(drive.getStreetArrival());
+        driveDTO.setExactPlaceArrival(drive.getExactPlaceArrival());
+        driveDTO.setPassengersQuantity(driveDetails.getPassengersQuantity());
+        driveDTO.setCost(drive.getCost());
+        driveDTO.setLuggageSize(driveDetails.getLuggageSize());
+        driveDTO.setIsSmokePermitted(isSmokePermitted);
+        driveDTO.setIsRoundTrip(isRoundTrip);
+        driveDTO.setReturnDate(returnDate);
+        driveDTO.setDriverComment(driveDetails.getDriverComment());
+
+        model.addAttribute("driveDTO", driveDTO);
+        model.addAttribute("driveId", driveId);
+
+        return "drives/searchDrive/bookDrive";
     }
 }
