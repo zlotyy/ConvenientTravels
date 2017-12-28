@@ -83,36 +83,5 @@
 
     <script src="/resources/scripts/drive/searchDrive.js?version=<%=cacheNumber%>"></script>
 
-    <script type="text/javascript">
-
-        var driveToBookId;       // id przejazdu ktory bedzie rezerwowany
-
-        function setDriveToBookId(id){
-            driveToBookId = id;
-        }
-
-
-        $("[name=searchedDrivesTableBody]").find("tr").hover(function(){
-            $(this).css("background-color", "buttonface");
-        }, function(){
-            $(this).css("background-color", "white");
-        });
-
-
-
-
-//        $("[name=driveToBookRow]").on("click", function() {
-//            window.location.href = "/drives/"
-//        });
-//
-//        $("[name=dialogSubmit]").on("click", function () {
-//            $("[name=deleteConfirmForm]").attr("action", "/drives/myDrives/delete?driveId=" + driveToProcessId);
-//            console.log("Action: " + $("[name=deleteConfirmForm]").attr("action"));
-//
-//            $("[name=deleteConfirmForm]").submit();
-//        });
-
-    </script>
-
 </body>
 </html>

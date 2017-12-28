@@ -39,24 +39,170 @@
         <div class="panel panel-primary my-fixed-panel">
             <div class="panel-body">
                 <div class="text-center">
-                    <h2>Edycja przejazdu</h2>
+                    <h2>Rezerwacja przejazdu</h2>
                     <br>
                 </div>
                 <form:form class="form-horizontal" modelAttribute="driveDTO" name="driveForm" action="/drives/bookDrive?driveId=${driveId}" method="post">
-                    <div class="container-fluid col-md-12">
-                        <div class="col-md-3" style="float: left">
-                            <fieldset>
-                                <legend>Miejsce wyjazdu</legend>
-                                <div class="form-group row">
-                                    <label class="form-control" >${driveDTO.cityStart} ${driveDTO.streetStart} ${driveDTO.exactPlaceStart}</label>
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+                            <div class="col-md-6" style="float: left">
+                                <fieldset>
+                                    <legend>Podstawowe informacje</legend>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Miejsce wyjazdu</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">${driveDTO.cityStart} ${driveDTO.streetStart} ${driveDTO.exactPlaceStart}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Czas wyjazdu</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">${driveDTO.startDate}</p>
+                                        </div>
+                                    </div>
+                                    <hr class="divider">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Miejsce docelowe</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">${driveDTO.cityArrival} ${driveDTO.streetArrival} ${driveDTO.exactPlaceArrival}</p>
+                                        </div>
+                                    </div>
+                                    <hr class="divider">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Miejsca pośrednie</label>
+                                        <div class="col-md-8">
+                                            <c:forEach items="${stopOverPlaces}" var="place" varStatus="status">
+                                                <p class="form-control-static">${place.stopOverCity} ${place.stopOverStreet}</p>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <br>
+                                <fieldset>
+                                    <legend>Kierowca</legend>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Imię i nazwisko</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static"></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Wiek</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static"></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Płeć</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static"></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Telefon</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static"></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">E-mail</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static"></p>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-5 col-md-offset-1" style="float: right">
+                                <fieldset>
+                                    <legend>Szczegóły przejazdu</legend>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Koszt</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">${driveDTO.cost}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Bagaż</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">${driveDTO.luggageSize}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Czy można palić</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">${driveDTO.isSmokePermitted}</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Przejazd w obie strony</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">
+                                                <c:choose>
+                                                <c:when test="${driveDTO.isRoundTrip == 'Tak'}">
+                                                    ${driveDTO.isRoundTrip}, powrót: ${driveDTO.returnDate}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${driveDTO.isRoundTrip}
+                                                </c:otherwise>
+                                                </c:choose>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Komentarz kierującego</label>
+                                        <div class="col-md-8">
+                                            <p class="form-control-static">
+                                                <c:choose>
+                                                    <c:when test="${empty driveDTO.driverComment}">
+                                                        Kierujący nie zostawił komentarza
+                                                    </c:when>
+                                                    <c:otherwise>${driveDTO.driverComment}</c:otherwise>
+                                                </c:choose>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Samochód</label>
+                                        <div class="col-md-8">
+                                            <c:forEach items="${cars}" var="car" varStatus="status2">
+                                                <p class="form-control-static">${car.carBrand} ${car.carModel} ${car.color}</p>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <br>
+                                <fieldset>
+                                    <legend>Pasażerowie</legend>
+                                    <div class="form-group col-md-12">
+                                        <div class="col-md-3">
+                                            <span class="glyphicon glyphicon-user text-danger" title="zajęte miejsce" style="font-size: 50px;"></span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="glyphicon glyphicon-user text-primary" title="wolne miejsce" style="font-size: 50px;"></span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="glyphicon glyphicon-user text-primary" style="font-size: 50px;"></span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="glyphicon glyphicon-user text-primary" style="font-size: 50px;"></span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-5" style="float: right; ">
+                                <div class="col-md-4 row">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-block">Zarezerwuj</button>
+                                    </div>
                                 </div>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-3 col-md-offset-1">
-
-                        </div>
-                        <div class="col-md-4 col-md-offset-1" style="float: right">
-
+                                <div class="col-md-4" style="float: right">
+                                    <div class="form-group">
+                                        <a href="javascript:history.go(-1)"><button type="button" class="btn btn-danger btn-block">Anuluj</button></a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form:form>

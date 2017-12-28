@@ -5,6 +5,7 @@ import com.mvc.dto.SearchDrivesDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
 import com.mvc.model.*;
+import com.mvc.service.ICarService;
 import com.mvc.service.IDriveService;
 import com.mvc.service.IUserService;
 import org.json.JSONArray;
@@ -32,6 +33,8 @@ public class DriveController {
     @Autowired
     IDriveService driveService;
 
+    @Autowired
+    ICarService carService;
 
     /**
      * kontroler wyswietla formatke dodawania przejazdu
@@ -489,11 +492,12 @@ public class DriveController {
 
         DriveModel drive = driveService.getDrive(driveId).getData();
         DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
+        ServiceResult<List<CarModel>> result_carService = new ServiceResult<>();
         DriveDTO driveDTO = new DriveDTO();
         String startDate = null;
         String returnDate = null;
-        String isSmokePermitted = null;
-        String isRoundTrip = null;
+        String isSmokePermitted;
+        String isRoundTrip;
 
         // zamiana daty z Calendar na Stringa
         DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
@@ -504,11 +508,17 @@ public class DriveController {
         if(drive.getReturnDate() != null){
             returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
         }
+
         if(driveDetails.isSmokePermitted()){
-            isSmokePermitted = "true";
+            isSmokePermitted = "Tak";
+        } else {
+            isSmokePermitted = "Nie";
         }
+
         if(drive.isRoundTrip()){
-            isRoundTrip = "true";
+            isRoundTrip = "Tak";
+        } else {
+            isRoundTrip = "Nie";
         }
 
         driveDTO.setCityStart(drive.getCityStart());
@@ -526,8 +536,16 @@ public class DriveController {
         driveDTO.setReturnDate(returnDate);
         driveDTO.setDriverComment(driveDetails.getDriverComment());
 
+        // pobieranie miejsc posrednich
+        List<StopOverPlaceModel> stopOverPlaces = drive.getStopOverPlaces();
+
+        // pobieranie samochodu kierowcy
+        result_carService = carService.getUserCars(drive.getInsertUser());
+
         model.addAttribute("driveDTO", driveDTO);
         model.addAttribute("driveId", driveId);
+        model.addAttribute("stopOverPlaces", stopOverPlaces);
+        model.addAttribute("cars", result_carService.getData());
 
         return "drives/searchDrive/bookDrive";
     }

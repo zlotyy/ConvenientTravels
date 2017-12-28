@@ -205,12 +205,15 @@ public class DriveService implements IDriveService {
     /**
      * serwis wyszukuje przejazd po id
      */
+    @Transactional
     public ServiceResult<DriveModel> getDrive(long driveId) {
 
         ServiceResult<DriveModel> result = new ServiceResult<>();
         DriveModel drive;
         try {
             drive = driveDAO.findById(driveId);
+            Hibernate.initialize(drive.getStopOverPlaces());
+
             result.setData(drive);
         } catch (Exception e){
             log.error("Blad podczas wyszukiwania przejazdu");
