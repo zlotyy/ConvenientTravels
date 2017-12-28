@@ -83,31 +83,40 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Imię i nazwisko</label>
                                         <div class="col-md-8">
-                                            <p class="form-control-static"></p>
+                                            <p class="form-control-static">${driver.name} ${driver.lastname}</p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Wiek</label>
                                         <div class="col-md-8">
-                                            <p class="form-control-static"></p>
+                                            <p class="form-control-static">${driverAge}</p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Płeć</label>
                                         <div class="col-md-8">
-                                            <p class="form-control-static"></p>
+                                            <p class="form-control-static">
+                                                <c:choose>
+                                                    <c:when test="${driver.male eq 'MEZCZYZNA'}">
+                                                        Mężczyzna
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        Kobieta
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Telefon</label>
                                         <div class="col-md-8">
-                                            <p class="form-control-static"></p>
+                                            <p class="form-control-static">${driver.phone}</p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">E-mail</label>
                                         <div class="col-md-8">
-                                            <p class="form-control-static"></p>
+                                            <p class="form-control-static">${driver.mail}</p>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -118,13 +127,25 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Koszt</label>
                                         <div class="col-md-8">
-                                            <p class="form-control-static">${driveDTO.cost}</p>
+                                            <p class="form-control-static">${driveDTO.cost} zł</p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Bagaż</label>
                                         <div class="col-md-8">
-                                            <p class="form-control-static">${driveDTO.luggageSize}</p>
+                                            <p class="form-control-static">
+                                                <c:choose>
+                                                    <c:when test="${driveDTO.luggageSize eq 'MALY'}">
+                                                        Mały
+                                                    </c:when>
+                                                    <c:when test="${driveDTO.luggageSize eq 'SREDNI'}">
+                                                        Średni
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        Duży
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -164,7 +185,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Samochód</label>
                                         <div class="col-md-8">
-                                            <c:forEach items="${cars}" var="car" varStatus="status2">
+                                            <c:forEach items="${cars}" var="car" varStatus="status">
                                                 <p class="form-control-static">${car.carBrand} ${car.carModel} ${car.color}</p>
                                             </c:forEach>
                                         </div>
@@ -174,18 +195,16 @@
                                 <fieldset>
                                     <legend>Pasażerowie</legend>
                                     <div class="form-group col-md-12">
-                                        <div class="col-md-3">
-                                            <span class="glyphicon glyphicon-user text-danger" title="zajęte miejsce" style="font-size: 50px;"></span>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <span class="glyphicon glyphicon-user text-primary" title="wolne miejsce" style="font-size: 50px;"></span>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <span class="glyphicon glyphicon-user text-primary" style="font-size: 50px;"></span>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <span class="glyphicon glyphicon-user text-primary" style="font-size: 50px;"></span>
-                                        </div>
+                                        <c:forEach items="${passengers}" var="passenger" varStatus="status">
+                                            <div class="col-md-3">
+                                                <span name="passenger" class="glyphicon glyphicon-user text-danger" title="zajęte miejsce" style="font-size: 60px; cursor: pointer;"></span>
+                                            </div>
+                                        </c:forEach>
+                                        <c:forEach var="i" begin="1" end="${availableSeats}">
+                                            <div class="col-md-3">
+                                                <span class="glyphicon glyphicon-user text-primary" title="wolne miejsce" style="font-size: 60px;"></span>
+                                            </div>
+                                        </c:forEach>
                                     </div>
                                 </fieldset>
                             </div>
@@ -210,7 +229,6 @@
         </div>
     </div>
 
-
     <jsp:include page="/footer"/>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -227,31 +245,7 @@
     <%-- Bootstrap DateTimePicker JS --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
+    <%--<script src="/resources/scripts/drive/bookDrive.js?version=<%=cacheNumber%>"></script>--%>
 
-    <%-- Modal z alertem - blad z bazy --%>
-    <c:if test="${dbError}">
-        <jsp:include page="/modal/alert/dbError" />
-        <script type="text/javascript">
-            console.log("${dbError}");
-            <c:if test="${dbError}">
-
-            $("[name=alertDialog]").dialog({
-                autoOpen: false,
-                modal: true
-            });
-
-            $("[name=alertClose]").on("click", function() {
-                $("[name=alertDialog]").dialog("close");
-            });
-
-            $("[name=alertDialog]").dialog("open");
-
-            </c:if>
-        </script>
-    </c:if>
-
-    <script src="/resources/scripts/drive/addNewDrive.js?version=<%=cacheNumber%>"></script>
-    <script src="/resources/scripts/modals/alerts/alert.js?version=<%=cacheNumber%>"></script>
-    <script src="/resources/scripts/modals/dialogs/stopOverPlaces.js?version=<%=cacheNumber%>"></script>
 </body>
 </html>

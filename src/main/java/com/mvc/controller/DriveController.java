@@ -5,6 +5,7 @@ import com.mvc.dto.SearchDrivesDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
 import com.mvc.model.*;
+import com.mvc.service.IBookingService;
 import com.mvc.service.ICarService;
 import com.mvc.service.IDriveService;
 import com.mvc.service.IUserService;
@@ -35,6 +36,9 @@ public class DriveController {
 
     @Autowired
     ICarService carService;
+
+    @Autowired
+    IBookingService bookingService;
 
     /**
      * kontroler wyswietla formatke dodawania przejazdu
@@ -283,6 +287,12 @@ public class DriveController {
             model.addAttribute("drivesStartDates", startDates);
             model.addAttribute("filteredDrives", drives);
 
+//            session.setAttribute("session_stopOverPlaces", stopOverPlaces);
+//            session.setAttribute("session_availableSeats", availableSeats);
+//            session.setAttribute("session_drivesStartDates", startDates);
+//            session.setAttribute("session_filteredDrives", drives);
+//            session.setAttribute("session_searchDrivesDTO", searchDrivesDTO);
+
             return "drives/searchDrive/drivesList";
         } else {
             log.info("Wyszukiwanie przejazdow - blad podczas pobierania przejazdow z bazy");
@@ -413,8 +423,8 @@ public class DriveController {
      * kontroler wywoluje serwis edytujacy dane przejazdu
      */
     @RequestMapping(value = "/myDrives/edit", method = RequestMethod.POST)
-    public String editDrive(@ModelAttribute("driveDTO") @Valid DriveDTO driveDTO, BindingResult bindingResult, HttpSession session, Model model,
-                           @RequestParam(value = "driveId", required = true) Long driveId){
+    public String editDrive(@ModelAttribute("driveDTO") @Valid DriveDTO driveDTO, BindingResult bindingResult, HttpSession session,
+                            @RequestParam(value = "driveId", required = true) Long driveId){
         if(bindingResult.hasErrors()){
             log.info("Edycja przejazdu - wprowadzono niepoprawne dane, zwroc formularz");
 
@@ -492,7 +502,10 @@ public class DriveController {
 
         DriveModel drive = driveService.getDrive(driveId).getData();
         DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
-        ServiceResult<List<CarModel>> result_carService = new ServiceResult<>();
+        UserModel driver = drive.getInsertUser();
+        List<CarModel> driverCars = carService.getUserCars(drive.getInsertUser()).getData();
+        List<StopOverPlaceModel> stopOverPlaces = drive.getStopOverPlaces();
+        int driverAge;
         DriveDTO driveDTO = new DriveDTO();
         String startDate = null;
         String returnDate = null;
@@ -536,17 +549,59 @@ public class DriveController {
         driveDTO.setReturnDate(returnDate);
         driveDTO.setDriverComment(driveDetails.getDriverComment());
 
-        // pobieranie miejsc posrednich
-        List<StopOverPlaceModel> stopOverPlaces = drive.getStopOverPlaces();
+        // zmiana daty urodzenia na wiek
+        driverAge = Calendar.getInstance().get(Calendar.YEAR) - driver.getBirthDate().get(Calendar.YEAR);
 
-        // pobieranie samochodu kierowcy
-        result_carService = carService.getUserCars(drive.getInsertUser());
+        // pobieranie rezerwacji dla przejazdu
+        List<BookingModel> bookings = bookingService.getBookings(drive).getData();
+
+        // pobieranie uzytkownikow ktorzy zarezerwowali
+        List<UserModel> passengers = new ArrayList<>();
+        for(BookingModel booking : bookings){
+            passengers.add(booking.getUser());
+        }
+
+        // obliczanie ilosci wolnych miejsc, w celu wyswietlenia kolorowych ludzikow
+        Integer availableSeats = driveDetails.getPassengersQuantity() - passengers.size();
 
         model.addAttribute("driveDTO", driveDTO);
         model.addAttribute("driveId", driveId);
         model.addAttribute("stopOverPlaces", stopOverPlaces);
-        model.addAttribute("cars", result_carService.getData());
+        model.addAttribute("cars", driverCars);
+        model.addAttribute("driver", driver);
+        model.addAttribute("driverAge", driverAge);
+        model.addAttribute("passengers", passengers);
+        model.addAttribute("availableSeats", availableSeats);
+
+        //todo: pasazerowie - po kliknieciu wyswietl modal z pasazerem
+        //todo zapamietywanie poprzedniej strony (z wyszukiwaniem - wyszukane przejazdy zapisac do sesji i stamtad je pobierac)
 
         return "drives/searchDrive/bookDrive";
+    }
+
+
+    @RequestMapping(value = "/bookDrive", method = RequestMethod.POST)
+    public String bookDrive(@SessionAttribute("userFromSession") UserModel passenger,
+                            @RequestParam(value = "driveId", required = true) Long driveId){
+
+        ServiceResult<BookingModel> result = new ServiceResult<>();
+        DriveModel drive = driveService.getDrive(driveId).getData();
+
+        result = bookingService.bookDrive(passenger, drive);
+
+        // todo: sprawdzanie czy jest jeszcze miejsce podczas rezerwowania przejazdu
+        // todo: gdy nie ma miejsca to komunikat, lub gdy wiadomo juz wczesniej ze nie ma miejsca to wyszarzyc przycisk
+
+        if(result.isValid()){
+            log.info("Rezerwacja przejazdu - przejazd zarezerwowany");
+            return "redirect:/drives/myBookings";
+        } else {
+            log.info("Rezerwacja przejazdu - nie udalo sie zarezerwowac przejazdu");
+
+//            session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
+//            model.addAttribute("dbError", true);
+
+            return "drives/searchDrive/bookDrive";
+        }
     }
 }

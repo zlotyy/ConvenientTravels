@@ -7,6 +7,7 @@
 9. register GET - carModalVisible - sprawdzic czy potrzebne
 10. jak nie uda sie usunac/edytowac przejazdu, to pokaz alert
 11. zaczytywac miejsca posrednie przy edycji przejazdu
+12. na liscie moich przejazdow zrobic przycisk - pokaz i potwierdz rezerwacje
 
 
 
@@ -21,3 +22,11 @@ gdy inicjalizujemy liste, uzywamy petli i dla kazdego elementu dajemy initialize
 
 @RequestParam:                              @PathVariable
 /drives/myDrives/delete?driveId=id          /drives/myDrives/delete/id
+
+
+
+w przyszlosci:
+1. SignalR - cos co bedzie odswiezac listy na biezaco
+2. Czat
+3. Maile i smsy o przejazdach
+4. Wiecej szczegolow przejazdu
