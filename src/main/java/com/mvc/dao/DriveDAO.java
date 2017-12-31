@@ -5,6 +5,7 @@ import com.mvc.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -99,7 +100,7 @@ public class DriveDAO implements IDriveDAO {
      * metoda wyszukuje przejazd po id
      */
     public DriveModel findById(Long id) {
-        TypedQuery<DriveModel> query = entityManager.createQuery("select d from DriveModel d where d.driveId = :driveId", DriveModel.class);
+        TypedQuery<DriveModel> query = entityManager.createQuery("select d from DriveModel d where d.driveId = :driveId and d.isDeleted = false", DriveModel.class);
         query.setParameter("driveId", id);
 
         DriveModel drive = null;
@@ -155,4 +156,5 @@ public class DriveDAO implements IDriveDAO {
 
         return drives;
     }
+
 }

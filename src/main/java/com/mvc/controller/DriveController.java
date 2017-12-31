@@ -303,6 +303,9 @@ public class DriveController {
     }
 
 
+    /**
+     * kontroler wyswietla przejazdy uzytkownika
+     */
     @RequestMapping("/myDrives")
     public String return_myDrives_index(@SessionAttribute("userFromSession") UserModel user, Model model){
         List<DriveModel> allDrives = driveService.getUserDrives(user).getData();
@@ -490,15 +493,65 @@ public class DriveController {
         }
     }
 
-    @RequestMapping("/myBookings")
-    public String return_myBookings_index(){
+    @RequestMapping(value = "/myBookings", method = RequestMethod.GET)
+    public String return_myBookings_index(@SessionAttribute("userFromSession") UserModel session_user, Model model){
+
+        List<DriveModel> bookedDrives = bookingService.getUserBookedDrives(session_user).getData();
+
+        // zmiana formatu daty z Calendar na Stringa
+        List<String> startDates = new ArrayList<>();
+        for (DriveModel drive : bookedDrives) {
+            DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
+            String startDate = dateFormatHelper.calendarToString_DateTimeFormat();
+            startDates.add(startDate);
+        }
+        List<String> returnDates = new ArrayList<>();
+        for (DriveModel drive : bookedDrives) {
+            DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getReturnDate(), "yyyy-MM-dd HH:mm");
+            String returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
+            returnDates.add(returnDate);
+        }
+
+        // obliczanie ilosci miejsc
+        List<Integer> bookedSeats = new ArrayList<>();
+        List<Integer> maxSeats = new ArrayList<>();
+        for (DriveModel drive : bookedDrives) {
+            DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
+
+            bookedSeats.add(drive.getBookings().size());
+            maxSeats.add(driveDetails.getPassengersQuantity());
+        }
+
+        // pobieranie miejsc posrednich i parsowanie na Stringa
+        List<String> stopOverPlaces = new ArrayList<>();
+        for (DriveModel drive : bookedDrives) {
+            List<StopOverPlaceModel> list = drive.getStopOverPlaces();
+            String tmp = "";
+
+            for (StopOverPlaceModel place : list) {
+                if (!list.get(0).equals(place)) {
+                    tmp += " <br>";
+                }
+                tmp += place.getStopOverCity() + ", " + place.getStopOverStreet();
+            }
+
+            stopOverPlaces.add(tmp);
+        }
+
+        model.addAttribute("bookedDrives", bookedDrives);
+        model.addAttribute("drivesStartDates", startDates);
+        model.addAttribute("drivesReturnDates", returnDates);
+        model.addAttribute("drivesBookedSeats", bookedSeats);
+        model.addAttribute("drivesMaxSeats", maxSeats);
+        model.addAttribute("stopOverPlaces", stopOverPlaces);
 
         return "drives/myBookings/index";
     }
 
 
-    @RequestMapping(value = "/bookDrive", method = RequestMethod.GET)
-    public String bookDrive(Model model, @RequestParam(value = "driveId", required = true) Long driveId){
+    @RequestMapping(value = "/myBookings/bookedDrive", method = RequestMethod.GET)
+    public String showBookedDrive(Model model, @RequestParam(value = "driveId", required = true) Long driveId,
+                                  @SessionAttribute("userFromSession") UserModel session_user){
 
         DriveModel drive = driveService.getDrive(driveId).getData();
         DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
@@ -573,6 +626,92 @@ public class DriveController {
         model.addAttribute("passengers", passengers);
         model.addAttribute("availableSeats", availableSeats);
 
+        return "drives/myBookings/bookedDrive";
+    }
+
+
+    @RequestMapping(value = "/bookDrive", method = RequestMethod.GET)
+    public String bookDrive(Model model, @RequestParam(value = "driveId", required = true) Long driveId,
+                            @SessionAttribute("userFromSession") UserModel session_user){
+
+        DriveModel drive = driveService.getDrive(driveId).getData();
+        DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
+        UserModel driver = drive.getInsertUser();
+        List<CarModel> driverCars = carService.getUserCars(drive.getInsertUser()).getData();
+        List<StopOverPlaceModel> stopOverPlaces = drive.getStopOverPlaces();
+        int driverAge;
+        DriveDTO driveDTO = new DriveDTO();
+        String startDate = null;
+        String returnDate = null;
+        String isSmokePermitted;
+        String isRoundTrip;
+        boolean isUserPassenger = false;
+
+        // zamiana daty z Calendar na Stringa
+        DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
+        if(drive.getStartDate() != null){
+            startDate = dateFormatHelper.calendarToString_DateTimeFormat();
+        }
+        dateFormatHelper = new DateFormatHelper(drive.getReturnDate(), "yyyy-MM-dd HH:mm");
+        if(drive.getReturnDate() != null){
+            returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
+        }
+
+        if(driveDetails.isSmokePermitted()){
+            isSmokePermitted = "Tak";
+        } else {
+            isSmokePermitted = "Nie";
+        }
+
+        if(drive.isRoundTrip()){
+            isRoundTrip = "Tak";
+        } else {
+            isRoundTrip = "Nie";
+        }
+
+        driveDTO.setCityStart(drive.getCityStart());
+        driveDTO.setStreetStart(drive.getStreetStart());
+        driveDTO.setExactPlaceStart(drive.getExactPlaceStart());
+        driveDTO.setStartDate(startDate);
+        driveDTO.setCityArrival(drive.getCityArrival());
+        driveDTO.setStreetArrival(drive.getStreetArrival());
+        driveDTO.setExactPlaceArrival(drive.getExactPlaceArrival());
+        driveDTO.setPassengersQuantity(driveDetails.getPassengersQuantity());
+        driveDTO.setCost(drive.getCost());
+        driveDTO.setLuggageSize(driveDetails.getLuggageSize());
+        driveDTO.setIsSmokePermitted(isSmokePermitted);
+        driveDTO.setIsRoundTrip(isRoundTrip);
+        driveDTO.setReturnDate(returnDate);
+        driveDTO.setDriverComment(driveDetails.getDriverComment());
+
+        // zmiana daty urodzenia na wiek
+        driverAge = Calendar.getInstance().get(Calendar.YEAR) - driver.getBirthDate().get(Calendar.YEAR);
+
+        // pobieranie rezerwacji dla przejazdu
+        List<BookingModel> bookings = bookingService.getBookings(drive).getData();
+
+        // pobieranie uzytkownikow ktorzy zarezerwowali
+        List<UserModel> passengers = new ArrayList<>();
+        for(BookingModel booking : bookings){
+            passengers.add(booking.getUser());
+            if(booking.getUser().getUserId() == session_user.getUserId()){
+                isUserPassenger = true;
+            }
+        }
+
+        // obliczanie ilosci wolnych miejsc, w celu wyswietlenia kolorowych ludzikow
+        Integer availableSeats = driveDetails.getPassengersQuantity() - passengers.size();
+
+        model.addAttribute("driveDTO", driveDTO);
+        model.addAttribute("driveId", driveId);
+        model.addAttribute("stopOverPlaces", stopOverPlaces);
+        model.addAttribute("cars", driverCars);
+        model.addAttribute("driver", driver);
+        model.addAttribute("driverAge", driverAge);
+        model.addAttribute("passengers", passengers);
+        model.addAttribute("availableSeats", availableSeats);
+        model.addAttribute("isUserPassenger", isUserPassenger);
+
         //todo: pasazerowie - po kliknieciu wyswietl modal z pasazerem
         //todo zapamietywanie poprzedniej strony (z wyszukiwaniem - wyszukane przejazdy zapisac do sesji i stamtad je pobierac)
 
@@ -584,13 +723,13 @@ public class DriveController {
     public String bookDrive(@SessionAttribute("userFromSession") UserModel passenger,
                             @RequestParam(value = "driveId", required = true) Long driveId){
 
-        ServiceResult<BookingModel> result = new ServiceResult<>();
+        ServiceResult<BookingModel> result;
         DriveModel drive = driveService.getDrive(driveId).getData();
 
         result = bookingService.bookDrive(passenger, drive);
 
         // todo: sprawdzanie czy jest jeszcze miejsce podczas rezerwowania przejazdu
-        // todo: gdy nie ma miejsca to komunikat, lub gdy wiadomo juz wczesniej ze nie ma miejsca to wyszarzyc przycisk
+        // todo: gdy nie ma miejsca to komunikat
 
         if(result.isValid()){
             log.info("Rezerwacja przejazdu - przejazd zarezerwowany");
@@ -602,6 +741,32 @@ public class DriveController {
 //            model.addAttribute("dbError", true);
 
             return "drives/searchDrive/bookDrive";
+        }
+    }
+
+
+    @RequestMapping(value = "/myBookings/unbookDrive", method = RequestMethod.POST)
+    public String unbookDrive(@SessionAttribute("userFromSession") UserModel passenger,
+                              @RequestParam(value = "driveId", required = true) Long driveId){
+
+        ServiceResult<BookingModel> result;
+        DriveModel drive = driveService.getDrive(driveId).getData();
+        BookingModel booking = bookingService.getBooking(passenger, drive).getData();
+
+        result = bookingService.unbookDrive(passenger, booking);
+
+        //todo: komunikat o konsekwencjach rezygnacji z rezerwacji
+
+        if(result.isValid()){
+            log.info("Anulowanie rezerwacji przejazdu - rezerwacja usunieta");
+            return "redirect:/drives/myBookings";
+        } else {
+            log.info("Anulowanie rezerwacji przejazdu - nie udalo sie usunac rezerwacji przejazdu");
+
+//            session.setAttribute("dbMessage", result.errorsToString());                                   //lista bledow
+//            model.addAttribute("dbError", true);
+
+            return "drives/myBookings/bookedDrive";
         }
     }
 }

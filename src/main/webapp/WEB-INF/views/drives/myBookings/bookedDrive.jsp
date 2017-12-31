@@ -34,15 +34,14 @@
 <body>
     <jsp:include page="/menu"/>
 
-
     <div class="container">
         <div class="panel panel-primary my-fixed-panel">
             <div class="panel-body">
                 <div class="text-center">
-                    <h2>Rezerwacja przejazdu</h2>
+                    <h2>Szczegóły przejazdu</h2>
                     <br>
                 </div>
-                <form:form class="form-horizontal" modelAttribute="driveDTO" name="driveForm" action="/drives/bookDrive?driveId=${driveId}" method="post">
+                <form:form class="form-horizontal" modelAttribute="driveDTO" name="driveForm" action="/drives/myBookings/unbookDrive?driveId=${driveId}" method="post">
                     <div class="container-fluid">
                         <div class="col-md-12">
                             <div class="col-md-6" style="float: left">
@@ -159,12 +158,12 @@
                                         <div class="col-md-8">
                                             <p class="form-control-static">
                                                 <c:choose>
-                                                <c:when test="${driveDTO.isRoundTrip == 'Tak'}">
-                                                    ${driveDTO.isRoundTrip}, powrót: ${driveDTO.returnDate}
-                                                </c:when>
-                                                <c:otherwise>
-                                                    ${driveDTO.isRoundTrip}
-                                                </c:otherwise>
+                                                    <c:when test="${driveDTO.isRoundTrip == 'Tak'}">
+                                                        ${driveDTO.isRoundTrip}, powrót: ${driveDTO.returnDate}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        ${driveDTO.isRoundTrip}
+                                                    </c:otherwise>
                                                 </c:choose>
                                             </p>
                                         </div>
@@ -213,7 +212,7 @@
                             <div class="col-md-5" style="float: right; ">
                                 <div class="col-md-4 row">
                                     <div class="form-group">
-                                        <button name="bookDrive" type="submit" class="btn btn-primary btn-block">Zarezerwuj</button>
+                                        <button name="unbookDrive" type="submit" class="btn btn-primary btn-block">Anuluj rezerwację</button>
                                     </div>
                                 </div>
                                 <div class="col-md-4" style="float: right">
@@ -245,20 +244,6 @@
     <%-- Bootstrap DateTimePicker JS --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
-    <%--<script src="/resources/scripts/drive/bookDrive.js?version=<%=cacheNumber%>"></script>--%>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            if( ${availableSeats == 0} ){
-                console.log("Brak wolnych miejsc");
-                $("[name=bookDrive]").prop('disabled', true).prop('title', 'Brak wolnych miejsc');
-            }
-            if( ${isUserPassenger} ){
-                console.log("Ten uzytkownik juz zarezerwowal ten przejazd");
-                $("[name=bookDrive]").prop('disabled', true).prop('title', 'Jesteś już uczestnikiem tego przejazdu');
-            }
-        });
-    </script>
 
 </body>
 </html>
