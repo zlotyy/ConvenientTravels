@@ -9,6 +9,9 @@ import com.mvc.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -50,6 +54,11 @@ public class UserController {
         if(carModalVisible != null){
             model.addAttribute("carModalVisible", true);
         }
+
+
+        RestTemplate restTemplate = new RestTemplate();
+        UserModel userRest = restTemplate.getForObject("http://localhost:8080/rest/test/1", UserModel.class);
+        log.info("REST ODEBRANY OBIEKT " + userRest);
 
         return "register/index";
     }
@@ -254,5 +263,4 @@ public class UserController {
     public UserRatesDTO getRates(){
         return new UserRatesDTO();
     }
-
 }

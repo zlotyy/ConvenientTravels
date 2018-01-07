@@ -12,6 +12,10 @@
 
 
 
+USUNAC RESTA Z USERCONTROLLER
+
+
+
 !!! WAZNE - w toString nie uzywac dolaczonych encji - leci StackOverflowError !!!
 
 Hibernate.initialize - uzywamy w serwisie!!

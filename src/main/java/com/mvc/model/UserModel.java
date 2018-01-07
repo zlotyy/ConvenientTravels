@@ -313,18 +313,18 @@ public class UserModel implements Serializable {
     @Override
     public String toString() {
         return "UserModel{" +
-                "userId=" + userId +
+//                "userId=" + userId +
                 ", login='" + login + '\'' +
-                ", mail='" + mail + '\'' +
-                ", phone='" + phone + '\'' +
-                ", name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", male=" + male +
-                ", birthDate=" + birthDate.getTime() +
-                ", role=" + role +
-                ", modifyTime=" + modifyTime.getTime() +
-                ", lastLoginTime=" + (lastLoginTime != null ? lastLoginTime.getTime() : "" ) +
-                ", isDeleted=" + isDeleted +
+//                ", mail='" + mail + '\'' +
+//                ", phone='" + phone + '\'' +
+//                ", name='" + name + '\'' +
+//                ", lastname='" + lastname + '\'' +
+//                ", male=" + male +
+//                ", birthDate=" + birthDate.getTime() +
+//                ", role=" + role +
+//                ", modifyTime=" + modifyTime.getTime() +
+//                ", lastLoginTime=" + (lastLoginTime != null ? lastLoginTime.getTime() : "" ) +
+//                ", isDeleted=" + isDeleted +
                 '}';
     }
 }
