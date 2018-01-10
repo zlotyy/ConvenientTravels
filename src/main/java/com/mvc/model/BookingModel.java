@@ -1,5 +1,6 @@
 package com.mvc.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -21,11 +22,13 @@ public class BookingModel implements Serializable {
     // Polaczenie 1 User do N Rezerwacji
     @ManyToOne
     @JoinColumn(name = "UserId")
+    @JsonBackReference
     private UserModel user;
 
     // Polaczenie 1 Przejazd do N Rezerwacji
     @ManyToOne
     @JoinColumn(name = "DriveId")
+    @JsonBackReference
     private DriveModel drive;
 
     public long getBookingId() {

@@ -1,6 +1,8 @@
 package com.mvc.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -22,6 +24,7 @@ public class StopOverPlaceModel implements Serializable {
     // Polaczenie 1 Przejazd do N Miejsc posrednich
     @ManyToOne
     @JoinColumn(name = "DriveId")
+    @JsonBackReference
     private DriveModel drive;
 
 

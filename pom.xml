@@ -29,7 +29,7 @@
         <jstl-version>1.2</jstl-version>
         <org.apache.commons-version>3.2</org.apache.commons-version>
         <org.json-version>20170516</org.json-version>
-        <jackson.core-version>2.5.0</jackson.core-version>          <!--zmiana na nizsza wersje bo najwyzsza nie dzialala-->
+        <jackson.core-version>2.5.1</jackson.core-version>          <!--zmiana na nizsza wersje bo najwyzsza nie dzialala-->
     </properties>
 
     <dependencies>

@@ -2,6 +2,7 @@ package com.mvc.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mvc.enums.LuggageSize;
 import com.mvc.enums.Male;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -52,7 +53,8 @@ public class DriveDetailsModel implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "DriveId")
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonManagedReference           // czy dobrze?
     private DriveModel drive;
 
 

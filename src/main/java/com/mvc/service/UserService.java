@@ -62,7 +62,9 @@ public class UserService implements IUserService {
         UserModel user;
         try {
             user = userDAO.findByLoginAndPassword(login, password);
-            result.setData(user);
+            if(user != null) {
+                result.setData(user);
+            }
         } catch (Exception e){
             log.error("Blad podczas wyszukiwania uzytkownika");
             result.errors.add("Błąd podczas pobierania danych użytkownika");

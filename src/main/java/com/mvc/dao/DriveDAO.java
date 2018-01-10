@@ -53,7 +53,7 @@ public class DriveDAO implements IDriveDAO {
      * metoda pobiera liste przejazdow dla podanego uzytkownika
      */
     public List<DriveModel> getUserDrives(UserModel user) {
-        TypedQuery<DriveModel> query = entityManager.createQuery("select d from DriveModel d where d.insertUser = :user", DriveModel.class);
+        TypedQuery<DriveModel> query = entityManager.createQuery("select d from DriveModel d where d.insertUser = :user and d.isDeleted = false", DriveModel.class);
         query.setParameter("user", user);
 
         return query.getResultList();

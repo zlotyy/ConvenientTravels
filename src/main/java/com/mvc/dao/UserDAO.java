@@ -47,8 +47,12 @@ public class UserDAO implements IUserDAO {
         try {
             user = query.getSingleResult();
             // sprawdzenie czy dla wyszukanego loginu zgadza sie haslo
-            bCryptPasswordEncoder.matches(password, user.getPassword());
-            log.info("Znaleziono uzytkownika w bazie: " + user);
+            if(bCryptPasswordEncoder.matches(password, user.getPassword())){
+                log.info("Znaleziono uzytkownika w bazie: " + user);
+            } else {
+                user = null;
+                log.info("Znaleziono uzytkownika o takim loginie, ale podane haslo jest nieprawidlowe");
+            }
         } catch (NoResultException nRE){
             log.info("UserDAO.findByLoginAndPassword() - nie znaleziono uzytkownika w bazie");
         }

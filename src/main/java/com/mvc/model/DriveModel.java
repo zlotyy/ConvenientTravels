@@ -1,8 +1,8 @@
 package com.mvc.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -48,9 +48,6 @@ public class DriveModel implements Serializable  {
     @Column(name = "StreetStart")
     private String streetStart;
 
-//    @Column(name = "BusStopStart")
-//    private String busStopStart;
-
     @Column(name = "ExactPlaceStart")
     private String exactPlaceStart;
 
@@ -82,18 +79,50 @@ public class DriveModel implements Serializable  {
     // Polaczenie 1 User do N Przejazdow
     @ManyToOne
     @JoinColumn(name = "InsertUserId")
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonBackReference
     private UserModel insertUser;
 
     // Polaczenie 1 Przejazd do N Rezerwacji
     @OneToMany(mappedBy = "drive")
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonManagedReference
     private List<BookingModel> bookings;
 
     // Polaczenie 1 Przejazd do N Miejsc posrednich
     @OneToMany(mappedBy = "drive")
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonManagedReference
     private List<StopOverPlaceModel> stopOverPlaces;
+
+
+    public DriveModel(){
+
+    }
+
+    public DriveModel(Calendar startDate, Calendar returnDate, Calendar insertDate, Calendar modificationDate, String searchData,
+                      String cityStart, String streetStart, String exactPlaceStart, String cityArrival, String streetArrival,
+                      String exactPlaceArrival, boolean isFreeWay, boolean isRoundTrip, int cost, boolean isDeleted, UserModel insertUser,
+                      List<BookingModel> bookings, List<StopOverPlaceModel> stopOverPlaces) {
+        this.startDate = startDate;
+        this.returnDate = returnDate;
+        this.insertDate = insertDate;
+        this.modificationDate = modificationDate;
+        this.searchData = searchData;
+        this.cityStart = cityStart;
+        this.streetStart = streetStart;
+        this.exactPlaceStart = exactPlaceStart;
+        this.cityArrival = cityArrival;
+        this.streetArrival = streetArrival;
+        this.exactPlaceArrival = exactPlaceArrival;
+        this.isFreeWay = isFreeWay;
+        this.isRoundTrip = isRoundTrip;
+        this.cost = cost;
+        this.isDeleted = isDeleted;
+        this.insertUser = insertUser;
+        this.bookings = bookings;
+        this.stopOverPlaces = stopOverPlaces;
+    }
 
 
 
@@ -161,29 +190,12 @@ public class DriveModel implements Serializable  {
         this.streetStart = streetStart;
     }
 
-//    public String getBusStopStart() {
-//        return busStopStart;
-//    }
-//
-//    public void setBusStopStart(String busStopStart) {
-//        this.busStopStart = busStopStart;
-//    }
-
-
     public String getExactPlaceStart() {
         return exactPlaceStart;
     }
 
     public void setExactPlaceStart(String exactPlaceStart) {
         this.exactPlaceStart = exactPlaceStart;
-    }
-
-    public String getExactPlaceArrival() {
-        return exactPlaceArrival;
-    }
-
-    public void setExactPlaceArrival(String exactPlaceArrival) {
-        this.exactPlaceArrival = exactPlaceArrival;
     }
 
     public String getCityArrival() {
@@ -200,6 +212,14 @@ public class DriveModel implements Serializable  {
 
     public void setStreetArrival(String streetArrival) {
         this.streetArrival = streetArrival;
+    }
+
+    public String getExactPlaceArrival() {
+        return exactPlaceArrival;
+    }
+
+    public void setExactPlaceArrival(String exactPlaceArrival) {
+        this.exactPlaceArrival = exactPlaceArrival;
     }
 
     public boolean isFreeWay() {
@@ -257,6 +277,8 @@ public class DriveModel implements Serializable  {
     public void setStopOverPlaces(List<StopOverPlaceModel> stopOverPlaces) {
         this.stopOverPlaces = stopOverPlaces;
     }
+
+
 
     @Override
     public String toString() {

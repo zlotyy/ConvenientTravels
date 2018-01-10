@@ -1,6 +1,7 @@
 package com.mvc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mvc.enums.Male;
 import com.mvc.enums.Role;
 import org.hibernate.annotations.Cascade;
@@ -98,31 +99,31 @@ public class UserModel implements Serializable {
 
     // Polaczenie 1 User do N Przejazdow
     @OneToMany(mappedBy = "insertUser")
-    @JsonIgnore
+    @JsonManagedReference
     private List<DriveModel> drives;
 
     // Polaczenie 1 User do N Samochodow
     @OneToMany(mappedBy = "user")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-    @JsonIgnore
+    @JsonManagedReference
     private List<CarModel> cars;
 
     // Polaczenie 1 User do N Rezerwacji
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @JsonManagedReference
     private List<BookingModel> bookings;
 
     // Polaczenie 1 User do N Sesji
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @JsonManagedReference
     private List<SessionActualModel> sessionActual;
 
     @OneToMany(mappedBy = "sender")
-    @JsonIgnore
+    @JsonManagedReference
     private List<MessageModel> message_sender;
 
     @OneToMany(mappedBy = "receiver")
-    @JsonIgnore
+    @JsonManagedReference
     private List<MessageModel> message_receiver;
 
 

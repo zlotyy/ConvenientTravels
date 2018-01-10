@@ -308,17 +308,12 @@ public class DriveController {
      */
     @RequestMapping("/myDrives")
     public String return_myDrives_index(@SessionAttribute("userFromSession") UserModel user, Model model){
-        List<DriveModel> allDrives = driveService.getUserDrives(user).getData();
-        List<DriveModel> notDeletedDrives = new ArrayList<>();
-        for(DriveModel drive : allDrives){
-            if(!drive.isDeleted())
-                notDeletedDrives.add(drive);
-        }
-        model.addAttribute("userDrives", notDeletedDrives);
+        List<DriveModel> drives = driveService.getUserDrives(user).getData();
+        model.addAttribute("userDrives", drives);
 
         // zmiana formatu daty z Calendar na Stringa
         List<String> startDates = new ArrayList<>();
-        for(DriveModel drive : notDeletedDrives){
+        for(DriveModel drive : drives){
             DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
             String startDate = dateFormatHelper.calendarToString_DateTimeFormat();
             startDates.add(startDate);
@@ -328,7 +323,7 @@ public class DriveController {
         // obliczanie ilosci miejsc
         List<Integer> bookedPlaces = new ArrayList<>();
         List<Integer> maxPlaces = new ArrayList<>();
-        for(DriveModel drive : notDeletedDrives){
+        for(DriveModel drive : drives){
             DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
 
             bookedPlaces.add(drive.getBookings().size());
@@ -501,15 +496,23 @@ public class DriveController {
         // zmiana formatu daty z Calendar na Stringa
         List<String> startDates = new ArrayList<>();
         for (DriveModel drive : bookedDrives) {
-            DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
-            String startDate = dateFormatHelper.calendarToString_DateTimeFormat();
-            startDates.add(startDate);
+            if(drive.getStartDate() != null) {
+                DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
+                String startDate = dateFormatHelper.calendarToString_DateTimeFormat();
+                startDates.add(startDate);
+            } else {
+                startDates.add("");
+            }
         }
         List<String> returnDates = new ArrayList<>();
         for (DriveModel drive : bookedDrives) {
-            DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getReturnDate(), "yyyy-MM-dd HH:mm");
-            String returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
-            returnDates.add(returnDate);
+            if(drive.getReturnDate() != null) {
+                DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getReturnDate(), "yyyy-MM-dd HH:mm");
+                String returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
+                returnDates.add(returnDate);
+            } else {
+                returnDates.add("");
+            }
         }
 
         // obliczanie ilosci miejsc

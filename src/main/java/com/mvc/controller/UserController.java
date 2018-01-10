@@ -56,9 +56,9 @@ public class UserController {
         }
 
 
-        RestTemplate restTemplate = new RestTemplate();
-        UserModel userRest = restTemplate.getForObject("http://localhost:8080/rest/test/1", UserModel.class);
-        log.info("REST ODEBRANY OBIEKT " + userRest);
+//        RestTemplate restTemplate = new RestTemplate();
+//        UserModel userRest = restTemplate.getForObject("http://localhost:8080/rest/test/1", UserModel.class);
+//        log.info("REST ODEBRANY OBIEKT " + userRest);
 
         return "register/index";
     }

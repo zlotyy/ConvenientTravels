@@ -1,5 +1,6 @@
 package com.mvc.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class CarModel implements Serializable {
     // Polaczenie 1 User do N Samochodow
     @ManyToOne
     @JoinColumn(name = "UserId")
+    @JsonBackReference
     private UserModel user;
 
     public long getCarId() {

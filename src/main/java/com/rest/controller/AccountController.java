@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@SessionAttributes(types = UserModel.class)     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
 @RestController("restAccountController")
 @RequestMapping("/rest")
 public class AccountController {
@@ -70,50 +71,4 @@ public class AccountController {
             return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.UNAUTHORIZED);
         }
     }
-
-
-//    @RequestMapping(value = "/login", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String rest(@RequestParam(value = "login", required = false) String login,
-//                       @RequestParam(value = "password", required = false) String password,
-//                       HttpSession session){
-//
-//        log.info("RESTOWA METODA - LOGOWANIE");
-//        String jsonOutput = "";
-//        HashMap<String, String> outputHashMap = new HashMap<>();
-//        // generujemy token dla aplikacji androidowej
-//        String token = TokenGenerator.generateToken(64);
-//
-//        UserModel user = userService.getUser(login, password).getData();
-//
-//        if(user != null){
-//            // dodaj token uzytkownika do sesji
-//            List<String> restTokensList = (ArrayList<String>) session.getAttribute("session_restTokensList");
-//            if(restTokensList == null){
-//                restTokensList = new ArrayList<>();
-//            }
-//            restTokensList.add(token);
-//            session.setAttribute("session_restTokensList", restTokensList);
-//
-//            outputHashMap.put("userId", String.valueOf(user.getUserId()));
-//            outputHashMap.put("token", token);
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            try {
-//                jsonOutput = mapper.writeValueAsString(outputHashMap);
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return jsonOutput;
-//    }
-
-//
-//    @RequestMapping(value = "/test", method = RequestMethod.GET)
-//    public String testy(){
-//        log.info("REST - TESTY");
-//
-//        return "testy";
-//    }
 }
