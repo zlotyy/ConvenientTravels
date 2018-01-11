@@ -1,16 +1,11 @@
 package com.rest.controller;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mvc.dto.DriveDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
 import com.mvc.model.DriveModel;
 import com.mvc.model.UserModel;
+import com.mvc.service.IBookingService;
 import com.mvc.service.IDriveService;
 import com.mvc.service.IUserService;
 import com.rest.helpers.EmptyJsonResponse;
@@ -24,11 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.*;
 
 
-@SessionAttributes(types = {UserModel.class, ArrayList.class})     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
+//@SessionAttributes(types = {UserModel.class, ArrayList.class})     //potrzebne zeby przesylac obiekty miedzy kontrolerami gdy jest sesja
 @RestController("restDriveController")
 @RequestMapping("/rest")
 public class DriveController {
@@ -39,6 +33,9 @@ public class DriveController {
 
     @Autowired
     IDriveService driveService;
+
+    @Autowired
+    IBookingService bookingService;
 
 
 
@@ -158,4 +155,66 @@ public class DriveController {
 
 
 
+    @RequestMapping(value = "/myDrives/delete", method = RequestMethod.POST)
+    public ResponseEntity<?> deleteDrive(@RequestBody HashMap<String, Long> driveIdMap){
+
+        log.info("RESTOWA METODA - USUN PRZEJAZD");
+
+        ServiceResult<DriveModel> result;
+        Long driveId = driveIdMap.get("driveId");
+        DriveModel drive = driveService.getDrive(driveId).getData();
+
+        try {
+            result = driveService.setDriveDeleted(drive);
+        } catch (Exception e){
+            log.info("REST - nie udalo sie usunac przejazdu");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.BAD_REQUEST);
+        }
+
+        if(result.isValid()) {
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.OK);
+        } else {
+            log.info("REST - nie udalo sie usunac przejazdu");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+
+
+
+
+
+
+    @RequestMapping(value = "/myBookings", method = RequestMethod.GET)
+    public ResponseEntity<?> getMyBookings(@RequestHeader() HashMap<String, String> header){
+
+        log.info("RESTOWA METODA - MOJE REZERWACJE");
+
+        ServiceResult<List<DriveModel>> result = new ServiceResult<>();
+        String header_id = header.get("userid");
+        Long userId = Long.parseLong(header_id);
+        UserModel user = userService.getUser(userId).getData();
+
+        result = bookingService.getUserBookedDrives(user);
+
+        if(result.isValid()) {
+            List<DriveModel> myDrives = result.getData();
+            JSONObject drivesJSON;
+
+            // parsowanie listy przejazdow na JSONA
+            try {
+                drivesJSON = JsonHelper.getJSONObjectFromList(myDrives, "myBookedDrivesList");
+            } catch (Exception e){
+                return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return new ResponseEntity<>(drivesJSON.toString(), HttpStatus.OK);
+        } else {
+            log.info("REST - nie udalo sie pobrac przejazdow");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }
