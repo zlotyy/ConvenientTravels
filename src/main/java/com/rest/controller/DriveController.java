@@ -3,6 +3,7 @@ package com.rest.controller;
 import com.mvc.dto.DriveDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
+import com.mvc.model.BookingModel;
 import com.mvc.model.DriveModel;
 import com.mvc.model.UserModel;
 import com.mvc.service.IBookingService;
@@ -213,6 +214,43 @@ public class DriveController {
             return new ResponseEntity<>(drivesJSON.toString(), HttpStatus.OK);
         } else {
             log.info("REST - nie udalo sie pobrac przejazdow");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+
+
+
+    @RequestMapping(value = "/myBookings/unbookDrive", method = RequestMethod.POST)
+    public ResponseEntity<?> unbookDrive(@RequestBody HashMap<String, Long> driveIdMap,
+                                         @RequestHeader() HashMap<String, String> header){
+
+        log.info("RESTOWA METODA - ANULUJ REZERWACJE");
+
+        ServiceResult<BookingModel> result;
+
+        Long driveId = driveIdMap.get("driveId");
+        DriveModel drive = driveService.getDrive(driveId).getData();
+
+        String header_id = header.get("userid");
+        Long userId = Long.parseLong(header_id);
+        UserModel passenger = userService.getUser(userId).getData();
+
+        BookingModel booking = bookingService.getBooking(passenger, drive).getData();
+
+        try {
+            result = bookingService.unbookDrive(passenger, booking);
+        } catch (Exception e){
+            log.info("REST - nie udalo sie anulowac rezerwacji");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.BAD_REQUEST);
+        }
+
+        if(result.isValid()) {
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.OK);
+        } else {
+            log.info("REST - nie udalo sie anulowac rezerwacji");
             return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
