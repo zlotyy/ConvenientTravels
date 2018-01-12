@@ -250,7 +250,7 @@ public class DriveController {
         if(result.isValid()) {
             return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.OK);
         } else {
-            log.info("REST - nie udalo sie anulowac rezerwacji");
+            log.info("REST - nie udalo sie usunac przejazdu");
             return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

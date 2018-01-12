@@ -218,7 +218,8 @@
                                 </div>
                                 <div class="col-md-4" style="float: right">
                                     <div class="form-group">
-                                        <a href="javascript:history.go(-1)"><button type="button" class="btn btn-danger btn-block">Anuluj</button></a>
+                                        <%--<a href="javascript:history.go(-1)"><button type="button" class="btn btn-danger btn-block">Anuluj</button></a>--%>
+                                            <a href="/drives/searchDrive"><button type="button" class="btn btn-danger btn-block">Anuluj</button></a>
                                     </div>
                                 </div>
                             </div>

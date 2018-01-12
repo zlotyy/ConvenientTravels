@@ -35,8 +35,33 @@
     <div class="panel panel-primary my-fixed-panel">
         <section>
             <div class="panel-body">
-                <div class="text-center">
-                    <h3>Contact</h3>
+                <div>
+                    <div class="text-center" style="margin-bottom: 100px">
+                        <h2>Kontakt</h2>
+                        <br>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-2 col-md-offset-2">
+                            <h3>E - mail</h3>
+                            <p>Czytamy wszystkie maile, jeśli masz jakiś problem, koresponduj z nami na:</p>
+                            <strong><a href="mailto: convenient.travels@gmail.com" style="color: black">convenient.travels@gmail.com</a></strong>
+                        </div>
+                        <div class="col-md-2 col-md-offset-1">
+                            <h3>Adres</h3>
+                            <p>ul. Testowa 55/2
+                                <br>Kraków
+                                <br>30-123
+                                <br>
+                            </p>
+                        </div>
+                        <div class="col-md-2 col-md-offset-1">
+                            <h3>Telefon</h3>
+                            <p> Możesz się również z nami skontaktować pod numerem telefonu:</p>
+                            <p><strong>+48 55 55 555</strong></p>
+                        </div>
+                        <!-- /.col-sm-4 -->
+                    </div>
                 </div>
             </div>
         </section>

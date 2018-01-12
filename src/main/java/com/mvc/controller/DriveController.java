@@ -3,6 +3,7 @@ package com.mvc.controller;
 import com.mvc.dto.DriveDTO;
 import com.mvc.dto.SearchDrivesDTO;
 import com.mvc.helpers.DateFormatHelper;
+import com.mvc.helpers.DriveParser;
 import com.mvc.helpers.ServiceResult;
 import com.mvc.model.*;
 import com.mvc.service.IBookingService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.*;
+
 
 @SessionAttributes(types = {UserModel.class})
 @Controller("driveController")
@@ -373,43 +375,7 @@ public class DriveController {
     @RequestMapping(value = "/myDrives/edit", method = RequestMethod.GET)
     public String editDrive(@RequestParam(value = "driveId", required = true) Long driveId, Model model){
         DriveModel drive = driveService.getDrive(driveId).getData();
-        DriveDetailsModel driveDetails = driveService.getDriveDetails(drive).getData();
-        DriveDTO driveDTO = new DriveDTO();
-        String startDate = null;
-        String returnDate = null;
-        String isSmokePermitted = null;
-        String isRoundTrip = null;
-
-        // zamiana daty z Calendar na Stringa
-        DateFormatHelper dateFormatHelper = new DateFormatHelper(drive.getStartDate(), "yyyy-MM-dd HH:mm");
-        if(drive.getStartDate() != null){
-            startDate = dateFormatHelper.calendarToString_DateTimeFormat();
-        }
-        dateFormatHelper = new DateFormatHelper(drive.getReturnDate(), "yyyy-MM-dd HH:mm");
-        if(drive.getReturnDate() != null){
-            returnDate = dateFormatHelper.calendarToString_DateTimeFormat();
-        }
-        if(driveDetails.isSmokePermitted()){
-            isSmokePermitted = "true";
-        }
-        if(drive.isRoundTrip()){
-            isRoundTrip = "true";
-        }
-
-        driveDTO.setCityStart(drive.getCityStart());
-        driveDTO.setStreetStart(drive.getStreetStart());
-        driveDTO.setExactPlaceStart(drive.getExactPlaceStart());
-        driveDTO.setStartDate(startDate);
-        driveDTO.setCityArrival(drive.getCityArrival());
-        driveDTO.setStreetArrival(drive.getStreetArrival());
-        driveDTO.setExactPlaceArrival(drive.getExactPlaceArrival());
-        driveDTO.setPassengersQuantity(driveDetails.getPassengersQuantity());
-        driveDTO.setCost(drive.getCost());
-        driveDTO.setLuggageSize(driveDetails.getLuggageSize());
-        driveDTO.setIsSmokePermitted(isSmokePermitted);
-        driveDTO.setIsRoundTrip(isRoundTrip);
-        driveDTO.setReturnDate(returnDate);
-        driveDTO.setDriverComment(driveDetails.getDriverComment());
+        DriveDTO driveDTO = DriveParser.parseDriveModel_TO_DriveDTO(drive, driveService);
 
         model.addAttribute("driveDTO", driveDTO);
         model.addAttribute("driveId", driveId);
