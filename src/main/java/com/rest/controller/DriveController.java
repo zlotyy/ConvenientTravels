@@ -1,9 +1,12 @@
 package com.rest.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mvc.dto.DriveDTO;
 import com.mvc.helpers.DateFormatHelper;
 import com.mvc.helpers.ServiceResult;
 import com.mvc.model.BookingModel;
+import com.mvc.model.DriveDetailsModel;
 import com.mvc.model.DriveModel;
 import com.mvc.model.UserModel;
 import com.mvc.service.IBookingService;
@@ -17,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +44,7 @@ public class DriveController {
 
 
 
-    @RequestMapping(value = "/addNewDrive", method = RequestMethod.POST)
+    @RequestMapping(value = "/addNewDrive", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addNewDrive(@RequestBody DriveDTO driveDTO, //@SessionAttribute("session_restTokensList") ArrayList<String> session_restTokens,
                                          @RequestHeader() HashMap<String, String> header){
                                                  //String userIdHeader, @RequestHeader("token") String token){
@@ -251,6 +255,123 @@ public class DriveController {
             return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.OK);
         } else {
             log.info("REST - nie udalo sie usunac przejazdu");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+
+    @RequestMapping(value = "/getDriveDetails", method = RequestMethod.POST)
+    public ResponseEntity<?> getDriveDetails(@RequestBody HashMap<String, Long> driveIdMap,
+                                         @RequestHeader HashMap<String, String> header){
+
+        log.info("RESTOWA METODA - POBIERZ SZCZEGOLY PRZEJAZDU");
+
+        ServiceResult<DriveDetailsModel> result;
+
+        Long driveId = driveIdMap.get("driveId");
+        DriveModel drive = driveService.getDrive(driveId).getData();
+        DriveDetailsModel driveDetails;
+
+        try {
+            result = driveService.getDriveDetails(drive);
+            driveDetails = result.getData();
+        } catch (Exception e){
+            log.info("REST - nie udalo sie pobrac szczegolow przejazdu");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.BAD_REQUEST);
+        }
+
+
+        if(result.isValid()) {
+            JSONObject driveDetailsJSON;
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                String driveDetailsString = mapper.writeValueAsString(driveDetails);
+                driveDetailsJSON = new JSONObject(driveDetailsString);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity<>(driveDetailsJSON.toString(), HttpStatus.OK);
+        } else {
+            log.info("REST - nie udalo sie pobrac szczegolow przejazdu");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+
+
+
+    @RequestMapping(value = "/editDrive", method = RequestMethod.POST)
+    public ResponseEntity<?> editDrive(@RequestBody DriveDTO driveDTO,
+                                         @RequestHeader() HashMap<String, String> header){
+
+        log.info("RESTOWA METODA - EDYTUJ PRZEJAZD");
+
+        ServiceResult<DriveModel> result;
+        boolean isSmokePermitted = false;
+        boolean isRoundTrip = false;
+        Calendar startDate = null;
+        Calendar returnDate = null;
+        String header_id = header.get("driveid");
+        Long driveId = Long.parseLong(header_id);
+
+        // Parsowanie daty na Calendar
+        DateFormatHelper dateFormatHelper = new DateFormatHelper(driveDTO.getStartDate(), "yyyy-MM-dd HH:mm");
+        if(driveDTO.getStartDate() != null){
+            startDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
+        }
+        dateFormatHelper = new DateFormatHelper(driveDTO.getReturnDate(), "yyyy-MM-dd HH:mm");
+        if(driveDTO.getReturnDate() != null){
+            returnDate = dateFormatHelper.stringToCalendar_DateTimeFormat();
+        }
+
+        // Parsowanie Stringa na boolean
+        if(driveDTO.getIsSmokePermitted() != null){
+            if(driveDTO.getIsSmokePermitted().equals("true"))
+                isSmokePermitted = true;
+        }
+        if(driveDTO.getIsRoundTrip() != null) {
+            if (driveDTO.getIsRoundTrip().equals("true"))
+                isRoundTrip = true;
+        }
+
+        try {
+
+            // todo: stopoverplaces - ustawiac w aplikacji
+
+            result = driveService.editDrive(
+                    driveDTO.getCityStart(),
+                    driveDTO.getStreetStart(),
+                    driveDTO.getExactPlaceStart(),
+                    startDate,
+                    driveDTO.getCityArrival(),
+                    driveDTO.getStreetArrival(),
+                    driveDTO.getExactPlaceArrival(),
+                    driveDTO.getStopOverPlaces(),
+                    driveDTO.getPassengersQuantity(),
+                    driveDTO.getCost(),
+                    driveDTO.getLuggageSize(),
+                    isSmokePermitted,
+                    isRoundTrip,
+                    returnDate,
+                    driveDTO.getDriverComment(),
+                    driveId
+            );
+
+        } catch (Exception e){
+            log.info("REST - nie udalo sie edytowac przejazdu - podaj wszystkie dane");
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.BAD_REQUEST);
+        }
+
+        if(result.isValid()) {
+            return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.OK);
+        } else {
+            log.info("REST - nie udalo sie edytowac przejazdu");
             return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

@@ -113,19 +113,6 @@ public class UserModel implements Serializable {
     @JsonManagedReference
     private List<BookingModel> bookings;
 
-    // Polaczenie 1 User do N Sesji
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<SessionActualModel> sessionActual;
-
-    @OneToMany(mappedBy = "sender")
-    @JsonManagedReference
-    private List<MessageModel> message_sender;
-
-    @OneToMany(mappedBy = "receiver")
-    @JsonManagedReference
-    private List<MessageModel> message_receiver;
-
 
     public long getUserId() {
         return userId;
@@ -285,30 +272,6 @@ public class UserModel implements Serializable {
 
     public void setBookings(List<BookingModel> bookings) {
         this.bookings = bookings;
-    }
-
-    public List<SessionActualModel> getSessionActual() {
-        return sessionActual;
-    }
-
-    public void setSessionActual(List<SessionActualModel> sessionActual) {
-        this.sessionActual = sessionActual;
-    }
-
-    public List<MessageModel> getMessage_sender() {
-        return message_sender;
-    }
-
-    public void setMessage_sender(List<MessageModel> message_sender) {
-        this.message_sender = message_sender;
-    }
-
-    public List<MessageModel> getMessage_receiver() {
-        return message_receiver;
-    }
-
-    public void setMessage_receiver(List<MessageModel> message_receiver) {
-        this.message_receiver = message_receiver;
     }
 
     @Override

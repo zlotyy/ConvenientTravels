@@ -130,6 +130,8 @@ public class DriveService implements IDriveService {
             log.info("Pobieram szczegoly przejazdu");
             driveDetails = driveDAO.getDriveDetails(drive);
             Hibernate.initialize(driveDetails.getPassengersComments());
+            Hibernate.initialize(driveDetails.getDrive().getBookings());
+            Hibernate.initialize(driveDetails.getDrive().getStopOverPlaces());
             result.setData(driveDetails);
         } catch(Exception e){
             log.error("Blad podczas pobierania szczegolow przejazdu");

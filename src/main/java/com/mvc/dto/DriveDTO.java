@@ -1,6 +1,7 @@
 package com.mvc.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mvc.enums.LuggageSize;
 import com.mvc.model.StopOverPlaceModel;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -45,8 +46,32 @@ public class DriveDTO {
 
     private String driverComment;
 
+    @JsonIgnore
     private List<StopOverPlaceModel> stopOverPlaces;
 
+
+    public DriveDTO() {
+    }
+
+    public DriveDTO(String startDate, String returnDate, String cityStart, String streetStart, String exactPlaceStart, String cityArrival,
+                    String streetArrival, String exactPlaceArrival, String isRoundTrip, int cost, LuggageSize luggageSize, int passengersQuantity,
+                    String isSmokePermitted, String driverComment, List<StopOverPlaceModel> stopOverPlaces) {
+        this.startDate = startDate;
+        this.returnDate = returnDate;
+        this.cityStart = cityStart;
+        this.streetStart = streetStart;
+        this.exactPlaceStart = exactPlaceStart;
+        this.cityArrival = cityArrival;
+        this.streetArrival = streetArrival;
+        this.exactPlaceArrival = exactPlaceArrival;
+        this.isRoundTrip = isRoundTrip;
+        this.cost = cost;
+        this.luggageSize = luggageSize;
+        this.passengersQuantity = passengersQuantity;
+        this.isSmokePermitted = isSmokePermitted;
+        this.driverComment = driverComment;
+        this.stopOverPlaces = stopOverPlaces;
+    }
 
 
     public String getStartDate() {
@@ -89,14 +114,6 @@ public class DriveDTO {
         this.exactPlaceStart = exactPlaceStart;
     }
 
-    public String getExactPlaceArrival() {
-        return exactPlaceArrival;
-    }
-
-    public void setExactPlaceArrival(String exactPlaceArrival) {
-        this.exactPlaceArrival = exactPlaceArrival;
-    }
-
     public String getCityArrival() {
         return cityArrival;
     }
@@ -113,20 +130,20 @@ public class DriveDTO {
         this.streetArrival = streetArrival;
     }
 
+    public String getExactPlaceArrival() {
+        return exactPlaceArrival;
+    }
+
+    public void setExactPlaceArrival(String exactPlaceArrival) {
+        this.exactPlaceArrival = exactPlaceArrival;
+    }
+
     public String getIsRoundTrip() {
         return isRoundTrip;
     }
 
     public void setIsRoundTrip(String isRoundTrip) {
         this.isRoundTrip = isRoundTrip;
-    }
-
-    public String getIsSmokePermitted() {
-        return isSmokePermitted;
-    }
-
-    public void setIsSmokePermitted(String isSmokePermitted) {
-        this.isSmokePermitted = isSmokePermitted;
     }
 
     public int getCost() {
@@ -151,6 +168,14 @@ public class DriveDTO {
 
     public void setPassengersQuantity(int passengersQuantity) {
         this.passengersQuantity = passengersQuantity;
+    }
+
+    public String getIsSmokePermitted() {
+        return isSmokePermitted;
+    }
+
+    public void setIsSmokePermitted(String isSmokePermitted) {
+        this.isSmokePermitted = isSmokePermitted;
     }
 
     public String getDriverComment() {
@@ -186,7 +211,7 @@ public class DriveDTO {
                 ", passengersQuantity=" + passengersQuantity +
                 ", isSmokePermitted='" + isSmokePermitted + '\'' +
                 ", driverComment='" + driverComment + '\'' +
-                ", stopOverPlaces=" + stopOverPlaces +
+//                ", stopOverPlaces=" + stopOverPlaces +
                 '}';
     }
 }
